@@ -1,0 +1,25 @@
+{
+    "project": {
+        "logs": "console",
+        "type": "angular8",
+        "commands": [
+            {
+                "cmd": "npx",
+                "args": [
+                    "ng",
+                    "--version"
+                ],
+                "options": {
+                    "cwd": "../workspace/"
+                }
+            },
+            {
+                "cmd": "npx",
+                "args": ["ng","new","test","--commit=false","--interactive=false","--skipInstall=true","--skipGit=true","--routing=true","--style=css","--verbose=true"],
+                "options": {
+                    "cwd": "../workspace/"
+                }
+            }
+        ]
+    }
+}
