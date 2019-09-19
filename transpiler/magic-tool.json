@@ -15,10 +15,50 @@
             },
             {
                 "cmd": "npx",
-                "args": ["ng","new","test","--commit=false","--interactive=false","--skipInstall=true","--skipGit=true","--routing=true","--style=css","--verbose=true"],
+                "args": [
+                    "ng",
+                    "new",
+                    "test",
+                    "--commit=false",
+                    "--interactive=false",
+                    "--skipInstall=true",
+                    "--skipGit=true",
+                    "--routing=true",
+                    "--style=css",
+                    "--verbose=true"
+                ],
                 "options": {
                     "cwd": "../workspace/"
                 }
+            },
+            {
+                "cmd": "npm",
+                "args": [
+                    "install",
+                    "--verbose"
+                ],
+                "options": {
+                    "cwd": "../workspace/test/"
+                }
+            },
+            {
+                "cmd": "npx",
+                "args": [
+                    "ng",
+                    "serve",
+                    "--prod=true"
+                ],
+                "options": {
+                    "cwd": "../workspace/test/"
+                }
+            }
+        ],
+        "modules": [
+            {
+                "name": "app",
+                "components": [],
+                "services": [],
+                "pipes": []
             }
         ]
     }
