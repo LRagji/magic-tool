@@ -2,9 +2,12 @@
     "project": {
         "logs": "console",
         "type": "angular8",
+        "workspace":"../workspace/",
+        "name":"test",
         "commands": [
             {
                 "cmd": "npx",
+                "keepRunningInBackgroud": false,
                 "args": [
                     "ng",
                     "--version"
@@ -15,6 +18,7 @@
             },
             {
                 "cmd": "npx",
+                "keepRunningInBackgroud": false,
                 "args": [
                     "ng",
                     "new",
@@ -33,6 +37,7 @@
             },
             {
                 "cmd": "npm",
+                "keepRunningInBackgroud": false,
                 "args": [
                     "install",
                     "--verbose"
@@ -42,21 +47,36 @@
                 }
             },
             {
-                "cmd": "npx",
+                "cmd": "node",
+                "keepRunningInBackgroud": false,
                 "args": [
-                    "ng",
-                    "serve",
-                    "--prod=true"
-                ],
-                "options": {
-                    "cwd": "../workspace/test/"
-                }
+                    "layout-generator",
+                    "magic-tool.json"
+                ]
             }
         ],
         "modules": [
             {
-                "name": "app",
-                "components": [],
+                "name":"alert",
+                "bootstrapComponent": "main",
+                "components": [
+                    {
+                        "name": "main",
+                        "container": "fluid",
+                        "layouts": [
+                            {
+                                "type": "row",
+                                "elements": [
+                                    {
+                                        "width":1,
+                                        "package":"ngx-bootstrap",
+                                        "name":"buttons"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
                 "services": [],
                 "pipes": []
             }
