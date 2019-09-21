@@ -196,6 +196,7 @@
         "variable-name": [
             true,
             "ban-keywords",
+            "allow-leading-underscore",
             "check-format"
         ]
     },
@@ -290,6 +291,7 @@
         "variable-name": [
             true,
             "ban-keywords",
+            "allow-leading-underscore",
             "check-format"
         ],
         "new-parens": true,
