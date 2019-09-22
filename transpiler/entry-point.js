@@ -1,29 +1,16 @@
 // Copyright © 2019 Baker Hughes, a GE company, LLC.  All rights reserved
-const configOptions = require('./magic-tool.json');
-const _logger = require('./lou-util');
+const configOptions = require('./.magic-tool.json');
+const _logger = require('./log-util');
+const _angular = require('./angular');
+const _di = require('./dependency-injector');
 const spawn = require('child_process').spawn;
 
-async function main() {
-    const backgroundProcess = [];
-    for (let cmdPointer = 0; cmdPointer < configOptions.project.commands.length; cmdPointer++) {
-        const cmdlet = configOptions.project.commands[cmdPointer].cmd;
-        const options = configOptions.project.commands[cmdPointer].options || {};
-        const args = configOptions.project.commands[cmdPointer].args;
-        const isBackgroundProcess = configOptions.project.commands[cmdPointer].keepRunningInBackgroud;
-        _logger.log('\n\r \n\r' + '[' + cmdPointer + ']' + 'Executing Command:' + cmdlet + '\n\r');
-        try {
-            if (isBackgroundProcess === false) {
-                await runCommand(cmdlet, args, options);
-            } else {
-                backgroundProcess.push(runCommand(cmdlet, args, options));
-            }
-        } catch (err) {
-            _logger.log('Command Errored:' + JSON.stringify(err));
-        }
-    }
-
-    return backgroundProcess;
-}
+const executorService = 'shell';
+const loggerService = 'logger';
+const context = new _di();
+context.register(executorService, runCommand);
+context.register(loggerService, _logger);
+const builder = new _angular(context);
 
 async function runCommand(command, args, options) {
     return new Promise((acc, rej) => {
@@ -36,17 +23,26 @@ async function runCommand(command, args, options) {
             _logger.log(`${data}`);
         });
 
-        cmd.on('close', code => {
+        cmd.on('error', err => {
+            _logger.log(`${err}`);
+            rej(code);
+        });
+
+        cmd.on('exit', (code, signal) => {
             if (code === 0) {
                 acc(code);
             } else {
-                rej(code);
+                rej({ 'code': code, 'signal': signal });
             }
+            cmd.stdin.end();
         });
     });
 }
 
-main().then(longRunningProcesses => {
-    _logger.log('Execution Done, waiting for background processes');
-    Promise.All(longRunningProcesses);
+builder.createProject(configOptions).then(async longRunningProcesses => {
+    if (Array.isArray(longRunningProcesses)) {
+        _logger.log('Waiting for background processes..');
+        await Promise.All(longRunningProcesses);
+    }
+    _logger.log('Execution Complete.');
 }).catch(err => _logger.log('Process level Catch:' + JSON.stringify(err)));

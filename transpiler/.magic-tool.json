@@ -1,0 +1,38 @@
+{
+    "name": "OFE",
+    "workspace": "/Users/laukikragji/Documents/Git/Local/magic-tool/workspace",
+    "modules": [
+        {
+            "name": "alerts",
+            "route": "alerts",
+            "components": [
+                {
+                    "name": "list",
+                    "route": "alerts",
+                    "layout": []
+                },
+                {
+                    "name": "detail",
+                    "route": "detail",
+                    "layout": []
+                }
+            ],
+            "services": [],
+            "pipes": []
+        },
+        {
+            "name": "dashboard",
+            "route": "dashboard",
+            "components": [],
+            "services": [],
+            "pipes": []
+        },
+        {
+            "name": "usermanagement",
+            "route": "usermanagement",
+            "components": [],
+            "services": [],
+            "pipes": []
+        }
+    ]
+}
