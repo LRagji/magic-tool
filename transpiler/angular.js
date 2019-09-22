@@ -1,23 +1,24 @@
 // Copyright © 2019 Laukik Ragji, a GE company, LLC.  All rights reserved
-const executorService = 'shell';
-const loggerService = 'logger';
+const serviceNames = require('./service-names');
 const npxCommand = 'npx';
 const npmCommand = 'npm';
-const path = require('path');
 
 module.exports = class angularBuilder {
 
     constructor(locatorService) {
         this._locatorService = locatorService;
+        this.createProject = this.createProject.bind(this);
+        this.insertAt = this.insertAt.bind(this);
     }
 
     async createProject(config) {
-        const shellExecutor = this._locatorService.get(executorService);
+        const shellExecutor = this._locatorService.get(serviceNames.executorService);
+        const path = this._locatorService.get(serviceNames.pathService);
         const fullWorkspace = config.workspace;
         const projectName = config.name;
         const cmdOptions = { 'cwd': fullWorkspace };
         const modules = config.modules;
-        const logger = this._locatorService.get(loggerService);
+        const logger = this._locatorService.get(serviceNames.loggerService);
 
         // Clean up project space
         logger.log(`Deleting existing project ${projectName}`);
@@ -47,6 +48,11 @@ module.exports = class angularBuilder {
             'install',
             '--verbose'
         ], { 'cwd': path.join(fullWorkspace, projectName) });
+
+        // Inject Code for Schematics
+        const magicCodeInsert = 61;
+        const templates = this._locatorService.get(serviceNames.templateService);
+        await this.insertAt(path.join(fullWorkspace, projectName, 'node_modules/@schematics/angular/component/index.js'), magicCodeInsert, templates.routeUpdaterSchematic);
 
         // Create Modules
         for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
@@ -80,6 +86,20 @@ module.exports = class angularBuilder {
                 ], { 'cwd': path.join(fullWorkspace, projectName) });
             }
         }
+    }
+
+    async insertAt(filePath, lineNumber, content) {
+        const fs = this._locatorService.get(serviceNames.fileSystemService);
+        let fileContentArray = fs.readFileSync(filePath).toString().split("\n");
+        fileContentArray.splice(lineNumber, 0, content);
+        return new Promise((acc, rej) => {
+            fs.writeFile(filePath, fileContentArray.join("\n"), function (err) {
+                if (err)
+                    rej(err)
+                else
+                    acc();
+            });
+        });
     }
 
 };

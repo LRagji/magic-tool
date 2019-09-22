@@ -4,12 +4,18 @@ const _logger = require('./log-util');
 const _angular = require('./angular');
 const _di = require('./dependency-injector');
 const spawn = require('child_process').spawn;
+const fs = require('fs');
+const path = require('path');
+const serviceNames = require('./service-names');
+const tempaltes = require('./templates/code');
 
-const executorService = 'shell';
-const loggerService = 'logger';
 const context = new _di();
-context.register(executorService, runCommand);
-context.register(loggerService, _logger);
+context.register(serviceNames.executorService, runCommand);
+context.register(serviceNames.loggerService, _logger);
+context.register(serviceNames.fileSystemService, fs);
+context.register(serviceNames.pathService, path);
+context.register(serviceNames.templateService, tempaltes);
+
 const builder = new _angular(context);
 
 async function runCommand(command, args, options) {
