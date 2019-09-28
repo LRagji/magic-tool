@@ -21,6 +21,9 @@ module.exports = class angularBuilder {
         this._installBootstapDesignSystem = this._installBootstapDesignSystem.bind(this);
         this._createComponentsForModule = this._createComponentsForModule.bind(this);
         this._createModule = this._createModule.bind(this);
+        this._fetchUniqueElementsFor = this._fetchUniqueElementsFor.bind(this);
+        this._installElements = this._installElements.bind(this);
+
     }
 
     async createProject(config) {
@@ -30,53 +33,93 @@ module.exports = class angularBuilder {
         const modules = config.modules;
         const logger = this._locatorService.get(serviceNames.loggerService);
 
-        // Clean up project space
-        logger.log(`Deleting existing project ${projectName}`);
-        await this._clearWorkspaceFolder(fullWorkspace, projectName);
+        // // Clean up project space
+        // logger.log(`Deleting existing project ${projectName}`);
+        // await this._clearWorkspaceFolder(fullWorkspace, projectName);
 
 
-        // Create a new Project
-        logger.log(`Creating new project ${projectName}`);
-        await this._createAngularProject(fullWorkspace, projectName);
+        // // Create a new Project
+        // logger.log(`Creating new project ${projectName}`);
+        // await this._createAngularProject(fullWorkspace, projectName);
 
-        // Run NPM Install
-        logger.log(`Installing Dependencies`);
-        await this._installDependencies(fullWorkspace, projectName);
+        // // Run NPM Install
+        // logger.log(`Installing Dependencies`);
+        // await this._installDependencies(fullWorkspace, projectName);
 
-        // Install Design System
-        if (designSystem === bootstrapDesignSystem) {
-            logger.log(`Installing ${designSystem}`);
-            await this._installBootstapDesignSystem(fullWorkspace, projectName);
-            const bootstrapComponents = ['buttons', 'collapse'];
-            for (let compCounter = 0; compCounter < bootstrapComponents.length; compCounter++) {
-                const comp = bootstrapComponents[compCounter];
-                logger.log(`Installing ${comp} from ${designSystem}`);
-                await this._shellExecutor(npxCommand, [
-                    'ng',
-                    'add',
-                    "ngx-bootstrap",
-                    "--component",
-                    comp
-                ], { 'cwd': this._path.join(fullWorkspace, projectName) });
-            }
-        }
-        else {
-            logger.log(`Design System: ${designSystem} not found`);
-            return;
-        }
+        // // Install Design System
+        // if (designSystem === bootstrapDesignSystem) {
+        //     logger.log(`Installing ${designSystem}`);
+        //     await this._installBootstapDesignSystem(fullWorkspace, projectName);
+        // }
+        // else {
+        //     logger.log(`Design System: ${designSystem} not found`);
+        //     return;
+        // }
 
-        // Inject Code for Schematics
-        const magicCodeInsert = 61;
-        const templates = this._locatorService.get(serviceNames.templateService);
-        await this._insertAt(this._path.join(fullWorkspace, projectName, 'node_modules/@schematics/angular/component/index.js'), magicCodeInsert, templates.routeUpdaterSchematic);
+        // // Inject Code for Schematics
+        // const magicCodeInsert = 61;
+        // const templates = this._locatorService.get(serviceNames.templateService);
+        // await this._insertAt(this._path.join(fullWorkspace, projectName, 'node_modules/@schematics/angular/component/index.js'), magicCodeInsert, templates.routeUpdaterSchematic);
 
         // Create Modules
         for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
             const currentModule = modules[moduleCtr];
             await this._createModule(currentModule, fullWorkspace, projectName);
             await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
-
+            await this._installElements(currentModule, fullWorkspace, projectName);
         }
+    }
+
+    async _installElements(currentModule, fullWorkspace, projectName) {
+        const moduleElements = this._fetchUniqueElementsFor(currentModule);
+        for (let compCounter = 0; compCounter < moduleElements.length; compCounter++) {
+            const element = moduleElements[compCounter];
+            this._logger.log(`Installing ${element} for ${currentModule.name}`);
+            await this._shellExecutor(npxCommand, [
+                'ng',
+                'add',
+                "ngx-bootstrap",
+                "--component",
+                element
+            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+        }
+    }
+
+    _fetchUniqueElementsFor(currentModule) {
+        const moduleElements = new Set();
+        const allowedElements = new Map();
+        allowedElements.set('button', 'buttons');
+        allowedElements.set('accordion', 'accordion');
+        allowedElements.set('alert', 'alerts');
+        allowedElements.set('carousel', 'carousel');
+        allowedElements.set('collapse', 'collapse');
+        allowedElements.set('datepicker', 'datepicker');
+        allowedElements.set('dropdowns', 'dropdowns');
+        allowedElements.set('modal', 'modals');
+        allowedElements.set('pagination', 'pagination');
+        allowedElements.set('popover', 'popover');
+        allowedElements.set('progressbar', 'progressbar');
+        allowedElements.set('rating', 'rating');
+        allowedElements.set('sortable', 'sortable');
+        allowedElements.set('tab', 'tabs');
+        allowedElements.set('timepicker', 'timepicker');
+        allowedElements.set('tooltip', 'tooltip');
+        allowedElements.set('typeahead', 'typeahead');
+        currentModule.components.forEach(component => {
+            component.layouts.forEach((layout) => {
+                layout.elements.forEach((element) => {
+                    const elementName = allowedElements.get(element.name.toLowerCase());
+                    if (elementName === undefined) {
+                        this._logger.log("Cannot find component:" + element.name.toLowerCase());
+                    }
+                    else {
+                        moduleElements.add(elementName);
+                    }
+                })
+            })
+        });
+
+        return Array.from(moduleElements);
     }
 
     async _createModule(currentModule, fullWorkspace, projectName) {

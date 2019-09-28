@@ -10,12 +10,31 @@
                 {
                     "name": "list",
                     "route": "alerts",
-                    "layout": []
+                    "layouts": [
+                        {
+                            "type": "row",
+                            "elements": [
+                                {
+                                    "name": "accordion",
+                                    "width": 1
+                                }
+                            ]
+                        },
+                        {
+                            "type": "row",
+                            "elements": [
+                                {
+                                    "name": "button",
+                                    "width": 1
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "name": "detail",
                     "route": "detail",
-                    "layout": [
+                    "layouts": [
                         {
                             "type": "row",
                             "elements": [
