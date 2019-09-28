@@ -10,6 +10,7 @@ module.exports = class angularBuilder {
         this._locatorService = locatorService;
         this._shellExecutor = this._locatorService.get(serviceNames.executorService);
         this._path = this._locatorService.get(serviceNames.pathService);
+        this._logger = this._locatorService.get(serviceNames.loggerService);
 
         this.createProject = this.createProject.bind(this);
 
@@ -18,6 +19,8 @@ module.exports = class angularBuilder {
         this._createAngularProject = this._createAngularProject.bind(this);
         this._installDependencies = this._installDependencies.bind(this);
         this._installBootstapDesignSystem = this._installBootstapDesignSystem.bind(this);
+        this._createComponentsForModule = this._createComponentsForModule.bind(this);
+        this._createModule = this._createModule.bind(this);
     }
 
     async createProject(config) {
@@ -37,7 +40,7 @@ module.exports = class angularBuilder {
         await this._createAngularProject(fullWorkspace, projectName);
 
         // Run NPM Install
-        logger.log(`Running NPM Install`);
+        logger.log(`Installing Dependencies`);
         await this._installDependencies(fullWorkspace, projectName);
 
         // Install Design System
@@ -70,34 +73,43 @@ module.exports = class angularBuilder {
         // Create Modules
         for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
             const currentModule = modules[moduleCtr];
-            logger.log(`Creating module ${currentModule.name}`);
+            await this._createModule(currentModule, fullWorkspace, projectName);
+            await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
+
+        }
+    }
+
+    async _createModule(currentModule, fullWorkspace, projectName) {
+        this._logger.log(`Creating module ${currentModule.name}`);
+        return this._shellExecutor(npxCommand, [
+            'ng',
+            'generate',
+            'module',
+            currentModule.name,
+            '--project=' + projectName,
+            '--routing=true',
+            '--route=' + currentModule.route,
+            '--module=app'
+        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+
+    }
+
+    async _createComponentsForModule(currentModule, fullWorkspace, projectName) {
+
+        for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
+            const currentComponent = currentModule.components[componentCtr];
+            this._logger.log(`Creating component ${currentComponent.name} under ${currentModule.name}`);
             await this._shellExecutor(npxCommand, [
                 'ng',
                 'generate',
-                'module',
-                currentModule.name,
+                'component',
+                this._path.join(currentModule.name, currentComponent.name),
+                '--entryComponent=' + (currentModule.route === currentComponent.route),
                 '--project=' + projectName,
-                '--routing=true',
-                '--route=' + currentModule.route,
-                '--module=app'
+                '--module=' + currentModule.name,
+                '--style=css',
+                '--prefix=' + currentModule.name
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
-
-            // Create Components
-            for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
-                const currentComponent = currentModule.components[componentCtr];
-                logger.log(`Creating component ${currentComponent.name} under ${currentModule.name}`);
-                await this._shellExecutor(npxCommand, [
-                    'ng',
-                    'generate',
-                    'component',
-                    this._path.join(currentModule.name, currentComponent.name),
-                    '--entryComponent=' + (currentModule.route === currentComponent.route),
-                    '--project=' + projectName,
-                    '--module=' + currentModule.name,
-                    '--style=css',
-                    '--prefix=' + currentModule.name
-                ], { 'cwd': this._path.join(fullWorkspace, projectName) });
-            }
         }
     }
 
