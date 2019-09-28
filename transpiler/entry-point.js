@@ -31,7 +31,7 @@ async function runCommand(command, args, options) {
 
         cmd.on('error', err => {
             _logger.log(`${err}`);
-            rej(code);
+            rej(err);
         });
 
         cmd.on('exit', (code, signal) => {
@@ -51,4 +51,4 @@ builder.createProject(configOptions).then(async longRunningProcesses => {
         await Promise.All(longRunningProcesses);
     }
     _logger.log('Execution Complete.');
-}).catch(err => _logger.log('Process level Catch:' + JSON.stringify(err)));
+}).catch(err => _logger.log('Process level Catch:' + err.toString()));
