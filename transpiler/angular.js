@@ -2,6 +2,7 @@
 const serviceNames = require('./service-names');
 const npxCommand = 'npx';
 const npmCommand = 'npm';
+const bootstrapDesignSystem = "bootstrap";
 
 module.exports = class angularBuilder {
 
@@ -15,39 +16,65 @@ module.exports = class angularBuilder {
         const shellExecutor = this._locatorService.get(serviceNames.executorService);
         const path = this._locatorService.get(serviceNames.pathService);
         const fullWorkspace = config.workspace;
+        const designSystem = config.designSystem;
         const projectName = config.name;
         const cmdOptions = { 'cwd': fullWorkspace };
         const modules = config.modules;
         const logger = this._locatorService.get(serviceNames.loggerService);
 
-        // Clean up project space
-        logger.log(`Deleting existing project ${projectName}`);
-        await shellExecutor('rm', [
-            '-r',
-            path.join(fullWorkspace, projectName),
-        ], cmdOptions);
+        // // Clean up project space
+        // logger.log(`Deleting existing project ${projectName}`);
+        // await shellExecutor('rm', [
+        //     '-r',
+        //     path.join(fullWorkspace, projectName),
+        // ], cmdOptions);
 
-        // Create a new Project
-        logger.log(`Creating new project ${projectName}`);
-        await shellExecutor(npxCommand, [
-            'ng',
-            'new',
-            projectName,
-            '--commit=false',
-            '--interactive=false',
-            '--skipInstall=true',
-            '--skipGit=true',
-            '--routing=true',
-            '--style=css',
-            '--verbose=true'
-        ], cmdOptions);
+        // // Create a new Project
+        // logger.log(`Creating new project ${projectName}`);
+        // await shellExecutor(npxCommand, [
+        //     'ng',
+        //     'new',
+        //     projectName,
+        //     '--commit=false',
+        //     '--interactive=false',
+        //     '--skipInstall=true',
+        //     '--skipGit=true',
+        //     '--routing=true',
+        //     '--style=css',
+        //     '--verbose=true'
+        // ], cmdOptions);
 
-        // Run NPM Install
-        logger.log(`Running NPM Install`);
-        await shellExecutor(npmCommand, [
-            'install',
-            '--verbose'
-        ], { 'cwd': path.join(fullWorkspace, projectName) });
+        // // Run NPM Install
+        // logger.log(`Running NPM Install`);
+        // await shellExecutor(npmCommand, [
+        //     'install',
+        //     '--verbose'
+        // ], { 'cwd': path.join(fullWorkspace, projectName) });
+
+        // Install Design System
+        if (designSystem === bootstrapDesignSystem) {
+            logger.log(`Installing ${designSystem}`);
+            await shellExecutor(npxCommand, [
+                'ng',
+                'add',
+                "ngx-bootstrap"
+            ], { 'cwd': path.join(fullWorkspace, projectName) });
+            const bootstrapComponents = ['buttons', 'collapse'];
+            for (let compCounter = 0; compCounter < bootstrapComponents.length; compCounter++) {
+                const comp = bootstrapComponents[compCounter];
+                logger.log(`Installing ${compCounter} from ${designSystem}`);
+                await shellExecutor(npxCommand, [
+                    'ng',
+                    'add',
+                    "ngx-bootstrap",
+                    "--component",
+                    compCounter
+                ], { 'cwd': path.join(fullWorkspace, projectName) });
+            }
+        }
+        else {
+            logger.log(`Design System: ${designSystem} not found`);
+        }
 
         // Inject Code for Schematics
         const magicCodeInsert = 61;

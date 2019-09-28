@@ -1,6 +1,7 @@
 {
     "name": "OFE",
     "workspace": "/Users/laukikragji/Documents/Git/Local/magic-tool/workspace",
+    "designSystem": "bootstrap",
     "modules": [
         {
             "name": "alerts",
@@ -14,7 +15,17 @@
                 {
                     "name": "detail",
                     "route": "detail",
-                    "layout": []
+                    "layout": [
+                        {
+                            "type": "row",
+                            "elements": [
+                                {
+                                    "name": "button",
+                                    "width": 1
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "services": [],
