@@ -1,2 +1,8 @@
+#node
 node_modules
+
+# Project related
 workspace
+
+# System Files
+.DS_Store
