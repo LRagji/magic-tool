@@ -51,4 +51,4 @@ builder.createProject(configOptions).then(async longRunningProcesses => {
         await Promise.All(longRunningProcesses);
     }
     _logger.log('Execution Complete.');
-}).catch(err => _logger.log('Process level Catch:' + err.toString()));
+}).catch(err => _logger.log('Process level Catch: ' + err instanceof Error ? err.toString() : JSON.stringify(err)));
