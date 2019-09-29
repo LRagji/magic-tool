@@ -135,7 +135,7 @@ module.exports = class angularBuilder {
                     'ng',
                     'g',
                     "ng-utils:add-imports",
-                    `--module-path=${currentModule.path.replace(this._path.join(fullWorkspace, projectName), '')}`,
+                    `--module-path=${currentModule.path}`,
                     `--component-name=${dependency.moduleName}`,
                     `--component-path=${dependency.link}`
                 ], { 'cwd': this._path.join(fullWorkspace, projectName) });
@@ -182,7 +182,7 @@ module.exports = class angularBuilder {
 
     async _createModule(currentModule, fullWorkspace, projectName) {
         this._logger.log(`Creating module ${currentModule.name}`);
-        currentModule.path = this._path.join(fullWorkspace, projectName, "/src/app/", `${currentModule.name}/${currentModule.name}.module.ts`);
+        currentModule.path = this._path.join("/src/app/", `${currentModule.name}/${currentModule.name}.module.ts`);
         return this._shellExecutor(npxCommand, [
             'ng',
             'generate',
@@ -196,9 +196,13 @@ module.exports = class angularBuilder {
     }
 
     async _createComponentsForModule(currentModule, fullWorkspace, projectName) {
-
         for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
             const currentComponent = currentModule.components[componentCtr];
+            currentComponent.path = {
+                "html": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.html`),
+                "ts": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.ts`),
+                "css": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.css`)
+            }
             this._logger.log(`Creating component ${currentComponent.name} under ${currentModule.name}`);
             await this._shellExecutor(npxCommand, [
                 'ng',
