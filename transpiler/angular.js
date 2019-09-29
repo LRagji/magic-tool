@@ -2,6 +2,8 @@
 const serviceNames = require('./service-names');
 const npxCommand = 'npx';
 const npmCommand = 'npm';
+const copyCommand = 'cp';
+const deleteCommand = 'rm';
 const bootstrapDesignSystem = "bootstrap";
 
 module.exports = class angularBuilder {
@@ -61,16 +63,57 @@ module.exports = class angularBuilder {
         // const templates = this._locatorService.get(serviceNames.templateService);
         // await this._insertAt(this._path.join(fullWorkspace, projectName, 'node_modules/@schematics/angular/component/index.js'), magicCodeInsert, templates.routeUpdaterSchematic);
 
-        // Create Modules
-        for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
-            const currentModule = modules[moduleCtr];
-            await this._createModule(currentModule, fullWorkspace, projectName);
-            await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
-            await this._installElements(currentModule, fullWorkspace, projectName);
+        // Copy utils node modules
+        this._logger.log("Building schematics");
+        await this._shellExecutor(npmCommand, [
+            'run',
+            'build'
+        ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
+
+        this._logger.log("Copying schematics");
+        await this._shellExecutor(copyCommand, [
+            '-r',
+            this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
+            'node_modules'
+        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+        try {
+            // Create Modules
+            for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
+                const currentModule = modules[moduleCtr];
+                await this._createModule(currentModule, fullWorkspace, projectName);
+                await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
+                await this._installElements(currentModule, fullWorkspace, projectName);
+            }
+        }
+        finally {
+            this._logger.log("Cleaning up schematics");
+            await this._shellExecutor(deleteCommand, [
+                '-r',
+                'node_modules/ng-utils',
+            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
     async _installElements(currentModule, fullWorkspace, projectName) {
+        const elementsToModuleDependencies = {
+            accordion: [{ moduleName: 'AccordionModule', link: `ngx-bootstrap/accordion` }, { moduleName: 'CommonModule', link: '@angular/common' }],
+            alerts: [{ moduleName: 'AlertModule', link: `ngx-bootstrap/alert` }],
+            buttons: [{ moduleName: 'ButtonsModule', link: `ngx-bootstrap/buttons` }],
+            carousel: [{ moduleName: 'CarouselModule', link: `ngx-bootstrap/carousel` }],
+            collapse: [{ moduleName: 'CollapseModule', link: `ngx-bootstrap/collapse` }, { moduleName: 'CommonModule', link: '@angular/common' }],
+            datepicker: [{ moduleName: 'BsDatepickerModule', link: `ngx-bootstrap/datepicker` }, { moduleName: 'CommonModule', link: '@angular/common' }],
+            dropdowns: [{ moduleName: 'BsDropdownModule', link: `ngx-bootstrap/dropdown` }],
+            modals: [{ moduleName: 'ModalModule', link: `ngx-bootstrap/modal` }],
+            pagination: [{ moduleName: 'PaginationModule', link: `ngx-bootstrap/pagination` }],
+            popover: [{ moduleName: 'PopoverModule', link: `ngx-bootstrap/popover` }],
+            progressbar: [{ moduleName: 'ProgressbarModule', link: `ngx-bootstrap/progressbar` }],
+            rating: [{ moduleName: 'RatingModule', link: `ngx-bootstrap/rating` }],
+            sortable: [{ moduleName: 'SortableModule', link: `ngx-bootstrap/sortable` }],
+            tabs: [{ moduleName: 'TabsModule', link: `ngx-bootstrap/tabs` }],
+            timepicker: [{ moduleName: 'TimepickerModule', link: `ngx-bootstrap/timepicker` }],
+            tooltip: [{ moduleName: 'TooltipModule', link: `ngx-bootstrap/tooltip` }],
+            typeahead: [{ moduleName: 'TypeaheadModule', link: `ngx-bootstrap/typeahead` }, { moduleName: 'CommonModule', link: '@angular/common' }]
+        };
         const moduleElements = this._fetchUniqueElementsFor(currentModule);
         for (let compCounter = 0; compCounter < moduleElements.length; compCounter++) {
             const element = moduleElements[compCounter];
@@ -82,6 +125,20 @@ module.exports = class angularBuilder {
                 "--component",
                 element
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+
+            const moduleDependencies = elementsToModuleDependencies[element];
+            for (let dependencyCtr = 0; dependencyCtr < moduleDependencies.length; dependencyCtr++) {
+                const dependency = moduleDependencies[dependencyCtr];
+                this._logger.log(`Installing dependency: ${dependency.moduleName} for element: ${element} within module: ${currentModule.name}`);
+                await this._shellExecutor(npxCommand, [
+                    'ng',
+                    'g',
+                    "ng-utils:add-imports",
+                    `--module-path=${currentModule.path.replace(this._path.join(fullWorkspace, projectName), '')}`,
+                    `--component-name=${dependency.moduleName}`,
+                    `--component-path=${dependency.link}`
+                ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+            }
         }
     }
 
@@ -94,7 +151,7 @@ module.exports = class angularBuilder {
         allowedElements.set('carousel', 'carousel');
         allowedElements.set('collapse', 'collapse');
         allowedElements.set('datepicker', 'datepicker');
-        allowedElements.set('dropdowns', 'dropdowns');
+        allowedElements.set('dropdown', 'dropdowns');
         allowedElements.set('modal', 'modals');
         allowedElements.set('pagination', 'pagination');
         allowedElements.set('popover', 'popover');
@@ -124,6 +181,7 @@ module.exports = class angularBuilder {
 
     async _createModule(currentModule, fullWorkspace, projectName) {
         this._logger.log(`Creating module ${currentModule.name}`);
+        currentModule.path = this._path.join(fullWorkspace, projectName, "/src/app/", `${currentModule.name}/${currentModule.name}.module.ts`);
         return this._shellExecutor(npxCommand, [
             'ng',
             'generate',
@@ -134,7 +192,6 @@ module.exports = class angularBuilder {
             '--route=' + currentModule.route,
             '--module=app'
         ], { 'cwd': this._path.join(fullWorkspace, projectName) });
-
     }
 
     async _createComponentsForModule(currentModule, fullWorkspace, projectName) {
