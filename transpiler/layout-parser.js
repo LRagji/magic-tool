@@ -1,11 +1,11 @@
 module.exports = class LayoutParser {
-    constructor() {
+    constructor(repoElements) {
         this.parse = this.parse.bind(this);
 
         this._createHorizontalContainer = this._createHorizontalContainer.bind(this);
         this._createElements = this._createElements.bind(this);
         this._createElementContainer = this._createElementContainer.bind(this);
-        this._buttonTemplate = this._buttonTemplate.bind(this);
+        this._repoElements = repoElements;
     }
 
     parse(layouts) {
@@ -45,26 +45,20 @@ module.exports = class LayoutParser {
             return `<div class="${cls}" >${content}</div>`;
         }
     }
-    
+
     _createElements(elements) {
         const elementTemplates = [];
         elements.forEach((element) => {
-            const container = this._createElementContainer(element);
-            switch (element.name) {
-                case 'button':
-                    elementTemplates.push(container(this._buttonTemplate(element.prop)));
-                    break;
-                default:
-                    elementTemplates.push('Unknown Element:' + element.name);
+            const container = this._createElementContainer(element); 
+            const repoElement = this._repoElements[element.name];
+            if (repoElement === undefined) {
+                elementTemplates.push('Unknown Element:' + element.name);
+            }
+            else {
+                const props = element.properties || repoElement.defaultProperties;
+                elementTemplates.push(repoElement.template(props));
             }
         });
         return elementTemplates.join(" ");
-    }
-
-    _buttonTemplate(properties) {
-        properties = properties || {
-            text: 'No Name'
-        }
-        return `<button type="button" class="btn btn-primary">${properties.text}</button>`
     }
 }

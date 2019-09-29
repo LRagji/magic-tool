@@ -5,7 +5,7 @@ const _angular = require('./angular');
 const _di = require('./dependency-injector');
 const spawn = require('child_process').spawn;
 const parser = require('./layout-parser');
-const fs = require('fs').promises;
+const fs = require('promise-fs');
 const path = require('path');
 const serviceNames = require('./service-names');
 const tempaltes = require('./templates/code');
@@ -17,7 +17,7 @@ context.register(serviceNames.loggerService, _logger);
 context.register(serviceNames.fileSystemService, fs);
 context.register(serviceNames.pathService, path);
 context.register(serviceNames.templateService, tempaltes);
-context.register(serviceNames.parser, new parser());
+context.register(serviceNames.parser, new parser(elementsRepo));
 context.register(serviceNames.elementsRepo, elementsRepo);
 
 const builder = new _angular(context);
