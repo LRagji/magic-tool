@@ -14,6 +14,7 @@ module.exports = class angularBuilder {
         this._path = this._locatorService.get(serviceNames.pathService);
         this._logger = this._locatorService.get(serviceNames.loggerService);
         this._fs = this._locatorService.get(serviceNames.fileSystemService);
+        this._elementsRepo = this._locatorService.get(serviceNames.elementsRepo);
 
         this.createProject = this.createProject.bind(this);
 

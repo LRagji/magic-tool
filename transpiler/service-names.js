@@ -4,5 +4,6 @@ module.exports = {
     fileSystemService: 'fs',
     pathService: 'path',
     templateService: 'templates',
-    parser:'parser'
+    parser:'parser',
+    elementsRepo:'element-repo'
 }

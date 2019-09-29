@@ -9,6 +9,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const serviceNames = require('./service-names');
 const tempaltes = require('./templates/code');
+const elementsRepo = require('./templates/bootstrap-elements');
 
 const context = new _di();
 context.register(serviceNames.executorService, runCommand);
@@ -17,6 +18,7 @@ context.register(serviceNames.fileSystemService, fs);
 context.register(serviceNames.pathService, path);
 context.register(serviceNames.templateService, tempaltes);
 context.register(serviceNames.parser, new parser());
+context.register(serviceNames.elementsRepo, elementsRepo);
 
 const builder = new _angular(context);
 
