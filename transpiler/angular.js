@@ -65,35 +65,35 @@ module.exports = class angularBuilder {
         // await this._insertAt(this._path.join(fullWorkspace, projectName, 'node_modules/@schematics/angular/component/index.js'), magicCodeInsert, templates.routeUpdaterSchematic);
 
         // Copy utils node modules
-        this._logger.log("Building schematics");
-        await this._shellExecutor(npmCommand, [
-            'run',
-            'build'
-        ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
+        // this._logger.log("Building schematics");
+        // await this._shellExecutor(npmCommand, [
+        //     'run',
+        //     'build'
+        // ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
 
-        this._logger.log("Copying schematics");
-        await this._shellExecutor(copyCommand, [
-            '-r',
-            this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
-            'node_modules'
-        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+        // this._logger.log("Copying schematics");
+        // await this._shellExecutor(copyCommand, [
+        //     '-r',
+        //     this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
+        //     'node_modules'
+        // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
         try {
             // Create Modules
             for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
                 const currentModule = modules[moduleCtr];
-                await this._createModule(currentModule, fullWorkspace, projectName);
-                await this._installElements(currentModule, fullWorkspace, projectName);
+               // await this._createModule(currentModule, fullWorkspace, projectName);
+               // await this._installElements(currentModule, fullWorkspace, projectName);
                 await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
 
             }
         }
         finally {
-            this._logger.log("Cleaning up schematics");
-            await this._shellExecutor(deleteCommand, [
-                '-r',
-                'node_modules/ng-utils',
-            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+            // this._logger.log("Cleaning up schematics");
+            // await this._shellExecutor(deleteCommand, [
+            //     '-r',
+            //     'node_modules/ng-utils',
+            // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
@@ -207,20 +207,20 @@ module.exports = class angularBuilder {
                 "css": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.css`)
             }
             this._logger.log(`Creating component ${currentComponent.name} under ${currentModule.name}`);
-            await this._shellExecutor(npxCommand, [
-                'ng',
-                'generate',
-                'component',
-                this._path.join(currentModule.name, currentComponent.name),
-                '--entryComponent=' + (currentModule.route === currentComponent.route),
-                '--project=' + projectName,
-                '--module=' + currentModule.name,
-                '--style=css',
-                '--prefix=' + currentModule.name
-            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+            // await this._shellExecutor(npxCommand, [
+            //     'ng',
+            //     'generate',
+            //     'component',
+            //     this._path.join(currentModule.name, currentComponent.name),
+            //     '--entryComponent=' + (currentModule.route === currentComponent.route),
+            //     '--project=' + projectName,
+            //     '--module=' + currentModule.name,
+            //     '--style=css',
+            //     '--prefix=' + currentModule.name
+            // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
             this._logger.log(`Building layout for ${currentComponent.name} under ${currentModule.name}`);
-            let htmlContent = await layoutBuilder.parse(currentComponent.layouts);
+            let htmlContent = layoutBuilder.parse(currentComponent.layouts);
             await this._fs.writeFile(this._path.join(fullWorkspace, projectName, currentComponent.path.html), htmlContent);
         }
     }

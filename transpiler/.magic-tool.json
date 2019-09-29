@@ -21,7 +21,7 @@
                             ]
                         },
                         {
-                            "type": "row-start",
+                            "type": "row-left",
                             "elements": [
                                 {
                                     "name": "button",
@@ -30,7 +30,7 @@
                             ]
                         },
                         {
-                            "type": "row-end",
+                            "type": "row-right",
                             "elements": [
                                 {
                                     "name": "button",
@@ -45,7 +45,7 @@
                     "route": "detail",
                     "layouts": [
                         {
-                            "type": "row",
+                            "type": "row-left",
                             "elements": [
                                 {
                                     "name": "button",
