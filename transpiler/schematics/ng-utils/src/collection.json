@@ -1,0 +1,10 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "add-imports": {
+      "description": "Adds import in a angular module.",
+      "factory": "./add-imports/index#addImports",
+      "schema": "./add-imports/schema.json"
+    }
+  }
+}
