@@ -76,13 +76,14 @@ module.exports = class angularBuilder {
             this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
             'node_modules'
         ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+
         try {
             // Create Modules
             for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
                 const currentModule = modules[moduleCtr];
                 await this._createModule(currentModule, fullWorkspace, projectName);
-                await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
                 await this._installElements(currentModule, fullWorkspace, projectName);
+                await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
             }
         }
         finally {
