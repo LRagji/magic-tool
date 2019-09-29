@@ -204,7 +204,7 @@ module.exports = class angularBuilder {
     }
 
     async _createAngularProject(fullWorkspace, projectName) {
-        return this._shellExecutor(npxCommand, [
+        await this._shellExecutor(npxCommand, [
             'ng',
             'new',
             projectName,
@@ -216,6 +216,8 @@ module.exports = class angularBuilder {
             '--style=css',
             '--verbose=true'
         ], { 'cwd': fullWorkspace });
+        const htmlContent=`<router-outlet></router-outlet>`;
+        await this._fs.writeFile(this._path.join(fullWorkspace, projectName, 'src/app/app.component.html'), htmlContent);
     }
 
     async _installDependencies(fullWorkspace, projectName) {
