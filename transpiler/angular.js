@@ -13,6 +13,7 @@ module.exports = class angularBuilder {
         this._shellExecutor = this._locatorService.get(serviceNames.executorService);
         this._path = this._locatorService.get(serviceNames.pathService);
         this._logger = this._locatorService.get(serviceNames.loggerService);
+        this._fs = this._locatorService.get(serviceNames.fileSystemService);
 
         this.createProject = this.createProject.bind(this);
 
@@ -84,6 +85,7 @@ module.exports = class angularBuilder {
                 await this._createModule(currentModule, fullWorkspace, projectName);
                 await this._installElements(currentModule, fullWorkspace, projectName);
                 await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
+
             }
         }
         finally {
@@ -196,6 +198,7 @@ module.exports = class angularBuilder {
     }
 
     async _createComponentsForModule(currentModule, fullWorkspace, projectName) {
+        const layoutBuilder = this._locatorService.get(serviceNames.parser);
         for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
             const currentComponent = currentModule.components[componentCtr];
             currentComponent.path = {
@@ -215,6 +218,10 @@ module.exports = class angularBuilder {
                 '--style=css',
                 '--prefix=' + currentModule.name
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+
+            this._logger.log(`Building layout for ${currentComponent.name} under ${currentModule.name}`);
+            let htmlContent = await layoutBuilder.parse(currentComponent.layouts);
+            await this._fs.writeFile(this._path.join(fullWorkspace, projectName, currentComponent.path.html), htmlContent);
         }
     }
 
@@ -256,17 +263,9 @@ module.exports = class angularBuilder {
     }
 
     async _insertAt(filePath, lineNumber, content) {
-        const fs = this._locatorService.get(serviceNames.fileSystemService);
-        let fileContentArray = fs.readFileSync(filePath).toString().split("\n");
+        let fileContentArray = await this._fs.readFile(filePath).toString().split("\n");
         fileContentArray.splice(lineNumber, 0, content);
-        return new Promise((acc, rej) => {
-            fs.writeFile(filePath, fileContentArray.join("\n"), function (err) {
-                if (err)
-                    rej(err)
-                else
-                    acc();
-            });
-        });
+        return this._fs.writeFile(filePath, fileContentArray.join("\n"));
     }
 
 };

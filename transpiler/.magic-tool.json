@@ -12,7 +12,7 @@
                     "route": "alerts",
                     "layouts": [
                         {
-                            "type": "row",
+                            "type": "row-center",
                             "elements": [
                                 {
                                     "name": "accordion",
@@ -21,7 +21,16 @@
                             ]
                         },
                         {
-                            "type": "row",
+                            "type": "row-start",
+                            "elements": [
+                                {
+                                    "name": "button",
+                                    "width": 1
+                                }
+                            ]
+                        },
+                        {
+                            "type": "row-end",
                             "elements": [
                                 {
                                     "name": "button",

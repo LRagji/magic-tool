@@ -3,5 +3,6 @@ module.exports = {
     loggerService: 'logger',
     fileSystemService: 'fs',
     pathService: 'path',
-    templateService: 'templates'
+    templateService: 'templates',
+    parser:'parser'
 }
