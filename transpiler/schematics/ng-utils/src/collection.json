@@ -5,6 +5,11 @@
       "description": "Adds import in a angular module.",
       "factory": "./add-imports/index#addImports",
       "schema": "./add-imports/schema.json"
+    },
+    "add-declare-imports": {
+      "description": "Adds js import in a file.",
+      "factory": "./add-declare-imports/index#addDecalreImports",
+      "schema": "./add-declare-imports/schema.json"
     }
   }
 }
