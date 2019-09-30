@@ -8,15 +8,16 @@ module.exports = class LayoutParser {
         this._repoElements = repoElements;
     }
 
-    parse(layouts) {
+    parse(layouts, container) {
         const allLayouts = [];
         layouts.forEach(layout => {
             const hContainer = this._createHorizontalContainer(layout);
             const elementTemplates = this._createElements(layout.elements);
             allLayouts.push(hContainer(elementTemplates));
         });
-
-        return allLayouts.join(' ');
+        
+        let containerStyle = (container !== undefined && container === 'strech') ? 'container-fluid' : 'container'
+        return `<div class="${containerStyle}" > ${allLayouts.join(' ')} </div>`;
     }
 
     _createHorizontalContainer(layout) {
@@ -49,7 +50,7 @@ module.exports = class LayoutParser {
     _createElements(elements) {
         const elementTemplates = [];
         elements.forEach((element) => {
-            const container = this._createElementContainer(element); 
+            const container = this._createElementContainer(element);
             const repoElement = this._repoElements[element.name];
             if (repoElement === undefined) {
                 elementTemplates.push('Unknown Element:' + element.name);

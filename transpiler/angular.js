@@ -196,7 +196,7 @@ module.exports = class angularBuilder {
                 "css": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.css`)
             }
             this._logger.log(`Building layout for ${currentComponent.name} under ${currentModule.name}`);
-            let htmlContent = layoutBuilder.parse(currentComponent.layouts);
+            let htmlContent = layoutBuilder.parse(currentComponent.layouts, currentComponent.container);
             await this._fs.writeFile(this._path.join(fullWorkspace, projectName, currentComponent.path.html), htmlContent);
         }
     }

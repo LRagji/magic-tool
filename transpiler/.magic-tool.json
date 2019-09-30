@@ -10,13 +10,17 @@
                 {
                     "name": "list",
                     "route": "alerts",
+                    "container":"normal",
                     "layouts": [
                         {
                             "type": "row-center",
                             "elements": [
                                 {
-                                    "name": "accordion",
-                                    "width": 1
+                                    "name": "button",
+                                    "width": 1,
+                                    "properties":{
+                                        "text":"Laukik"
+                                    }
                                 }
                             ]
                         },
@@ -43,6 +47,7 @@
                 {
                     "name": "detail",
                     "route": "detail",
+                    "container":"strech",
                     "layouts": [
                         {
                             "type": "row-left",
