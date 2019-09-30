@@ -18,6 +18,14 @@ module.exports = {
             </accordion-group>
             </accordion>`;
         }
+    },
+    image: {
+        installName: "",
+        dependencies: [],
+        defaultProperties: { imageSource: 'https://picsum.photos/1024/300', altText: 'Lorem Picsum' },
+        template: (props) => {
+            return `<img src="${props.imageSource}" class="img-fluid" alt="${props.altText}">`;
+        }
     }
 }
 

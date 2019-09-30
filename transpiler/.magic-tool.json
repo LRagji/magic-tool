@@ -16,11 +16,7 @@
                             "type": "row-center",
                             "elements": [
                                 {
-                                    "name": "button",
-                                    "width": 1,
-                                    "properties":{
-                                        "text":"Laukik"
-                                    }
+                                    "name": "image"
                                 }
                             ]
                         },
