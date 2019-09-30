@@ -37,64 +37,63 @@ module.exports = class angularBuilder {
         const modules = config.modules;
         const logger = this._locatorService.get(serviceNames.loggerService);
 
-        // Clean up project space
-        logger.log(`Deleting existing project ${projectName}`);
-        await this._clearWorkspaceFolder(fullWorkspace, projectName);
+        // // Clean up project space
+        // logger.log(`Deleting existing project ${projectName}`);
+        // await this._clearWorkspaceFolder(fullWorkspace, projectName);
 
+        // // Create a new Project
+        // logger.log(`Creating new project ${projectName}`);
+        // await this._createAngularProject(fullWorkspace, projectName);
 
-        // Create a new Project
-        logger.log(`Creating new project ${projectName}`);
-        await this._createAngularProject(fullWorkspace, projectName);
+        // // Run NPM Install
+        // logger.log(`Installing Dependencies`);
+        // await this._installDependencies(fullWorkspace, projectName);
 
-        // Run NPM Install
-        logger.log(`Installing Dependencies`);
-        await this._installDependencies(fullWorkspace, projectName);
+        // // Install Design System
+        // if (designSystem === bootstrapDesignSystem) {
+        //     logger.log(`Installing ${designSystem}`);
+        //     await this._installBootstapDesignSystem(fullWorkspace, projectName);
+        // }
+        // else {
+        //     logger.log(`Design System: ${designSystem} not found`);
+        //     return;
+        // }
 
-        // Install Design System
-        if (designSystem === bootstrapDesignSystem) {
-            logger.log(`Installing ${designSystem}`);
-            await this._installBootstapDesignSystem(fullWorkspace, projectName);
-        }
-        else {
-            logger.log(`Design System: ${designSystem} not found`);
-            return;
-        }
+        // //Inject Code for Schematics
+        // const magicCodeInsert = 61;
+        // const templates = this._locatorService.get(serviceNames.templateService);
+        // await this._insertAt(this._path.join(fullWorkspace, projectName, 'node_modules/@schematics/angular/component/index.js'), magicCodeInsert, templates.routeUpdaterSchematic);
 
-        //Inject Code for Schematics
-        const magicCodeInsert = 61;
-        const templates = this._locatorService.get(serviceNames.templateService);
-        await this._insertAt(this._path.join(fullWorkspace, projectName, 'node_modules/@schematics/angular/component/index.js'), magicCodeInsert, templates.routeUpdaterSchematic);
+        // //Copy utils node modules
+        // this._logger.log("Building schematics");
+        // await this._shellExecutor(npmCommand, [
+        //     'run',
+        //     'build'
+        // ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
 
-        //Copy utils node modules
-        this._logger.log("Building schematics");
-        await this._shellExecutor(npmCommand, [
-            'run',
-            'build'
-        ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
-
-        this._logger.log("Copying schematics");
-        await this._shellExecutor(copyCommand, [
-            '-r',
-            this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
-            'node_modules'
-        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+        // this._logger.log("Copying schematics");
+        // await this._shellExecutor(copyCommand, [
+        //     '-r',
+        //     this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
+        //     'node_modules'
+        // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
         try {
             // Create Modules
             for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
                 const currentModule = modules[moduleCtr];
-                await this._createModule(currentModule, fullWorkspace, projectName);
-                await this._installElements(currentModule, fullWorkspace, projectName);
-                await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
+                // await this._createModule(currentModule, fullWorkspace, projectName);
+                // await this._installElements(currentModule, fullWorkspace, projectName);
+                // await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
                 await this._createLayouts(currentModule, fullWorkspace, projectName)
             }
         }
         finally {
-            this._logger.log("Cleaning up schematics");
-            await this._shellExecutor(deleteCommand, [
-                '-r',
-                'node_modules/ng-utils',
-            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+            // this._logger.log("Cleaning up schematics");
+            // await this._shellExecutor(deleteCommand, [
+            //     '-r',
+            //     'node_modules/ng-utils',
+            // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
@@ -172,11 +171,6 @@ module.exports = class angularBuilder {
 
         for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
             const currentComponent = currentModule.components[componentCtr];
-            currentComponent.path = {
-                "html": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.html`),
-                "ts": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.ts`),
-                "css": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.css`)
-            }
             this._logger.log(`Creating component ${currentComponent.name} under ${currentModule.name}`);
             await this._shellExecutor(npxCommand, [
                 'ng',
@@ -196,6 +190,11 @@ module.exports = class angularBuilder {
         const layoutBuilder = this._locatorService.get(serviceNames.parser);
         for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
             const currentComponent = currentModule.components[componentCtr];
+            currentComponent.path = {
+                "html": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.html`),
+                "ts": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.ts`),
+                "css": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.css`)
+            }
             this._logger.log(`Building layout for ${currentComponent.name} under ${currentModule.name}`);
             let htmlContent = layoutBuilder.parse(currentComponent.layouts);
             await this._fs.writeFile(this._path.join(fullWorkspace, projectName, currentComponent.path.html), htmlContent);
