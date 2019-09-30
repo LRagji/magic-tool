@@ -27,7 +27,7 @@ module.exports = class angularBuilder {
         this._createModule = this._createModule.bind(this);
         this._fetchUniqueElementsFor = this._fetchUniqueElementsFor.bind(this);
         this._installElements = this._installElements.bind(this);
-
+        this._createLayouts = this._createLayouts.bind(this);
     }
 
     async createProject(config) {
@@ -86,7 +86,7 @@ module.exports = class angularBuilder {
                 await this._createModule(currentModule, fullWorkspace, projectName);
                 await this._installElements(currentModule, fullWorkspace, projectName);
                 await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
-
+                await this._createLayouts(currentModule, fullWorkspace, projectName)
             }
         }
         finally {
@@ -169,7 +169,7 @@ module.exports = class angularBuilder {
     }
 
     async _createComponentsForModule(currentModule, fullWorkspace, projectName) {
-        const layoutBuilder = this._locatorService.get(serviceNames.parser);
+
         for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
             const currentComponent = currentModule.components[componentCtr];
             currentComponent.path = {
@@ -189,7 +189,13 @@ module.exports = class angularBuilder {
                 '--style=css',
                 '--prefix=' + currentModule.name
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+        }
+    }
 
+    async _createLayouts(currentModule, fullWorkspace, projectName) {
+        const layoutBuilder = this._locatorService.get(serviceNames.parser);
+        for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
+            const currentComponent = currentModule.components[componentCtr];
             this._logger.log(`Building layout for ${currentComponent.name} under ${currentModule.name}`);
             let htmlContent = layoutBuilder.parse(currentComponent.layouts);
             await this._fs.writeFile(this._path.join(fullWorkspace, projectName, currentComponent.path.html), htmlContent);
@@ -216,7 +222,7 @@ module.exports = class angularBuilder {
             '--style=css',
             '--verbose=true'
         ], { 'cwd': fullWorkspace });
-        const htmlContent=`<router-outlet></router-outlet>`;
+        const htmlContent = `<router-outlet></router-outlet>`;
         await this._fs.writeFile(this._path.join(fullWorkspace, projectName, 'src/app/app.component.html'), htmlContent);
     }
 
