@@ -15,7 +15,7 @@ module.exports = class LayoutParser {
             const elementTemplates = this._createElements(layout.elements);
             allLayouts.push(hContainer(elementTemplates));
         });
-        
+
         let containerStyle = (container !== undefined && container === 'strech') ? 'container-fluid' : 'container'
         return `<div class="${containerStyle}" > ${allLayouts.join(' ')} </div>`;
     }
@@ -38,8 +38,8 @@ module.exports = class LayoutParser {
     }
 
     _createElementContainer(element) {
-        let cls = "col";
-        if (element.width !== undefined & !isNaN(element.width) & element.width < 12) {
+        let cls = "col-auto";
+        if (element.width !== undefined & !isNaN(element.width) & element.width < 13) {
             cls = "col-" + element.width;
         }
         return content => {
@@ -57,7 +57,7 @@ module.exports = class LayoutParser {
             }
             else {
                 const props = element.properties || repoElement.defaultProperties;
-                elementTemplates.push(repoElement.template(props));
+                elementTemplates.push(container(repoElement.template(props)));
             }
         });
         return elementTemplates.join(" ");

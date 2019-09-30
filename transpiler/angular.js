@@ -102,7 +102,7 @@ module.exports = class angularBuilder {
         const moduleElements = this._fetchUniqueElementsFor(currentModule);
         for (let compCounter = 0; compCounter < moduleElements.length; compCounter++) {
             const element = moduleElements[compCounter];
-            if (installedElements.indexOf(element.installName) == -1) {
+            if (installedElements.indexOf(element.installName) == -1 && element.installName !== "" && element.installName !== undefined) {
                 this._logger.log(`Installing ${element.installName} for ${currentModule.name}`);
                 await this._shellExecutor(npxCommand, [
                     'ng',
