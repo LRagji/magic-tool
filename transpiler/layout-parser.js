@@ -16,8 +16,14 @@ module.exports = class LayoutParser {
             allLayouts.push(hContainer(elementTemplates));
         });
 
-        let containerStyle = (container !== undefined && container === 'strech') ? 'container-fluid' : 'container'
-        return `<div class="${containerStyle}" > ${allLayouts.join(' ')} </div>`;
+        switch (container) {
+            case 'strech':
+                return `<div class="container-fluid" > ${allLayouts.join(' ')} </div>`;
+            case 'normal':
+                return `<div class="container" > ${allLayouts.join(' ')} </div>`;
+            default:
+                return allLayouts.join(' ');
+        }
     }
 
     _createHorizontalContainer(layout) {
