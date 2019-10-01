@@ -10,6 +10,11 @@
       "description": "Adds js import in a file.",
       "factory": "./add-declare-imports/index#addDecalreImports",
       "schema": "./add-declare-imports/schema.json"
+    },
+    "add-entry-routing-table": {
+      "description": "Adds routing entry in a router module.",
+      "factory": "./add-entry-routing-table/index#addRoutingEntry",
+      "schema": "./add-entry-routing-table/schema.json"
     }
   }
 }

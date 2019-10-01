@@ -1,22 +1,22 @@
 import { Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
 import * as ts from 'typescript';
-import { insertImport } from '@schematics/angular/utility/ast-utils';
+import { addRouteDeclarationToModule } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
 
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
-export function addDecalreImports(_options: any): Rule {
+export function addRoutingEntry(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
-    const routerPath = _options.modulePath;
+    const routeLiteral = `{ path: '${_options.route}',component:${_options.componentName} }`;
+    const routerPath = _options.routerPath;
     let routingSource = getSourceFile(tree, routerPath);
-    const moduleImportRecorder = tree.beginUpdate(routerPath);
-    const componentRelativePath = _options.componentPath;
-    const compName = _options.componentName;
-    const moduleImportChange = insertImport(routingSource, routerPath, compName, componentRelativePath);
-    if (moduleImportChange instanceof InsertChange)
-      moduleImportRecorder.insertLeft(moduleImportChange.pos, moduleImportChange.toAdd);
-    tree.commitUpdate(moduleImportRecorder);
+    const routerRecorder = tree.beginUpdate(routerPath);
+    const routerChange = addRouteDeclarationToModule(routingSource, routerPath, routeLiteral);
+    if (routerChange instanceof InsertChange) {
+      routerRecorder.insertLeft(routerChange.pos, routerChange.toAdd);
+    }
+    tree.commitUpdate(routerRecorder);
     return tree;
   };
 }

@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "id": "add-entry-routing-table",
+    "title": "Add Routing Entry.",
+    "type": "object",
+    "properties": {
+      "routerPath": {
+        "type": "string",
+        "description": "Path of the router module to add routing entry.",
+        "x-prompt": "Enter router module path to add routing entry to:"
+      },
+      "route": {
+        "type": "string",
+        "description": "Route entry to be added.",
+        "x-prompt": "Enter route string to add in routing module:"
+      },
+      "componentName": {
+        "type": "string",
+        "description": "Routing entry component name.",
+        "x-prompt": "Enter component name to be routed to:"
+      }
+    },
+    "required": ["routerPath","route","componentName"]
+  }
