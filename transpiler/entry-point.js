@@ -8,7 +8,6 @@ const parser = require('./layout-parser');
 const fs = require('promise-fs');
 const path = require('path');
 const serviceNames = require('./service-names');
-const tempaltes = require('./templates/code');
 const elementsRepo = require('./templates/bootstrap-elements');
 
 const context = new _di();
@@ -16,7 +15,6 @@ context.register(serviceNames.executorService, runCommand);
 context.register(serviceNames.loggerService, _logger);
 context.register(serviceNames.fileSystemService, fs);
 context.register(serviceNames.pathService, path);
-context.register(serviceNames.templateService, tempaltes);
 context.register(serviceNames.parser, new parser(elementsRepo));
 context.register(serviceNames.elementsRepo, elementsRepo);
 

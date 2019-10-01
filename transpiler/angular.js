@@ -37,63 +37,60 @@ module.exports = class angularBuilder {
         const modules = config.modules;
         const logger = this._locatorService.get(serviceNames.loggerService);
 
-        // // Clean up project space
-        // logger.log(`Deleting existing project ${projectName}`);
-        // await this._clearWorkspaceFolder(fullWorkspace, projectName);
+        // Clean up project space
+        logger.log(`Deleting existing project ${projectName}`);
+        await this._clearWorkspaceFolder(fullWorkspace, projectName);
 
-        // // Create a new Project
-        // logger.log(`Creating new project ${projectName}`);
-        // await this._createAngularProject(fullWorkspace, projectName);
+        // Create a new Project
+        logger.log(`Creating new project ${projectName}`);
+        await this._createAngularProject(fullWorkspace, projectName);
 
-        // // Run NPM Install
-        // logger.log(`Installing Dependencies`);
-        // await this._installDependencies(fullWorkspace, projectName);
+        // Run NPM Install
+        logger.log(`Installing Dependencies`);
+        await this._installDependencies(fullWorkspace, projectName);
 
-        // // Install Design System
-        // if (designSystem === bootstrapDesignSystem) {
-        //     logger.log(`Installing ${designSystem}`);
-        //     await this._installBootstapDesignSystem(fullWorkspace, projectName);
-        // }
-        // else {
-        //     logger.log(`Design System: ${designSystem} not found`);
-        //     return;
-        // }
+        // Install Design System
+        if (designSystem === bootstrapDesignSystem) {
+            logger.log(`Installing ${designSystem}`);
+            await this._installBootstapDesignSystem(fullWorkspace, projectName);
+        }
+        else {
+            logger.log(`Design System: ${designSystem} not found`);
+            return;
+        }
 
-        // //Inject Code for Schematics
-        // const magicCodeInsert = 61;
-        // const templates = this._locatorService.get(serviceNames.templateService);
-        // await this._insertAt(this._path.join(fullWorkspace, projectName, 'node_modules/@schematics/angular/component/index.js'), magicCodeInsert, templates.routeUpdaterSchematic);
+        //Copy utils node modules
+        this._logger.log("Building schematics");
+        await this._shellExecutor(npmCommand, [
+            'run',
+            'build'
+        ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
 
-        // //Copy utils node modules
-        // this._logger.log("Building schematics");
-        // await this._shellExecutor(npmCommand, [
-        //     'run',
-        //     'build'
-        // ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
-
-        // this._logger.log("Copying schematics");
-        // await this._shellExecutor(copyCommand, [
-        //     '-r',
-        //     this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
-        //     'node_modules'
-        // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+        this._logger.log("Copying schematics");
+        await this._shellExecutor(copyCommand, [
+            '-r',
+            this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
+            'node_modules'
+        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
         try {
             // Create Modules
             for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
                 const currentModule = modules[moduleCtr];
-                // await this._createModule(currentModule, fullWorkspace, projectName);
-                // await this._installElements(currentModule, fullWorkspace, projectName);
-                // await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
+                await this._createModule(currentModule, fullWorkspace, projectName);
+                await this._installElements(currentModule, fullWorkspace, projectName);
+                await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
                 await this._createLayouts(currentModule, fullWorkspace, projectName)
             }
+
+            this._logger.log("Awesome!!");
         }
         finally {
-            // this._logger.log("Cleaning up schematics");
-            // await this._shellExecutor(deleteCommand, [
-            //     '-r',
-            //     'node_modules/ng-utils',
-            // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+            this._logger.log("Cleaning up schematics");
+            await this._shellExecutor(deleteCommand, [
+                '-r',
+                'node_modules/ng-utils',
+            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
@@ -182,6 +179,30 @@ module.exports = class angularBuilder {
                 '--module=' + currentModule.name,
                 '--style=css',
                 '--prefix=' + currentModule.name
+            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+
+            const routerModulePath = currentModule.path.replace('.module.ts', '-routing.module.ts');
+            let componentName = currentComponent.name.toLowerCase();
+            componentName = componentName.charAt(0).toUpperCase() + componentName.substring(1, componentName.length);
+            componentName = componentName + "Component";
+            this._logger.log(`Importing: ${componentName} in routing module: ${routerModulePath}`);
+            await this._shellExecutor(npxCommand, [
+                'ng',
+                'g',
+                "ng-utils:add-declare-imports",
+                `--module-path=${routerModulePath}`,
+                `--component-name=${componentName}`,
+                `--component-path=./${currentComponent.name}/${currentComponent.name}.component`
+            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+
+            this._logger.log(`Adding route for: ${componentName}`);
+            await this._shellExecutor(npxCommand, [
+                'ng',
+                'g',
+                "ng-utils:add-entry-routing-table",
+                `--router-path=${routerModulePath}`,
+                `--route=${(currentModule.route === currentComponent.route) ? currentComponent.name.toLowerCase() : currentComponent.route}`, //DEFECT :https://github.com/LRagji/magic-tool/issues/2
+                `--component-name=${componentName}`
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
