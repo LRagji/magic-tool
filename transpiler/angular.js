@@ -78,9 +78,9 @@ module.exports = class angularBuilder {
             // Create Modules
             for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
                 const currentModule = modules[moduleCtr];
-                await this._createModule(currentModule, fullWorkspace, projectName);
-                await this._installElements(currentModule, fullWorkspace, projectName);
-                await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
+                // await this._createModule(currentModule, fullWorkspace, projectName);
+                // await this._installElements(currentModule, fullWorkspace, projectName);
+                // await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
                 await this._createLayouts(currentModule, fullWorkspace, projectName)
             }
 

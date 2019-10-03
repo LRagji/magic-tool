@@ -1,0 +1,57 @@
+[
+    {
+        "type": "row-sides",
+        "elements": [
+            {
+                "name": "image",
+                "width": 4,
+                "properties": {
+                    "imageSource": "assets/Images/KPI-1.png",
+                    "altText": "KPI-1"
+                }
+            },
+            {
+                "name": "image",
+                "width": 4,
+                "properties": {
+                    "imageSource": "assets/Images/KPI-2.png",
+                    "altText": "KPI-2"
+                }
+            },
+            {
+                "name": "image",
+                "width": 4,
+                "properties": {
+                    "imageSource": "assets/Images/KPI-3.png",
+                    "altText": "KPI-3"
+                }
+            }
+        ]
+    },
+    {
+        "type": "row-left",
+        "elements": [
+            {
+                "name": "image",
+                "width": 12,
+                "properties": {
+                    "imageSource": "assets/Images/Table.png",
+                    "altText": "Table"
+                }
+            }
+        ]
+    },
+    {
+        "type": "row-left",
+        "elements": [
+            {
+                "name": "image",
+                "width": 12,
+                "properties": {
+                    "imageSource": "assets/Images/Trend.png",
+                    "altText": "Trend Chart"
+                }
+            }
+        ]
+    }
+]

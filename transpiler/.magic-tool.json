@@ -69,7 +69,40 @@
         {
             "name": "dashboard",
             "route": "dashboard",
-            "components": [],
+            "components": [
+                {
+                    "name": "landingpage",
+                    "route": "demo",
+                    "container": "strech",
+                    "layouts": [
+                        {
+                            "type": "row-left",
+                            "elements": [
+                                {
+                                    "name": "image",
+                                    "width": 12,
+                                    "properties": {
+                                        "imageSource": "assets/Images/Header.png",
+                                        "altText": "Header"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "row-left",
+                            "elements": [
+                                {
+                                    "name": "layout",
+                                    "width": 12,
+                                    "properties": {
+                                        "layout": "/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/layouts/main-container.json"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "services": [],
             "pipes": []
         },

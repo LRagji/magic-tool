@@ -1,0 +1,22 @@
+[
+    {
+        "type": "row-left",
+        "elements": [
+            {
+                "name": "image",
+                "width": 1,
+                "properties": {
+                    "imageSource": "assets/Images/Sub-system.png",
+                    "altText": "Sub System"
+                }
+            },
+            {
+                "name": "layout",
+                "width": 11,
+                "properties": {
+                    "layout": "/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/layouts/page.json"
+                }
+            }
+        ]
+    }
+]
