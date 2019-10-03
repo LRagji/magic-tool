@@ -41,7 +41,7 @@ module.exports = class LayoutParser {
             case 'row-justify':
                 return content => `<div class="row justify-content-around">${content}</div>`;
             case 'row-sides':
-                return `<div class="row justify-content-between"> </div>`;
+                return content => `<div class="row justify-content-between">${content}</div>`;
             default:
                 throw new Error("Layout Type is unknown:" + layout.type);
         }
