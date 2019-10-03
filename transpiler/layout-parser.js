@@ -58,8 +58,8 @@ module.exports = class LayoutParser {
     }
 
     async _createElements(elements) {
-        const elementTemplates = [];
-        for (let elementCounter = 0; elementCounter < elements.length; elements++) {
+        let elementTemplates = [];
+        for (let elementCounter = 0; elementCounter < elements.length; elementCounter++) {
             const element = elements[elementCounter];
             const container = this._createElementContainer(element);
             const repoElement = this._repoElements[element.name];
@@ -70,7 +70,7 @@ module.exports = class LayoutParser {
                 if (element.name === 'layout') {
                     const nestedLayoutObject = await this._jsonReader.readFile(element.properties.layout);
                     const nestLayout = await this.parse(nestedLayoutObject);
-                    elementTemplates.concat(container(nestLayout));
+                    elementTemplates = elementTemplates.concat(container(nestLayout));
                 }
                 else {
                     const props = element.properties || repoElement.defaultProperties;
