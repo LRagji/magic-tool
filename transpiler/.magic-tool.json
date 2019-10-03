@@ -21,7 +21,7 @@
                                 {
                                     "name": "layout",
                                     "properties": {
-                                        "layout": "/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/nested-layout.json"
+                                        "layout": "/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/layouts/nested-layout.json"
                                     }
                                 }
                             ]
