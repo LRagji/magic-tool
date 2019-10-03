@@ -1,20 +1,24 @@
+const serviceNames = require('./service-names');
 module.exports = class LayoutParser {
-    constructor(repoElements) {
+    constructor(locatorService) {
         this.parse = this.parse.bind(this);
 
         this._createHorizontalContainer = this._createHorizontalContainer.bind(this);
         this._createElements = this._createElements.bind(this);
         this._createElementContainer = this._createElementContainer.bind(this);
-        this._repoElements = repoElements;
+        this._locatorService = locatorService;
+        this._repoElements = this._locatorService.get(serviceNames.elementsRepo);
+        this._jsonReader = this._locatorService.get(serviceNames.jsonReader);
     }
 
-    parse(layouts, container) {
+    async parse(layouts, container) {
         const allLayouts = [];
-        layouts.forEach(layout => {
+        for (let layoutCounter = 0; layoutCounter < layouts.length; layoutCounter++) {
+            const layout = layouts[layoutCounter];
             const hContainer = this._createHorizontalContainer(layout);
-            const elementTemplates = this._createElements(layout.elements);
+            const elementTemplates = await this._createElements(layout.elements);
             allLayouts.push(hContainer(elementTemplates));
-        });
+        }
 
         switch (container) {
             case 'strech':
@@ -53,19 +57,27 @@ module.exports = class LayoutParser {
         }
     }
 
-    _createElements(elements) {
+    async _createElements(elements) {
         const elementTemplates = [];
-        elements.forEach((element) => {
+        for (let elementCounter = 0; elementCounter < elements.length; elements++) {
+            const element = elements[elementCounter];
             const container = this._createElementContainer(element);
             const repoElement = this._repoElements[element.name];
             if (repoElement === undefined) {
                 elementTemplates.push('Unknown Element:' + element.name);
             }
             else {
-                const props = element.properties || repoElement.defaultProperties;
-                elementTemplates.push(container(repoElement.template(props)));
+                if (element.name === 'layout') {
+                    const nestedLayoutObject = await this._jsonReader.readFile(element.properties.layout);
+                    const nestLayout = await this.parse(nestedLayoutObject);
+                    elementTemplates.concat(container(nestLayout));
+                }
+                else {
+                    const props = element.properties || repoElement.defaultProperties;
+                    elementTemplates.push(container(repoElement.template(props)));
+                }
             }
-        });
+        };
         return elementTemplates.join(" ");
     }
 }

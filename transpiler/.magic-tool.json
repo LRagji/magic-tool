@@ -10,13 +10,19 @@
                 {
                     "name": "list",
                     "route": "alerts",
-                    "container":"normal",
+                    "container": "normal",
                     "layouts": [
                         {
                             "type": "row-center",
                             "elements": [
                                 {
                                     "name": "image"
+                                },
+                                {
+                                    "name": "layout",
+                                    "properties": {
+                                        "layout": "/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/nested-layout.json"
+                                    }
                                 }
                             ]
                         },
@@ -43,7 +49,7 @@
                 {
                     "name": "detail",
                     "route": "detail",
-                    "container":"strech",
+                    "container": "strech",
                     "layouts": [
                         {
                             "type": "row-left",

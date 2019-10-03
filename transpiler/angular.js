@@ -15,6 +15,7 @@ module.exports = class angularBuilder {
         this._logger = this._locatorService.get(serviceNames.loggerService);
         this._fs = this._locatorService.get(serviceNames.fileSystemService);
         this._elementsRepo = this._locatorService.get(serviceNames.elementsRepo);
+        this._jsonReader = this._locatorService.get(serviceNames.jsonReader);
 
         this.createProject = this.createProject.bind(this);
 
@@ -37,41 +38,41 @@ module.exports = class angularBuilder {
         const modules = config.modules;
         const logger = this._locatorService.get(serviceNames.loggerService);
 
-        // Clean up project space
-        logger.log(`Deleting existing project ${projectName}`);
-        await this._clearWorkspaceFolder(fullWorkspace, projectName);
+        // // Clean up project space
+        // logger.log(`Deleting existing project ${projectName}`);
+        // await this._clearWorkspaceFolder(fullWorkspace, projectName);
 
-        // Create a new Project
-        logger.log(`Creating new project ${projectName}`);
-        await this._createAngularProject(fullWorkspace, projectName);
+        // // Create a new Project
+        // logger.log(`Creating new project ${projectName}`);
+        // await this._createAngularProject(fullWorkspace, projectName);
 
-        // Run NPM Install
-        logger.log(`Installing Dependencies`);
-        await this._installDependencies(fullWorkspace, projectName);
+        // // Run NPM Install
+        // logger.log(`Installing Dependencies`);
+        // await this._installDependencies(fullWorkspace, projectName);
 
-        // Install Design System
-        if (designSystem === bootstrapDesignSystem) {
-            logger.log(`Installing ${designSystem}`);
-            await this._installBootstapDesignSystem(fullWorkspace, projectName);
-        }
-        else {
-            logger.log(`Design System: ${designSystem} not found`);
-            return;
-        }
+        // // Install Design System
+        // if (designSystem === bootstrapDesignSystem) {
+        //     logger.log(`Installing ${designSystem}`);
+        //     await this._installBootstapDesignSystem(fullWorkspace, projectName);
+        // }
+        // else {
+        //     logger.log(`Design System: ${designSystem} not found`);
+        //     return;
+        // }
 
-        //Copy utils node modules
-        this._logger.log("Building schematics");
-        await this._shellExecutor(npmCommand, [
-            'run',
-            'build'
-        ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
+        // //Copy utils node modules
+        // this._logger.log("Building schematics");
+        // await this._shellExecutor(npmCommand, [
+        //     'run',
+        //     'build'
+        // ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
 
-        this._logger.log("Copying schematics");
-        await this._shellExecutor(copyCommand, [
-            '-r',
-            this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
-            'node_modules'
-        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+        // this._logger.log("Copying schematics");
+        // await this._shellExecutor(copyCommand, [
+        //     '-r',
+        //     this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
+        //     'node_modules'
+        // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
         try {
             // Create Modules
@@ -86,20 +87,26 @@ module.exports = class angularBuilder {
             this._logger.log("Awesome!!");
         }
         finally {
-            this._logger.log("Cleaning up schematics");
-            await this._shellExecutor(deleteCommand, [
-                '-r',
-                'node_modules/ng-utils',
-            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+            // this._logger.log("Cleaning up schematics");
+            // await this._shellExecutor(deleteCommand, [
+            //     '-r',
+            //     'node_modules/ng-utils',
+            // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
     async _installElements(currentModule, fullWorkspace, projectName) {
         let installedElements = [];
-        const moduleElements = this._fetchUniqueElementsFor(currentModule);
+        const moduleElementsSet = new Set();
+        for (let componentCounter = 0; componentCounter < currentModule.components.length; componentCounter++) {
+            const component = currentModule.components[componentCounter];
+            await this._fetchUniqueElementsFor(component.layouts, moduleElementsSet);
+        };
+
+        const moduleElements = Array.from(moduleElementsSet);;
         for (let compCounter = 0; compCounter < moduleElements.length; compCounter++) {
             const element = moduleElements[compCounter];
-            if (installedElements.indexOf(element.installName) == -1 && element.installName !== "" && element.installName !== undefined) {
+            if (installedElements.indexOf(element.installName) === -1 && element.installName !== "" && element.installName !== undefined) {
                 this._logger.log(`Installing ${element.installName} for ${currentModule.name}`);
                 await this._shellExecutor(npxCommand, [
                     'ng',
@@ -112,7 +119,7 @@ module.exports = class angularBuilder {
                 const moduleDependencies = element.dependencies;
                 for (let dependencyCtr = 0; dependencyCtr < moduleDependencies.length; dependencyCtr++) {
                     const dependency = moduleDependencies[dependencyCtr];
-                    this._logger.log(`Installing dependency: ${dependency.moduleName} for element: ${element} within module: ${currentModule.name}`);
+                    this._logger.log(`Installing dependency: ${dependency.moduleName} for element: ${element.installName} within module: ${currentModule.name}`);
                     await this._shellExecutor(npxCommand, [
                         'ng',
                         'g',
@@ -125,28 +132,41 @@ module.exports = class angularBuilder {
                 installedElements.push(element.installName);
             }
             else {
-                this._logger.log(`Skipped Installing ${element.installName} for ${currentModule.name} as it is already installed.`);
+                if (element.installName === undefined || element.installName === "") {
+                    this._logger.log(`Skipped installing inbuilt module for ${currentModule.name}.`);
+                }
+                else {
+                    this._logger.log(`Skipped installing ${element.installName} for ${currentModule.name} as it is already installed.`);
+                }
             }
         }
     }
 
-    _fetchUniqueElementsFor(currentModule) {
-        const moduleElements = new Set();
-        currentModule.components.forEach(component => {
-            component.layouts.forEach((layout) => {
-                layout.elements.forEach((element) => {
-                    const repoElement = this._elementsRepo[element.name];
-                    if (repoElement === undefined) {
-                        this._logger.log("Cannot find component:" + element.name);
+    async _fetchUniqueElementsFor(layouts, uniqueElements) {
+        for (let layoutCounter = 0; layoutCounter < layouts.length; layoutCounter++) {
+            const layout = layouts[layoutCounter];
+            for (let elementCounter = 0; elementCounter < layout.elements.length; elementCounter++) {
+                const element = layout.elements[elementCounter];
+                const repoElement = this._elementsRepo[element.name];
+                if (repoElement === undefined) {
+                    this._logger.log("Cannot find component:" + element.name);
+                }
+                else {
+                    if (element.name === 'layout') {
+                        try {
+                            const nestedLayout = await this._jsonReader.readFile(element.properties.layout);
+                            await this._fetchUniqueElementsFor(nestedLayout, uniqueElements);
+                        }
+                        catch (err) {
+                            this._logger.log("Failed to fetch elements from  custom Layout:" + err.toString());
+                        }
                     }
                     else {
-                        moduleElements.add(repoElement);
+                        uniqueElements.add(repoElement);
                     }
-                })
-            })
-        });
-
-        return Array.from(moduleElements);
+                }
+            };
+        };
     }
 
     async _createModule(currentModule, fullWorkspace, projectName) {
@@ -217,7 +237,7 @@ module.exports = class angularBuilder {
                 "css": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.css`)
             }
             this._logger.log(`Building layout for ${currentComponent.name} under ${currentModule.name}`);
-            let htmlContent = layoutBuilder.parse(currentComponent.layouts, currentComponent.container);
+            let htmlContent = await layoutBuilder.parse(currentComponent.layouts, currentComponent.container);
             await this._fs.writeFile(this._path.join(fullWorkspace, projectName, currentComponent.path.html), htmlContent);
         }
     }
@@ -267,5 +287,4 @@ module.exports = class angularBuilder {
         fileContentArray.splice(lineNumber, 0, content);
         await this._fs.writeFile(filePath, fileContentArray.join("\n"));
     }
-
 };

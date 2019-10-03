@@ -15,10 +15,11 @@ context.register(serviceNames.executorService, runCommand);
 context.register(serviceNames.loggerService, _logger);
 context.register(serviceNames.fileSystemService, fs);
 context.register(serviceNames.pathService, path);
-context.register(serviceNames.parser, new parser(elementsRepo));
 context.register(serviceNames.elementsRepo, elementsRepo);
+context.register(serviceNames.jsonReader, require('jsonfile'));
 
 const builder = new _angular(context);
+context.register(serviceNames.parser, new parser(context));
 
 async function runCommand(command, args, options) {
     return new Promise((acc, rej) => {

@@ -4,5 +4,6 @@ module.exports = {
     fileSystemService: 'fs',
     pathService: 'path',
     parser:'parser',
-    elementsRepo:'element-repo'
+    elementsRepo:'element-repo',
+    jsonReader:'jsonreader'
 }
