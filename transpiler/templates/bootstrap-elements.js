@@ -34,6 +34,43 @@ module.exports = {
         template: (props) => {
             return `<img src="${props.imageSource}" class="img-fluid" alt="${props.altText}">`;
         }
+    },
+    text: {
+        installName: "",
+        dependencies: [],
+        defaultProperties: { text: 'this is text', bold: false, italic: false, turncate: false, wrap: false, lowercase: false, uppercase: false, align: 'left' },
+        template: (props) => {
+            let cls = "";
+            if (props.bold === true) {
+                cls += 'font-weight-bold ';
+            }
+            if (props.italic === true) {
+                cls += 'font-weight-italic ';
+            }
+
+            if (props.turncate === props.wrap === true) {
+                cls += 'd-inline-block text-truncate ';
+            }
+            else if (props.turncate === true) {
+                cls += 'd-inline-block text-truncate ';
+            }
+            else if (props.wrap === false) {
+                cls += 'text-nowrap ';
+            }
+
+            if (props.lowercase === true) {
+                cls += 'text-lowercase ';
+            }
+            if (props.uppercase === true) {
+                cls += 'text-uppercase ';
+            }
+
+            cls += `text-${props.align} `;
+
+            return `<span class="${cls}">
+                    ${props.text}
+                    </span>`;
+        }
     }
 }
 
