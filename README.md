@@ -1,6 +1,8 @@
 # magic-tool
 Automation tool for all your enterprise routine task(Current Support only for Angular and Bootstrap)
 
+![Tool Flow](documentation/flow.png "Tools workflow")
+
 ## Tool Json Explained
 The following are different sections of tool json
 1. Tool json should be named as .magic-tool.json and should be placed in transpiler directory.
