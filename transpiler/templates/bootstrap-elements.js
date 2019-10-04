@@ -35,7 +35,7 @@ module.exports = {
             return `<img src="${props.imageSource}" class="img-fluid" alt="${props.altText}">`;
         }
     },
-    text: {
+    label: {
         installName: "",
         dependencies: [],
         defaultProperties: { text: 'this is text', bold: false, italic: false, turncate: false, wrap: false, lowercase: false, uppercase: false, align: 'left' },
