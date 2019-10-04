@@ -13,7 +13,7 @@ Properties:
 |---|---|
 |  name | Name of the component  |
 |  route | url path to load this component on browser, relative without '/' in the starting  |
-|  [layouts](documentation/layouts.md) | Array of layout in this component.  |
+|  [layouts](layouts.md) | Array of layout in this component.  |
 |  container | Enum value which specifies what type of container to have this layout in. (normal|strech) |
 
 ### container:

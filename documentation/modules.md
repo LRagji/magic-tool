@@ -17,6 +17,6 @@
 |---|---|
 |  name | Name of the module  |
 |  route | url path to load this module on browser, relative without '/' in the starting  |
-|  [components](documentation/components.md) | Array of components in a module. This can be reffered as to Pages of the application.  |
+|  [components](components.md) | Array of components in a module. This can be reffered as to Pages of the application.  |
 |  services | Array of services in a module.  |
 |  pipes | Array of pipes exposed in a module.  |

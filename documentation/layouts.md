@@ -11,7 +11,7 @@
 | Name  | Explaination  |
 |---|---|
 |  type | Type of layout  |
-|  [elements](documentation/elements.md) | Array of UI-Elements inside this layout they stack horizontally can have total width of 12 |
+|  [elements](elements.md) | Array of UI-Elements inside this layout they stack horizontally can have total width of 12 |
 
 ### type
 Enum for different types of containers 
