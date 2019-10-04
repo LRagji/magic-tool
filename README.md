@@ -1,5 +1,5 @@
 # Magic-Tool
-Automation tool for all your enterprise routine task.
+Automation tool for releasing/creating/ a release cycle.
 
 # Motivation
 Lets consider a typical release cycle, It has following stages post requirement gathering
@@ -9,12 +9,28 @@ Lets consider a typical release cycle, It has following stages post requirement 
 4. Execution starts with demo's and feedback flowing back into backlog.
 5. After enough features are completed we call it a relase.
 
-![Release Cycle](documentation/Release.png "Release workflow")
+<img src="documentation/Release.png" alt="Release Cycle" width="500"/>
+
+In an ideal scenarion this is as simple as any other process & like other processes this can be automated, when considering actual execution cycle we should be able to automate alteast 80% of the process.
+
+Benefits of Automation:
+1. Removes the Human Error, Friction,
+2. Following of best practices & patterns.
+3. Consistency across applications.
+4. Reduction of development cycle.
+
+# How does this work
+This tool will try to cover all the above mentioned sections, currently it only supports following:
+
+- [ ] Mercury
+- [ ] Development of UI screens for application by UX personas.
+
+
+
+<img src="documentation/flow.png" alt="Tool Workflow" width="500"/>
 
 The idea behind the tool or why this was written is as follows:
 1. A 
-
-![Tool Flow](documentation/flow.png "Tools workflow")
 
 ## Tool Json Explained
 The following are different sections of tool json
