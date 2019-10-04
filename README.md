@@ -19,8 +19,8 @@ Benefits of Automation:
 3. Consistency across applications.
 4. Reduction of development cycle.
 
-# How does this work
-This tool will try to cover all the above mentioned sections, currently it only supports following:
+# How does this work?
+This tool will try to cover width , currently it only supports following:
 
 - [ ] Mercury
 - [ ] Development of UI screens for application by UX personas.

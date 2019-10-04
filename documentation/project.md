@@ -13,4 +13,4 @@
 |---|---|
 |  name | Name of the Project  |
 |  workspace | Disk location where the project will be created(Full path)  |
-|  modules | Array of modules object  |
+|  [modules](documentation/modules.md) | Array of modules object  |
