@@ -6,6 +6,12 @@
   "scripts": {
     "test": "test"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "os": [
+    "!win32"
+  ],
   "keywords": [
     "magic-tool"
   ],

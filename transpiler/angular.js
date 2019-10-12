@@ -243,6 +243,9 @@ module.exports = class angularBuilder {
     }
 
     async _clearWorkspaceFolder(fullWorkspace, projectName) {
+
+        this._fs.
+
         return this._shellExecutor('rm', [
             '-r',
             this._path.join(fullWorkspace, projectName),
