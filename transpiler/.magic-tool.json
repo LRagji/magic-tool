@@ -1,6 +1,6 @@
 {
     "name": "OFE",
-    "workspace": "/Users/laukikragji/Documents/Git/Local/magic-tool/workspace",
+    "workspace": "workspace",
     "designSystem": "bootstrap",
     "modules": [
         {

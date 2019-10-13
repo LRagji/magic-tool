@@ -3,7 +3,7 @@ const serviceNames = require('./service-names');
 const npxCommand = 'npx';
 const npmCommand = 'npm';
 const copyCommand = 'cp';
-const deleteCommand = 'rm';
+// const deleteCommand = 'rm';
 const bootstrapDesignSystem = "bootstrap";
 
 module.exports = class angularBuilder {
@@ -32,7 +32,7 @@ module.exports = class angularBuilder {
     }
 
     async createProject(config) {
-        const fullWorkspace = config.workspace;
+        const fullWorkspace = this._path.join(process.cwd(), config.workspace);
         const designSystem = config.designSystem;
         const projectName = config.name;
         const modules = config.modules;
@@ -88,10 +88,11 @@ module.exports = class angularBuilder {
         }
         finally {
             this._logger.log("Cleaning up schematics");
-            await this._shellExecutor(deleteCommand, [
-                '-r',
-                'node_modules/ng-utils',
-            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+            this._fs.cleanFolder(this._path.join(fullWorkspace, projectName,'node_modules/ng-utils') );
+            // await this._shellExecutor(deleteCommand, [
+            //     '-r',
+            //     'node_modules/ng-utils',
+            // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
@@ -243,13 +244,14 @@ module.exports = class angularBuilder {
     }
 
     async _clearWorkspaceFolder(fullWorkspace, projectName) {
-
-        this._fs.
-
-        return this._shellExecutor('rm', [
-            '-r',
-            this._path.join(fullWorkspace, projectName),
-        ], { 'cwd': fullWorkspace });
+        const porjectPath = this._path.join(fullWorkspace, projectName);
+        try {
+            await this._fs.access(porjectPath);
+        }
+        catch (err) {
+            await this._fs.mkdir(porjectPath, { recursive: true });
+        }
+        this._fs.cleanFolder(porjectPath);
     }
 
     async _createAngularProject(fullWorkspace, projectName) {
