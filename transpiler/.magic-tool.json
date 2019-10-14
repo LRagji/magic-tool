@@ -50,12 +50,12 @@
                             "elements": [
                                 {
                                     "name": "label",
-                                    "width":1,
-                                    "properties":{
-                                        "text":"Laukik I am don",
-                                        "bold":true,
-                                        "uppercase":true,
-                                        "align":"right"
+                                    "width": 1,
+                                    "properties": {
+                                        "text": "Laukik I am don",
+                                        "bold": true,
+                                        "uppercase": true,
+                                        "align": "right"
                                     }
                                 }
                             ]
@@ -80,10 +80,17 @@
                             "elements": [
                                 {
                                     "name": "image",
-                                    "width": 12,
+                                    "width": 10,
                                     "properties": {
                                         "imageSource": "assets/Images/Header.png",
                                         "altText": "Header"
+                                    }
+                                },
+                                {
+                                    "name": "toggle",
+                                    "width": 2,
+                                    "properties": {
+                                        "text": "Stupid"
                                     }
                                 }
                             ]

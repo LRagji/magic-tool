@@ -1,8 +1,18 @@
 module.exports = {
+    toggle: {
+        package: {
+            execute: 'ng add @angular/material --interactive=false --theme=custom --gestures=true --animations=true',
+            moduleImports: [{ moduleName: 'MatSlideToggleModule', link: '@angular/material/slide-toggle' }]
+        },
+        defaultProperties: { text: 'Material Components' },
+        template: (props) => {
+            return `<mat-slide-toggle>${props.text}</mat-slide-toggle>`;
+        }
+    },
     button: {
         package: {
             execute: 'ng add ngx-bootstrap --component buttons',
-            moduleImports: [{ moduleName: 'ButtonsModule', link: `ngx-bootstrap/buttons` }]
+            moduleImports: [{ moduleName: 'ButtonsModule', link: 'ngx-bootstrap/buttons' }]
         },
         defaultProperties: { text: 'No Name' },
         template: (props) => {
@@ -12,7 +22,7 @@ module.exports = {
     accordion: {
         package: {
             execute: 'ng add ngx-bootstrap --component accordion',
-            moduleImports: [{ moduleName: 'AccordionModule', link: `ngx-bootstrap/accordion` }, { moduleName: 'CommonModule', link: '@angular/common' }]
+            moduleImports: [{ moduleName: 'AccordionModule', link: 'ngx-bootstrap/accordion' }, { moduleName: 'CommonModule', link: '@angular/common' }]
         },
         defaultProperties: { name: 'No Name' },
         template: (props) => {
