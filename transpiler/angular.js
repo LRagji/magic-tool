@@ -3,8 +3,6 @@ const serviceNames = require('./service-names');
 const npxCommand = 'npx';
 const npmCommand = 'npm';
 const copyCommand = 'cp';
-// const deleteCommand = 'rm';
-const bootstrapDesignSystem = "bootstrap";
 
 module.exports = class angularBuilder {
 
@@ -23,7 +21,6 @@ module.exports = class angularBuilder {
         this._clearWorkspaceFolder = this._clearWorkspaceFolder.bind(this);
         this._createAngularProject = this._createAngularProject.bind(this);
         this._installDependencies = this._installDependencies.bind(this);
-        this._installBootstapDesignSystem = this._installBootstapDesignSystem.bind(this);
         this._createComponentsForModule = this._createComponentsForModule.bind(this);
         this._createModule = this._createModule.bind(this);
         this._fetchUniqueElementsFor = this._fetchUniqueElementsFor.bind(this);
@@ -49,16 +46,6 @@ module.exports = class angularBuilder {
         // Run NPM Install
         logger.log(`Installing Dependencies`);
         await this._installDependencies(fullWorkspace, projectName);
-
-        // Install Design System
-        if (designSystem === bootstrapDesignSystem) {
-            logger.log(`Installing ${designSystem}`);
-            await this._installBootstapDesignSystem(fullWorkspace, projectName);
-        }
-        else {
-            logger.log(`Design System: ${designSystem} not found`);
-            return;
-        }
 
         //Copy utils node modules
         this._logger.log("Building schematics");
@@ -271,14 +258,6 @@ module.exports = class angularBuilder {
         return this._shellExecutor(npmCommand, [
             'install',
             //'--verbose'
-        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
-    }
-
-    async _installBootstapDesignSystem(fullWorkspace, projectName) {
-        return this._shellExecutor(npxCommand, [
-            'ng',
-            'add',
-            "ngx-bootstrap"
         ], { 'cwd': this._path.join(fullWorkspace, projectName) });
     }
 
