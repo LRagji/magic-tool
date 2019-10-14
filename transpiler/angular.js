@@ -75,7 +75,7 @@ module.exports = class angularBuilder {
         }
         finally {
             this._logger.log("Cleaning up schematics");
-            this._fs.cleanFolder(this._path.join(fullWorkspace, projectName,'node_modules/ng-utils') );
+            this._fs.cleanFolder(this._path.join(fullWorkspace, projectName, 'node_modules/ng-utils'));
         }
     }
 
@@ -90,20 +90,16 @@ module.exports = class angularBuilder {
         const moduleElements = Array.from(moduleElementsSet);;
         for (let compCounter = 0; compCounter < moduleElements.length; compCounter++) {
             const element = moduleElements[compCounter];
-            if (installedElements.indexOf(element.installName) === -1 && element.installName !== "" && element.installName !== undefined) {
-                this._logger.log(`Installing ${element.installName} for ${currentModule.name}`);
-                await this._shellExecutor(npxCommand, [
-                    'ng',
-                    'add',
-                    "ngx-bootstrap",
-                    "--component",
-                    element.installName
-                ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+            const elementShell = element.package.execute;
+            if (installedElements.indexOf(elementShell) === -1 && elementShell !== "" && elementShell !== undefined) {
 
-                const moduleDependencies = element.dependencies;
+                this._logger.log(`Executing ${elementShell} for ${currentModule.name}`);
+                await this._shellExecutor(npxCommand, element.package.execute.split(' '), { 'cwd': this._path.join(fullWorkspace, projectName) });
+
+                const moduleDependencies = element.package.moduleImports;
                 for (let dependencyCtr = 0; dependencyCtr < moduleDependencies.length; dependencyCtr++) {
                     const dependency = moduleDependencies[dependencyCtr];
-                    this._logger.log(`Installing dependency: ${dependency.moduleName} for element: ${element.installName} within module: ${currentModule.name}`);
+                    this._logger.log(`Installing dependency: ${dependency.moduleName} for module: ${currentModule.name}`);
                     await this._shellExecutor(npxCommand, [
                         'ng',
                         'g',
@@ -113,14 +109,14 @@ module.exports = class angularBuilder {
                         `--component-path=${dependency.link}`
                     ], { 'cwd': this._path.join(fullWorkspace, projectName) });
                 }
-                installedElements.push(element.installName);
+                installedElements.push(elementShell);
             }
             else {
-                if (element.installName === undefined || element.installName === "") {
+                if (elementShell === undefined || elementShell === "") {
                     this._logger.log(`Skipped installing inbuilt module for ${currentModule.name}.`);
                 }
                 else {
-                    this._logger.log(`Skipped installing ${element.installName} for ${currentModule.name} as it is already installed.`);
+                    this._logger.log(`Skipped executing ${elementShell} for ${currentModule.name} as it is already installed.`);
                 }
             }
         }

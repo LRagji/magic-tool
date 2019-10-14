@@ -1,15 +1,19 @@
 module.exports = {
     button: {
-        installName: "buttons",
-        dependencies: [{ moduleName: 'ButtonsModule', link: `ngx-bootstrap/buttons` }],
+        package: {
+            execute: 'ng add ngx-bootstrap --component buttons',
+            moduleImports: [{ moduleName: 'ButtonsModule', link: `ngx-bootstrap/buttons` }]
+        },
         defaultProperties: { text: 'No Name' },
         template: (props) => {
             return `<button type="button" class="btn btn-primary">${props.text}</button>`;
         }
     },
     accordion: {
-        installName: "accordion",
-        dependencies: [{ moduleName: 'AccordionModule', link: `ngx-bootstrap/accordion` }, { moduleName: 'CommonModule', link: '@angular/common' }],
+        package: {
+            execute: 'ng add ngx-bootstrap --component accordion',
+            moduleImports: [{ moduleName: 'AccordionModule', link: `ngx-bootstrap/accordion` }, { moduleName: 'CommonModule', link: '@angular/common' }]
+        },
         defaultProperties: { name: 'No Name' },
         template: (props) => {
             return `<accordion>
@@ -20,24 +24,30 @@ module.exports = {
         }
     },
     image: {
-        installName: "",
-        dependencies: [],
+        package: {
+            execute: '',
+            moduleImports: []
+        },
         defaultProperties: { imageSource: 'https://picsum.photos/1024/300', altText: 'Lorem Picsum' },
         template: (props) => {
             return `<img src="${props.imageSource}" class="img-fluid" alt="${props.altText}">`;
         }
     },
     layout: {
-        installName: "",
-        dependencies: [],
+        package: {
+            execute: '',
+            moduleImports: []
+        },
         defaultProperties: { imageSource: 'https://picsum.photos/1024/300', altText: 'Lorem Picsum' },
         template: (props) => {
             return `<img src="${props.imageSource}" class="img-fluid" alt="${props.altText}">`;
         }
     },
     label: {
-        installName: "",
-        dependencies: [],
+        package: {
+            execute: '',
+            moduleImports: []
+        },
         defaultProperties: { text: 'this is text', bold: false, italic: false, turncate: false, wrap: false, lowercase: false, uppercase: false, align: 'left' },
         template: (props) => {
             let cls = "";
