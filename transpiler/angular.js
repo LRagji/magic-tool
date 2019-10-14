@@ -89,10 +89,6 @@ module.exports = class angularBuilder {
         finally {
             this._logger.log("Cleaning up schematics");
             this._fs.cleanFolder(this._path.join(fullWorkspace, projectName,'node_modules/ng-utils') );
-            // await this._shellExecutor(deleteCommand, [
-            //     '-r',
-            //     'node_modules/ng-utils',
-            // ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
