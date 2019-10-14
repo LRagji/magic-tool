@@ -30,22 +30,21 @@ module.exports = class angularBuilder {
 
     async createProject(config) {
         const fullWorkspace = this._path.join(process.cwd(), config.workspace);
-        const designSystem = config.designSystem;
         const projectName = config.name;
         const modules = config.modules;
         const logger = this._locatorService.get(serviceNames.loggerService);
 
-        // Clean up project space
-        logger.log(`Deleting existing project ${projectName}`);
-        await this._clearWorkspaceFolder(fullWorkspace, projectName);
+        // // Clean up project space
+        // logger.log(`Deleting existing project ${projectName}`);
+        // await this._clearWorkspaceFolder(fullWorkspace, projectName);
 
-        // Create a new Project
-        logger.log(`Creating new project ${projectName}`);
-        await this._createAngularProject(fullWorkspace, projectName);
+        // // Create a new Project
+        // logger.log(`Creating new project ${projectName}`);
+        // await this._createAngularProject(fullWorkspace, projectName);
 
-        // Run NPM Install
-        logger.log(`Installing Dependencies`);
-        await this._installDependencies(fullWorkspace, projectName);
+        // // Run NPM Install
+        // logger.log(`Installing Dependencies`);
+        // await this._installDependencies(fullWorkspace, projectName);
 
         //Copy utils node modules
         this._logger.log("Building schematics");

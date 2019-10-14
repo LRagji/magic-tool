@@ -1,7 +1,6 @@
 {
     "name": "OFE",
     "workspace": "workspace",
-    "designSystem": "bootstrap",
     "modules": [
         {
             "name": "alerts",
