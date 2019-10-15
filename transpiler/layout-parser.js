@@ -9,6 +9,7 @@ module.exports = class LayoutParser {
         this._locatorService = locatorService;
         this._repoElements = this._locatorService.get(serviceNames.elementsRepo);
         this._jsonReader = this._locatorService.get(serviceNames.jsonReader);
+        this._constructLayout = this._constructLayout.bind(this);
     }
 
     async parse(layouts, container) {
@@ -68,16 +69,20 @@ module.exports = class LayoutParser {
             }
             else {
                 if (element.name === 'layout') {
-                    const nestedLayoutObject = await this._jsonReader.readFile(element.properties.layout);
-                    const nestLayout = await this.parse(nestedLayoutObject);
+                    const nestLayout = await this._constructLayout(element.properties.layout);
                     elementTemplates = elementTemplates.concat(container(nestLayout));
                 }
                 else {
                     const props = element.properties || repoElement.defaultProperties;
-                    elementTemplates.push(container(repoElement.template(props)));
+                    elementTemplates.push(container(repoElement.template(props, this._constructLayout)));
                 }
             }
         };
         return elementTemplates.join(" ");
+    }
+
+    async _constructLayout(layoutFile) {
+        const nestedLayoutObject = await this._jsonReader.readFile(layoutFile);
+        return this.parse(nestedLayoutObject);
     }
 }
