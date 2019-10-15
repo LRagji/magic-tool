@@ -4,14 +4,13 @@
   "description": "I go by the name Neo",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "npm install && cd transpiler/schematics/ng-utils && npm install"
   },
   "engines": {
     "node": ">=10.0.0"
   },
-  "os": [
-    "!win32"
-  ],
+  "os": [],
   "keywords": [
     "magic-tool"
   ],
