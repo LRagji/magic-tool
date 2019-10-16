@@ -1,7 +1,8 @@
 // Copyright © 2019 Laukik Ragji, a GE company, LLC.  All rights reserved
 const serviceNames = require('./service-names');
-const npxCommand = 'npx';
-const npmCommand = 'npm';
+const windowsPlatform = 'win32';
+const npxCommand = process.platform === windowsPlatform ? 'npx.cmd' : 'npx';
+const npmCommand = process.platform === windowsPlatform ? 'npm.cmd' : 'npm';
 const copyCommand = 'cp';
 
 module.exports = class angularBuilder {
@@ -54,11 +55,7 @@ module.exports = class angularBuilder {
         ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
 
         this._logger.log("Copying schematics");
-        await this._shellExecutor(copyCommand, [
-            '-r',
-            this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'),
-            'node_modules'
-        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+        await this._fs.copy(this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'), this._path.join(fullWorkspace, projectName, 'node_modules/ng-utils'));
 
         try {
             // Create Modules
@@ -74,7 +71,7 @@ module.exports = class angularBuilder {
         }
         finally {
             this._logger.log("Cleaning up schematics");
-            this._fs.cleanFolder(this._path.join(fullWorkspace, projectName, 'node_modules/ng-utils'));
+            await this._fs.remove(this._path.join(fullWorkspace, projectName, 'node_modules/ng-utils'));
         }
     }
 
@@ -229,7 +226,7 @@ module.exports = class angularBuilder {
         catch (err) {
             await this._fs.mkdir(porjectPath, { recursive: true });
         }
-        this._fs.cleanFolder(porjectPath);
+        this._fs.remove(porjectPath);
     }
 
     async _createAngularProject(fullWorkspace, projectName) {
@@ -252,7 +249,7 @@ module.exports = class angularBuilder {
     async _installDependencies(fullWorkspace, projectName) {
         return this._shellExecutor(npmCommand, [
             'install',
-            //'--verbose'
+            '--verbose'
         ], { 'cwd': this._path.join(fullWorkspace, projectName) });
     }
 

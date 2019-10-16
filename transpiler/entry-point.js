@@ -5,7 +5,7 @@ const _angular = require('./angular');
 const _di = require('./dependency-injector');
 const spawn = require('child_process').spawn;
 const parser = require('./layout-parser');
-const fs = require('promise-fs'); //TODO Need to replace this with fs-promise api when out of experimental
+const fs = require('fs-extra'); //TODO Need to replace this with fs-promise api when out of experimental
 const path = require('path');
 const serviceNames = require('./service-names');
 const elementsRepo = require('./templates/bootstrap-elements');
@@ -13,21 +13,6 @@ const elementsRepo = require('./templates/bootstrap-elements');
 const context = new _di();
 context.register(serviceNames.executorService, runCommand);
 context.register(serviceNames.loggerService, _logger);
-fs.cleanFolder = function delDir(path) { // TODO Need to replace this with better function
-    var fs = require('fs');
-    if (fs.existsSync(path)) {
-        fs.readdirSync(path).forEach(function (file) {
-            var curPath = path + "/" + file;
-            console.log("Deleting " + curPath);
-            if (fs.lstatSync(curPath).isDirectory()) { // recurse
-                delDir(curPath);
-            } else { // delete file
-                fs.unlinkSync(curPath);
-            }
-        });
-        fs.rmdirSync(path);
-    }
-};
 context.register(serviceNames.fileSystemService, fs);
 context.register(serviceNames.pathService, path);
 context.register(serviceNames.elementsRepo, elementsRepo);
