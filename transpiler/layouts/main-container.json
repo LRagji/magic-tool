@@ -14,7 +14,7 @@
                 "name": "layout",
                 "width": 11,
                 "properties": {
-                    "layout": "/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/layouts/page.json"
+                    "layout": "/transpiler/layouts/page.json"
                 }
             }
         ]

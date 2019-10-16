@@ -3,7 +3,6 @@ const serviceNames = require('./service-names');
 const windowsPlatform = 'win32';
 const npxCommand = process.platform === windowsPlatform ? 'npx.cmd' : 'npx';
 const npmCommand = process.platform === windowsPlatform ? 'npm.cmd' : 'npm';
-const copyCommand = 'cp';
 
 module.exports = class angularBuilder {
 
@@ -15,6 +14,7 @@ module.exports = class angularBuilder {
         this._fs = this._locatorService.get(serviceNames.fileSystemService);
         this._elementsRepo = this._locatorService.get(serviceNames.elementsRepo);
         this._jsonReader = this._locatorService.get(serviceNames.jsonReader);
+        this._toolRootDirectory = this._path.join(process.argv[1], '../../');
 
         this.createProject = this.createProject.bind(this);
 
@@ -33,29 +33,31 @@ module.exports = class angularBuilder {
         const fullWorkspace = this._path.join(process.cwd(), config.workspace);
         const projectName = config.name;
         const modules = config.modules;
-        const logger = this._locatorService.get(serviceNames.loggerService);
 
-        // // Clean up project space
-        // logger.log(`Deleting existing project ${projectName}`);
-        // await this._clearWorkspaceFolder(fullWorkspace, projectName);
+        // Clean up project space
+        this._logger.log(`Deleting existing project ${projectName}`);
+        await this._clearWorkspaceFolder(fullWorkspace, projectName);
 
-        // // Create a new Project
-        // logger.log(`Creating new project ${projectName}`);
-        // await this._createAngularProject(fullWorkspace, projectName);
+        // Create a new Project
+        this._logger.log(`Creating new project ${projectName}`);
+        await this._createAngularProject(fullWorkspace, projectName);
 
-        // // Run NPM Install
-        // logger.log(`Installing Dependencies`);
-        // await this._installDependencies(fullWorkspace, projectName);
+        // Run NPM Install
+        this._logger.log(`Installing Dependencies`);
+        await this._installDependencies(fullWorkspace, projectName);
 
         //Copy utils node modules
         this._logger.log("Building schematics");
         await this._shellExecutor(npmCommand, [
             'run',
             'build'
-        ], { 'cwd': this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils') });
+        ], { 'cwd': this._path.join(this._toolRootDirectory, '/transpiler/schematics/ng-utils') });
 
-        this._logger.log("Copying schematics");
-        await this._fs.copy(this._path.join(fullWorkspace, '../transpiler/schematics/ng-utils'), this._path.join(fullWorkspace, projectName, 'node_modules/ng-utils'));
+        this._logger.log("Installing schematics");
+        await this._shellExecutor(npmCommand, [
+            'install',
+            this._path.join(this._toolRootDirectory, '/transpiler/schematics/ng-utils')
+        ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
         try {
             // Create Modules
@@ -70,8 +72,11 @@ module.exports = class angularBuilder {
             this._logger.log("Awesome!!");
         }
         finally {
-            this._logger.log("Cleaning up schematics");
-            await this._fs.remove(this._path.join(fullWorkspace, projectName, 'node_modules/ng-utils'));
+            this._logger.log("Uninstalling schematics");
+            await this._shellExecutor(npmCommand, [
+                'uninstall',
+                'ng-utils'
+            ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
@@ -130,7 +135,7 @@ module.exports = class angularBuilder {
                 else {
                     if (element.name === 'layout') {
                         try {
-                            const nestedLayout = await this._jsonReader.readFile(element.properties.layout);
+                            const nestedLayout = await this._jsonReader.readFile(this._path.join(this._toolRootDirectory, element.properties.layout));
                             await this._fetchUniqueElementsFor(nestedLayout, uniqueElements);
                         }
                         catch (err) {
@@ -226,7 +231,7 @@ module.exports = class angularBuilder {
         catch (err) {
             await this._fs.mkdir(porjectPath, { recursive: true });
         }
-        this._fs.remove(porjectPath);
+        await this._fs.remove(porjectPath);
     }
 
     async _createAngularProject(fullWorkspace, projectName) {
