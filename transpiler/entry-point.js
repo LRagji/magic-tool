@@ -17,6 +17,7 @@ context.register(serviceNames.fileSystemService, fs);
 context.register(serviceNames.pathService, path);
 context.register(serviceNames.elementsRepo, elementsRepo);
 context.register(serviceNames.jsonReader, require('jsonfile'));
+context.register(serviceNames.toolRootDirectory, path.join(process.argv[1], '../../'));
 
 const builder = new _angular(context);
 context.register(serviceNames.parser, new parser(context));

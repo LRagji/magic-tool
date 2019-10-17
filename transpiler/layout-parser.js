@@ -9,6 +9,8 @@ module.exports = class LayoutParser {
         this._locatorService = locatorService;
         this._repoElements = this._locatorService.get(serviceNames.elementsRepo);
         this._jsonReader = this._locatorService.get(serviceNames.jsonReader);
+        this._toolRootDirectory = this._locatorService.get(serviceNames.toolRootDirectory);
+        this._path = this._locatorService.get(serviceNames.pathService);
         this._constructLayout = this._constructLayout.bind(this);
     }
 
@@ -69,7 +71,7 @@ module.exports = class LayoutParser {
             }
             else {
                 if (element.name === 'layout') {
-                    const nestLayout = await this._constructLayout(element.properties.layout);
+                    const nestLayout = await this._constructLayout(this._path.join(this._toolRootDirectory, element.properties.layout));
                     elementTemplates = elementTemplates.concat(container(nestLayout));
                 }
                 else {

@@ -14,7 +14,7 @@ module.exports = class angularBuilder {
         this._fs = this._locatorService.get(serviceNames.fileSystemService);
         this._elementsRepo = this._locatorService.get(serviceNames.elementsRepo);
         this._jsonReader = this._locatorService.get(serviceNames.jsonReader);
-        this._toolRootDirectory = this._path.join(process.argv[1], '../../');
+        this._toolRootDirectory = this._locatorService.get(serviceNames.toolRootDirectory);
 
         this.createProject = this.createProject.bind(this);
 
