@@ -22,7 +22,7 @@ module.exports = class angularBuilder {
         this._clearWorkspaceFolder = this._clearWorkspaceFolder.bind(this);
         this._createAngularProject = this._createAngularProject.bind(this);
         this._installDependencies = this._installDependencies.bind(this);
-        this._createComponentsForModule = this._createComponentsForModule.bind(this);
+        this._createPagesForModule = this._createPagesForModule.bind(this);
         this._createModule = this._createModule.bind(this);
         this._fetchUniqueElementsFor = this._fetchUniqueElementsFor.bind(this);
         this._installElements = this._installElements.bind(this);
@@ -65,7 +65,7 @@ module.exports = class angularBuilder {
                 const currentModule = modules[moduleCtr];
                 await this._createModule(currentModule, fullWorkspace, projectName);
                 await this._installElements(currentModule, fullWorkspace, projectName);
-                await this._createComponentsForModule(currentModule, fullWorkspace, projectName);
+                await this._createPagesForModule(currentModule, fullWorkspace, projectName);
                 await this._createLayouts(currentModule, fullWorkspace, projectName)
             }
 
@@ -83,9 +83,9 @@ module.exports = class angularBuilder {
     async _installElements(currentModule, fullWorkspace, projectName) {
         let installedElements = [];
         const moduleElementsSet = new Set();
-        for (let componentCounter = 0; componentCounter < currentModule.components.length; componentCounter++) {
-            const component = currentModule.components[componentCounter];
-            await this._fetchUniqueElementsFor(component.layouts, moduleElementsSet);
+        for (let pageCounter = 0; pageCounter < currentModule.pages.length; pageCounter++) {
+            const page = currentModule.pages[pageCounter];
+            await this._fetchUniqueElementsFor(page.elements, moduleElementsSet);
         };
 
         const moduleElements = Array.from(moduleElementsSet);;
@@ -95,7 +95,7 @@ module.exports = class angularBuilder {
             if (installedElements.indexOf(elementShell) === -1 && elementShell !== "" && elementShell !== undefined) {
 
                 this._logger.log(`Executing ${elementShell} for ${currentModule.name}`);
-                await this._shellExecutor(npxCommand, element.package.execute.split(' '), { 'cwd': this._path.join(fullWorkspace, projectName) });
+                await this._shellExecutor(npxCommand, elementShell.split(' '), { 'cwd': this._path.join(fullWorkspace, projectName) });
 
                 const moduleDependencies = element.package.moduleImports;
                 for (let dependencyCtr = 0; dependencyCtr < moduleDependencies.length; dependencyCtr++) {
@@ -123,30 +123,16 @@ module.exports = class angularBuilder {
         }
     }
 
-    async _fetchUniqueElementsFor(layouts, uniqueElements) {
-        for (let layoutCounter = 0; layoutCounter < layouts.length; layoutCounter++) {
-            const layout = layouts[layoutCounter];
-            for (let elementCounter = 0; elementCounter < layout.elements.length; elementCounter++) {
-                const element = layout.elements[elementCounter];
-                const repoElement = this._elementsRepo[element.name];
-                if (repoElement === undefined) {
-                    this._logger.log("Cannot find component:" + element.name);
-                }
-                else {
-                    if (element.name === 'layout') {
-                        try {
-                            const nestedLayout = await this._jsonReader.readFile(this._path.join(this._toolRootDirectory, element.properties.layout));
-                            await this._fetchUniqueElementsFor(nestedLayout, uniqueElements);
-                        }
-                        catch (err) {
-                            this._logger.log("Failed to fetch elements from  custom Layout:" + err.toString());
-                        }
-                    }
-                    else {
-                        uniqueElements.add(repoElement);
-                    }
-                }
-            };
+    async _fetchUniqueElementsFor(elements, uniqueElements) {
+        for (let elementCounter = 0; elementCounter < elements.length; elementCounter++) {
+            const element = elements[elementCounter];
+            const repoElement = this._elementsRepo[element.type];
+            if (repoElement === undefined) {
+                this._logger.log("Cannot find component of type:" + element.type);
+            }
+            else {
+                uniqueElements.add(repoElement);
+            }
         };
     }
 
@@ -165,17 +151,17 @@ module.exports = class angularBuilder {
         ], { 'cwd': this._path.join(fullWorkspace, projectName) });
     }
 
-    async _createComponentsForModule(currentModule, fullWorkspace, projectName) {
+    async _createPagesForModule(currentModule, fullWorkspace, projectName) {
 
-        for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
-            const currentComponent = currentModule.components[componentCtr];
-            this._logger.log(`Creating component ${currentComponent.name} under ${currentModule.name}`);
+        for (let pageCtr = 0; pageCtr < currentModule.pages.length; pageCtr++) {
+            const page = currentModule.pages[pageCtr];
+            this._logger.log(`Creating component ${page.name} under ${currentModule.name}`);
             await this._shellExecutor(npxCommand, [
                 'ng',
                 'generate',
                 'component',
-                this._path.join(currentModule.name, currentComponent.name),
-                '--entryComponent=' + (currentModule.route === currentComponent.route),
+                this._path.join(currentModule.name, page.name),
+                '--entryComponent=' + (currentModule.route === page.route),
                 '--project=' + projectName,
                 '--module=' + currentModule.name,
                 '--style=css',
@@ -183,43 +169,43 @@ module.exports = class angularBuilder {
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
             const routerModulePath = currentModule.path.replace('.module.ts', '-routing.module.ts');
-            let componentName = currentComponent.name.toLowerCase();
-            componentName = componentName.charAt(0).toUpperCase() + componentName.substring(1, componentName.length);
-            componentName = componentName + "Component";
-            this._logger.log(`Importing: ${componentName} in routing module: ${routerModulePath}`);
+            let pageName = page.name.toLowerCase();
+            pageName = pageName.charAt(0).toUpperCase() + pageName.substring(1, pageName.length);
+            pageName = pageName + "Component";
+            this._logger.log(`Importing: ${pageName} in routing module: ${routerModulePath}`);
             await this._shellExecutor(npxCommand, [
                 'ng',
                 'g',
                 "ng-utils:add-declare-imports",
                 `--module-path=${routerModulePath}`,
-                `--component-name=${componentName}`,
-                `--component-path=./${currentComponent.name}/${currentComponent.name}.component`
+                `--component-name=${pageName}`,
+                `--component-path=./${page.name}/${page.name}.component`
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
-            this._logger.log(`Adding route for: ${componentName}`);
+            this._logger.log(`Adding route for: ${pageName}`);
             await this._shellExecutor(npxCommand, [
                 'ng',
                 'g',
                 "ng-utils:add-entry-routing-table",
                 `--router-path=${routerModulePath}`,
-                `--route=${(currentModule.route === currentComponent.route) ? currentComponent.name.toLowerCase() : currentComponent.route}`, //DEFECT :https://github.com/LRagji/magic-tool/issues/2
-                `--component-name=${componentName}`
+                `--route=${(currentModule.route === page.route) ? page.name.toLowerCase() : page.route}`, //DEFECT :https://github.com/LRagji/magic-tool/issues/2
+                `--component-name=${pageName}`
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
     }
 
     async _createLayouts(currentModule, fullWorkspace, projectName) {
         const layoutBuilder = this._locatorService.get(serviceNames.parser);
-        for (let componentCtr = 0; componentCtr < currentModule.components.length; componentCtr++) {
-            const currentComponent = currentModule.components[componentCtr];
-            currentComponent.path = {
-                "html": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.html`),
-                "ts": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.ts`),
-                "css": this._path.join('src/app/', currentModule.name, `${currentComponent.name}/${currentComponent.name}.component.css`)
+        for (let pageCtr = 0; pageCtr < currentModule.pages.length; pageCtr++) {
+            const page = currentModule.pages[pageCtr];
+            page.path = {
+                "html": this._path.join('src/app/', currentModule.name, `${page.name}/${page.name}.component.html`),
+                "ts": this._path.join('src/app/', currentModule.name, `${page.name}/${page.name}.component.ts`),
+                "css": this._path.join('src/app/', currentModule.name, `${page.name}/${page.name}.component.css`)
             }
-            this._logger.log(`Building layout for ${currentComponent.name} under ${currentModule.name}`);
-            let htmlContent = await layoutBuilder.parse(currentComponent.layouts, currentComponent.container);
-            await this._fs.writeFile(this._path.join(fullWorkspace, projectName, currentComponent.path.html), htmlContent);
+            this._logger.log(`Building layout for ${page.name} under ${currentModule.name}`);
+            let htmlContent = await layoutBuilder.parse(page.elements);
+            await this._fs.writeFile(this._path.join(fullWorkspace, projectName, page.path.html), htmlContent);
         }
     }
 

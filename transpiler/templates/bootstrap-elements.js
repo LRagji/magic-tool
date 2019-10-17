@@ -5,7 +5,7 @@ module.exports = {
             moduleImports: [{ moduleName: 'MatSlideToggleModule', link: '@angular/material/slide-toggle' }]
         },
         defaultProperties: { text: 'Material Components' },
-        template: (props) => {
+        template: async (props) => {
             return `<mat-slide-toggle>${props.text}</mat-slide-toggle>`;
         }
     },
@@ -15,7 +15,7 @@ module.exports = {
             moduleImports: [{ moduleName: 'MatGridListModule', link: '@angular/material/grid-list' }]
         },
         defaultProperties: { cols: 12, rowHeight: "4:3" },
-        template: (props,layoutBuilder) => {
+        template: async (props, layoutBuilder) => {
             return `<mat-grid-list cols="${props.cols}" rowHeight=${props.rowHeight} ></mat-grid-list>`;
         }
     },
@@ -25,7 +25,7 @@ module.exports = {
             moduleImports: [{ moduleName: 'ButtonsModule', link: 'ngx-bootstrap/buttons' }]
         },
         defaultProperties: { text: 'No Name' },
-        template: (props) => {
+        template: async (props) => {
             return `<button type="button" class="btn btn-primary">${props.text}</button>`;
         }
     },
@@ -35,7 +35,7 @@ module.exports = {
             moduleImports: [{ moduleName: 'AccordionModule', link: 'ngx-bootstrap/accordion' }, { moduleName: 'CommonModule', link: '@angular/common' }]
         },
         defaultProperties: { name: 'No Name' },
-        template: (props) => {
+        template: async (props) => {
             return `<accordion>
             <accordion-group heading="${props.name}">
               This content is straight in the template.
@@ -49,17 +49,18 @@ module.exports = {
             moduleImports: []
         },
         defaultProperties: { imageSource: 'https://picsum.photos/1024/300', altText: 'Lorem Picsum' },
-        template: (props) => {
+        template: async (props) => {
             return `<img src="${props.imageSource}" class="img-fluid" alt="${props.altText}">`;
         }
     },
+    bsgrid: require('./bootstrap-grid'),
     layout: {
         package: {
             execute: '',
             moduleImports: []
         },
         defaultProperties: { imageSource: 'https://picsum.photos/1024/300', altText: 'Lorem Picsum' },
-        template: (props) => {
+        template: async (props) => {
             return `<img src="${props.imageSource}" class="img-fluid" alt="${props.altText}">`;
         }
     },
@@ -69,7 +70,7 @@ module.exports = {
             moduleImports: []
         },
         defaultProperties: { text: 'this is text', bold: false, italic: false, turncate: false, wrap: false, lowercase: false, uppercase: false, align: 'left' },
-        template: (props) => {
+        template: async (props) => {
             let cls = "";
             if (props.bold === true) {
                 cls += 'font-weight-bold ';

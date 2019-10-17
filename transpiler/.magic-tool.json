@@ -3,158 +3,40 @@
     "workspace": "workspace",
     "modules": [
         {
-            "name": "alerts",
-            "route": "alerts",
-            "components": [
-                {
-                    "name": "list",
-                    "route": "list",
-                    "container": "normal",
-                    "layouts": [
-                        {
-                            "type": "row-center",
-                            "elements": [
-                                {
-                                    "name": "label"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "row-left",
-                            "elements": [
-                                {
-                                    "name": "button",
-                                    "width": 1
-                                }
-                            ]
-                        },
-                        {
-                            "type": "row-right",
-                            "elements": [
-                                {
-                                    "name": "button",
-                                    "width": 1
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "detail",
-                    "route": "detail",
-                    "container": "strech",
-                    "layouts": [
-                        {
-                            "type": "row-left",
-                            "elements": [
-                                {
-                                    "name": "label",
-                                    "width": 1,
-                                    "properties": {
-                                        "text": "Laukik I am don",
-                                        "bold": true,
-                                        "uppercase": true,
-                                        "align": "right"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "services": [],
-            "pipes": []
-        },
-        {
             "name": "dashboard",
             "route": "dashboard",
-            "components": [
+            "pages": [
                 {
                     "name": "bootstrap",
                     "route": "bootstrap",
-                    "container": "strech",
-                    "layouts": [
+                    "elements": [
                         {
-                            "type": "row-left",
-                            "elements": [
-                                {
-                                    "name": "image",
-                                    "width": 10,
-                                    "properties": {
-                                        "imageSource": "assets/Images/Header.png",
-                                        "altText": "Header"
+                            "type": "bsgrid",
+                            "bootstrapWrapper": {
+                                "colwidth": 1
+                            },
+                            "properties": {
+                                "rows": [
+                                    {
+                                        "type": "row-left",
+                                        "layout": "/transpiler/layouts/layer1.json"
+                                    },
+                                    {
+                                        "type": "row-left",
+                                        "layout": "/transpiler/layouts/layer1.json"
                                     }
-                                },
-                                {
-                                    "name": "toggle",
-                                    "width": 2,
-                                    "properties": {
-                                        "text": "Stupid"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "type": "row-left",
-                            "elements": [
-                                {
-                                    "name": "layout",
-                                    "width": 12,
-                                    "properties": {
-                                        "layout": "/transpiler/layouts/main-container.json"
-                                    }
-                                }
-                            ]
+                                ],
+                                "container": "strech"
+                            }
                         }
                     ]
                 },
                 {
                     "name": "material",
                     "route": "material",
-                    "container": "strech",
-                    "layouts": [
-                        {
-                            "type": "row-left",
-                            "elements": [
-                                {
-                                    "name": "image",
-                                    "width": 10,
-                                    "properties": {
-                                        "imageSource": "assets/Images/Header.png",
-                                        "altText": "Header"
-                                    }
-                                },
-                                {
-                                    "name": "toggle",
-                                    "width": 2,
-                                    "properties": {
-                                        "text": "Stupid"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "type": "row-left",
-                            "elements": [
-                                {
-                                    "name": "layout",
-                                    "width": 12,
-                                    "properties": {
-                                        "layout": "/transpiler/layouts/main-container.json"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
+                    "elements": []
                 }
             ],
-            "services": [],
-            "pipes": []
-        },
-        {
-            "name": "usermanagement",
-            "route": "usermanagement",
-            "components": [],
             "services": [],
             "pipes": []
         }

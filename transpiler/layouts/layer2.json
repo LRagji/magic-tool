@@ -1,0 +1,21 @@
+[
+    {
+        "type": "bsgrid",
+        "bootstrapWrapper": {
+            "colwidth": 1
+        },
+        "properties": {
+            "rows": [
+                {
+                    "type": "row-left",
+                    "layout": "/transpiler/layouts/layer1.json"
+                },
+                {
+                    "type": "row-left",
+                    "layout": "/transpiler/layouts/layer2.json"
+                }
+            ],
+            "container": "strech"
+        }
+    }
+]
