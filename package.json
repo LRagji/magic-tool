@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "build": "npm install && cd transpiler/schematics/ng-utils && npm install"
+    "build": "npm install && cd transpiler/schematics/ng-utils && npm install",
+    "start":"node ./transpiler/entry-point.js"
   },
   "engines": {
     "node": ">=10.0.0"
