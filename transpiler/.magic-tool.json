@@ -41,7 +41,23 @@
                 {
                     "name": "material",
                     "route": "material",
-                    "elements": []
+                    "elements": [
+                        {
+                            "type": "gridlist",
+                            "properties": {
+                                "cols": 12,
+                                "rowHeight": "4:3",
+                                "content": [
+                                    {
+                                        "rowspan": 1,
+                                        "colspan": 1,
+                                        "layout": "/transpiler/layouts/mat-layer1.json",
+                                        "color": "red"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             ],
             "services": [],

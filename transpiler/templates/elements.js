@@ -9,16 +9,7 @@ module.exports = {
             return `<mat-slide-toggle>${props.text}</mat-slide-toggle>`;
         }
     },
-    gridlist: {
-        package: {
-            execute: 'ng add @angular/material --interactive=false --theme=custom --gestures=true --animations=true',
-            moduleImports: [{ moduleName: 'MatGridListModule', link: '@angular/material/grid-list' }]
-        },
-        defaultProperties: { cols: 12, rowHeight: "4:3" },
-        template: async (props, layoutBuilder) => {
-            return `<mat-grid-list cols="${props.cols}" rowHeight=${props.rowHeight} ></mat-grid-list>`;
-        }
-    },
+    gridlist: require('./mat-grid-list'),
     button: {
         package: {
             execute: 'ng add ngx-bootstrap --component buttons',
