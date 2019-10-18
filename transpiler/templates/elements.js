@@ -36,7 +36,7 @@ module.exports = {
     },
     image: {
         package: {
-            execute: '',
+            execute: 'ng add ngx-bootstrap',
             moduleImports: []
         },
         defaultProperties: { imageSource: 'https://picsum.photos/1024/300', altText: 'Lorem Picsum' },
@@ -45,19 +45,9 @@ module.exports = {
         }
     },
     bsgrid: require('./bootstrap-grid'),
-    layout: {
-        package: {
-            execute: '',
-            moduleImports: []
-        },
-        defaultProperties: { imageSource: 'https://picsum.photos/1024/300', altText: 'Lorem Picsum' },
-        template: async (props) => {
-            return `<img src="${props.imageSource}" class="img-fluid" alt="${props.altText}">`;
-        }
-    },
     label: {
         package: {
-            execute: '',
+            execute: 'ng add ngx-bootstrap',
             moduleImports: []
         },
         defaultProperties: { text: 'this is text', bold: false, italic: false, turncate: false, wrap: false, lowercase: false, uppercase: false, align: 'left' },
