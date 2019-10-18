@@ -19,6 +19,7 @@
                                         "type": "row-left",
                                         "elements": [
                                             {
+                                                "color":"red",
                                                 "width": 12,
                                                 "layout": "/transpiler/layouts/layer1.json"
                                             }
@@ -28,6 +29,7 @@
                                         "type": "row-left",
                                         "elements": [
                                             {
+                                                "color":"green",
                                                 "width": 12,
                                                 "layout": "/transpiler/layouts/layer1.json"
                                             }

@@ -19,7 +19,7 @@ class bootstrapGrid {
             const columns = []
             for (let colCtr = 0; colCtr < row.elements.length; colCtr++) {
                 const element = row.elements[colCtr];
-                const elementContainer = this._createElementContainer(element.width);
+                const elementContainer = this._createElementContainer(element);
                 const elementTemplates = await layoutBuilder(element.layout);
                 columns.push(elementContainer(elementTemplates));
 
@@ -54,13 +54,13 @@ class bootstrapGrid {
         }
     }
 
-    _createElementContainer(colWidth) {
+    _createElementContainer(element) {
         let cls = "col-auto";
-        if (colWidth !== undefined & !isNaN(colWidth) & colWidth < 13) {
-            cls = "col-" + colWidth;
+        if (element.width !== undefined & !isNaN(element.width) & element.width < 13) {
+            cls = "col-" + element.width;
         }
         return content => {
-            return `<div class="${cls}" >${content}</div>`;
+            return `<div class="${cls}" [ngStyle]="{background:'${element.color}'}" >${content}</div>`;
         }
     }
 }
