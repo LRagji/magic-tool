@@ -6,7 +6,7 @@
   "scripts": {
     "test": "test",
     "build": "npm install && cd transpiler/schematics/ng-utils && npm install",
-    "start":"node ./transpiler/entry-point.js"
+    "start": "node ./transpiler/entry-point.js"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -18,6 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "@angular/cli": "^8.3.4",
+    "cfonts": "^2.4.5",
     "fs-extra": "^8.1.0",
     "jsonfile": "^5.0.0"
   },

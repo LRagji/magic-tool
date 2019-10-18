@@ -69,7 +69,7 @@ module.exports = class angularBuilder {
                 await this._createLayouts(currentModule, fullWorkspace, projectName)
             }
 
-            this._logger.log("Awesome!!");
+            this._logger.bold("Awesome!!");
         }
         finally {
             this._logger.log("Uninstalling schematics");
