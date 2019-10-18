@@ -12,21 +12,28 @@
                     "elements": [
                         {
                             "type": "bsgrid",
-                            "bootstrapWrapper": {
-                                "colwidth": 1
-                            },
                             "properties": {
+                                "container": "strech",
                                 "rows": [
                                     {
                                         "type": "row-left",
-                                        "layout": "/transpiler/layouts/layer1.json"
+                                        "elements": [
+                                            {
+                                                "width": 12,
+                                                "layout": "/transpiler/layouts/layer1.json"
+                                            }
+                                        ]
                                     },
                                     {
                                         "type": "row-left",
-                                        "layout": "/transpiler/layouts/layer1.json"
+                                        "elements": [
+                                            {
+                                                "width": 12,
+                                                "layout": "/transpiler/layouts/layer1.json"
+                                            }
+                                        ]
                                     }
-                                ],
-                                "container": "strech"
+                                ]
                             }
                         }
                     ]

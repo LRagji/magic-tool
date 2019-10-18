@@ -1,5 +1,5 @@
 class bootstrapGrid {
-    
+
     constructor() {
         this.package = {
             execute: 'ng add ngx-bootstrap',
@@ -7,7 +7,7 @@ class bootstrapGrid {
         };
         this.defaultProperties = { rows: [{ type: "", layout: '' }], container: 'normal' };
         this.template = this.template.bind(this);
-
+        this._createElementContainer = this._createElementContainer.bind(this);
         this._createHorizontalContainer = this._createHorizontalContainer.bind(this);
     }
 
@@ -16,8 +16,15 @@ class bootstrapGrid {
         for (let rowCounter = 0; rowCounter < props.rows.length; rowCounter++) {
             const row = props.rows[rowCounter];
             const hContainer = this._createHorizontalContainer(row);
-            const elementTemplates = await layoutBuilder(row.layout);
-            allLayouts.push(hContainer(elementTemplates));
+            const columns = []
+            for (let colCtr = 0; colCtr < row.elements.length; colCtr++) {
+                const element = row.elements[colCtr];
+                const elementContainer = this._createElementContainer(element.width);
+                const elementTemplates = await layoutBuilder(element.layout);
+                columns.push(elementContainer(elementTemplates));
+
+            }
+            allLayouts.push(hContainer(columns.join(' ')));
         }
 
         switch (props.container) {
@@ -44,6 +51,16 @@ class bootstrapGrid {
                 return content => `<div class="row justify-content-between">${content}</div>`;
             default:
                 return content => `<div style='bgcolor:red'>${content}</div>`;
+        }
+    }
+
+    _createElementContainer(colWidth) {
+        let cls = "col-auto";
+        if (colWidth !== undefined & !isNaN(colWidth) & colWidth < 13) {
+            cls = "col-" + colWidth;
+        }
+        return content => {
+            return `<div class="${cls}" >${content}</div>`;
         }
     }
 }
