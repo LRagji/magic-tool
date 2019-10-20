@@ -4,21 +4,16 @@
     "title": "Adds custom css to your projects",
     "type": "object",
     "properties": {
-      "modulePath": {
+      "project": {
         "type": "string",
-        "description": "Path of the module to add imports to.",
-        "x-prompt": "Enter module path to add Imports to:"
+        "description": "Project name",
+        "x-prompt": "Enter the project name:"
       },
-      "componentName": {
+      "stylePath": {
         "type": "string",
-        "description": "Name of the component to import",
-        "x-prompt": "Enter Name of the component to import:"
-      },
-      "componentPath": {
-        "type": "string",
-        "description": "Path of the component to import from.",
-        "x-prompt": "Enter Path of the component to import from:"
+        "description": "Stylesheet path to import",
+        "x-prompt": "Enter path for style sheet:"
       }
     },
-    "required": ["modulePath","componentName","componentPath"]
+    "required": ["stylePath","project"]
   }
