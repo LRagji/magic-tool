@@ -2,8 +2,9 @@ class bootstrapGrid {
 
     constructor() {
         this.package = {
-            execute: ['npx ng add ngx-bootstrap','echo HelloWorld'],
-            moduleImports: []
+            execute: ['npm i bootstrap-4-grid'],
+            moduleImports: [],
+            styles: ['node_modules\\bootstrap-4-grid\\css\\grid.min.css']
         };
         this.defaultProperties = { rows: [{ type: "", layout: '' }], container: 'normal' };
         this.template = this.template.bind(this);

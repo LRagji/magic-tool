@@ -27,15 +27,15 @@ async function runCommand(command, args, options) {
         options.shell = true;
         const cmd = spawn(command, args, options);
         cmd.stdout.on('data', data => {
-            _logger.log(`${data}`);
+            _logger.dim(`${data}`);
         });
 
         cmd.stderr.on('data', data => {
-            _logger.log(`${data}`);
+            _logger.dim(`${data}`);
         });
 
         cmd.on('error', err => {
-            _logger.log(`${err}`);
+            _logger.dim(`${err}`);
             rej(err);
         });
 

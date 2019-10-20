@@ -1,9 +1,8 @@
 [
     {
-        "type": "bs-image",
+        "type": "html-span",
         "properties": {
-            "imageSource": "assets/Images/Header.png",
-            "altText": "Header"
+            "text": "Header"
         }
     }
 ]
