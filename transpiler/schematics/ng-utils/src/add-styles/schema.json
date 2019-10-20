@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "id": "add-styles",
+    "title": "Adds custom css to your projects",
+    "type": "object",
+    "properties": {
+      "modulePath": {
+        "type": "string",
+        "description": "Path of the module to add imports to.",
+        "x-prompt": "Enter module path to add Imports to:"
+      },
+      "componentName": {
+        "type": "string",
+        "description": "Name of the component to import",
+        "x-prompt": "Enter Name of the component to import:"
+      },
+      "componentPath": {
+        "type": "string",
+        "description": "Path of the component to import from.",
+        "x-prompt": "Enter Path of the component to import from:"
+      }
+    },
+    "required": ["modulePath","componentName","componentPath"]
+  }
