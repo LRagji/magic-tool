@@ -18,7 +18,6 @@ module.exports = class angularBuilder {
 
         this.createProject = this.createProject.bind(this);
 
-        this._insertAt = this._insertAt.bind(this);
         this._clearWorkspaceFolder = this._clearWorkspaceFolder.bind(this);
         this._createAngularProject = this._createAngularProject.bind(this);
         this._installDependencies = this._installDependencies.bind(this);
@@ -95,7 +94,24 @@ module.exports = class angularBuilder {
             if (installedElements.indexOf(elementShell) === -1 && elementShell !== "" && elementShell !== undefined) {
 
                 this._logger.log(`Executing ${elementShell} for ${currentModule.name}`);
-                await this._shellExecutor(npxCommand, elementShell.split(' '), { 'cwd': this._path.join(fullWorkspace, projectName) });
+                let brokenCommand = elementShell.split(' ');
+                brokenCommand = brokenCommand.reduce((acc, param, idx) => {
+                    let cmd = param.trim();
+                    if (cmd !== "") {
+                        if (idx === 0 && process.platform === windowsPlatform) {
+                            switch (cmd.toLowerCase()) {
+                                case 'npx':
+                                    cmd = 'npx.cmd';
+                                    break;
+                            }
+                        }
+                        acc.push(cmd);
+                    }
+                    return acc;
+                }, []);
+                const command = brokenCommand[0];
+                brokenCommand.splice(0, 1)
+                await this._shellExecutor(command, brokenCommand, { 'cwd': this._path.join(fullWorkspace, projectName) });
 
                 const moduleDependencies = element.package.moduleImports;
                 for (let dependencyCtr = 0; dependencyCtr < moduleDependencies.length; dependencyCtr++) {
@@ -242,12 +258,5 @@ module.exports = class angularBuilder {
             'install',
             '--verbose'
         ], { 'cwd': this._path.join(fullWorkspace, projectName) });
-    }
-
-    async _insertAt(filePath, lineNumber, content) {
-        let fileContent = await this._fs.readFile(filePath);
-        let fileContentArray = fileContent.toString().split("\n");
-        fileContentArray.splice(lineNumber, 0, content);
-        await this._fs.writeFile(filePath, fileContentArray.join("\n"));
     }
 };

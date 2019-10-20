@@ -8,7 +8,7 @@ const parser = require('./layout-parser');
 const fs = require('fs-extra'); //TODO Need to replace this with fs-promise api when out of experimental
 const path = require('path');
 const serviceNames = require('./service-names');
-const elementsRepo = require('./templates/elements');
+const elementsRepo = require('./elements/repository');
 
 const context = new _di();
 context.register(serviceNames.executorService, runCommand);

@@ -1,9 +1,6 @@
 [
     {
-        "type": "image",
-        "bootstrapWrapper": {
-            "colwidth": 1
-        },
+        "type": "bs-image",
         "properties": {
             "imageSource": "assets/Images/Header.png",
             "altText": "Header"

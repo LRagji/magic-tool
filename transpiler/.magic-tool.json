@@ -11,7 +11,7 @@
                     "route": "bootstrap",
                     "elements": [
                         {
-                            "type": "bsgrid",
+                            "type": "bs-grid",
                             "properties": {
                                 "container": "strech",
                                 "rows": [

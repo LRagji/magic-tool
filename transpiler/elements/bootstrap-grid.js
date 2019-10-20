@@ -2,7 +2,7 @@ class bootstrapGrid {
 
     constructor() {
         this.package = {
-            execute: 'ng add ngx-bootstrap',
+            execute: 'npx ng add ngx-bootstrap',
             moduleImports: []
         };
         this.defaultProperties = { rows: [{ type: "", layout: '' }], container: 'normal' };
