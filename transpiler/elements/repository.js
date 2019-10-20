@@ -9,6 +9,7 @@ module.exports = {
             return `<mat-slide-toggle>${props.text}</mat-slide-toggle>`;
         }
     },
+    "html-span": require("./html-span"),
     gridlist: require('./mat-grid-list'),
     button: {
         package: {
