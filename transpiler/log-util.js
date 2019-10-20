@@ -1,5 +1,7 @@
 // Copyright © 2019 Baker Hughes, a GE company, LLC.  All rights reserved
 const CFonts = require('cfonts');
+const chalk = require('chalk');
+
 module.exports = class logger {
     static log(message) {
         // tslint:disable-next-line: no-console
@@ -19,13 +21,14 @@ module.exports = class logger {
         });
     }
 
+    static dim(message) {
+        console.log(chalk.gray(message));
+    }
+
     static exception(error) {
         let message = "";
         message += error.toString();
         message += error.stack !== undefined ? error.stack : "No Stack";
-        CFonts.say(message, {
-            colors: ['red'],
-            background: 'transparent'
-        });
+        console.log(chalk.red(message));
     }
 };
