@@ -1,7 +1,7 @@
 module.exports = {
     toggle: {
         package: {
-            execute: 'npx ng add @angular/material --interactive=false --theme=custom --gestures=true --animations=true',
+            execute: ['npx ng add @angular/material --interactive=false --theme=custom --gestures=true --animations=true'],
             moduleImports: [{ moduleName: 'MatSlideToggleModule', link: '@angular/material/slide-toggle' }]
         },
         defaultProperties: { text: 'Material Components' },
@@ -12,7 +12,7 @@ module.exports = {
     gridlist: require('./mat-grid-list'),
     button: {
         package: {
-            execute: 'npx ng add ngx-bootstrap --component buttons',
+            execute: ['npx ng add ngx-bootstrap --component buttons'],
             moduleImports: [{ moduleName: 'ButtonsModule', link: 'ngx-bootstrap/buttons' }]
         },
         defaultProperties: { text: 'No Name' },
@@ -22,7 +22,7 @@ module.exports = {
     },
     accordion: {
         package: {
-            execute: 'npx ng add ngx-bootstrap --component accordion',
+            execute: ['npx ng add ngx-bootstrap --component accordion'],
             moduleImports: [{ moduleName: 'AccordionModule', link: 'ngx-bootstrap/accordion' }, { moduleName: 'CommonModule', link: '@angular/common' }]
         },
         defaultProperties: { name: 'No Name' },
@@ -38,7 +38,7 @@ module.exports = {
     "bs-grid": require('./bootstrap-grid'),
     label: {
         package: {
-            execute: 'npx ng add ngx-bootstrap',
+            execute: ['npx ng add ngx-bootstrap'],
             moduleImports: []
         },
         defaultProperties: { text: 'this is text', bold: false, italic: false, turncate: false, wrap: false, lowercase: false, uppercase: false, align: 'left' },

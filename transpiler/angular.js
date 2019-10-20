@@ -1,8 +1,8 @@
 // Copyright © 2019 Laukik Ragji, a GE company, LLC.  All rights reserved
 const serviceNames = require('./service-names');
 const windowsPlatform = 'win32';
-const npxCommand = process.platform === windowsPlatform ? 'npx.cmd' : 'npx';
-const npmCommand = process.platform === windowsPlatform ? 'npm.cmd' : 'npm';
+const npxCommand = 'npx';
+const npmCommand = 'npm';
 
 module.exports = class angularBuilder {
 
@@ -26,6 +26,7 @@ module.exports = class angularBuilder {
         this._fetchUniqueElementsFor = this._fetchUniqueElementsFor.bind(this);
         this._installElements = this._installElements.bind(this);
         this._createLayouts = this._createLayouts.bind(this);
+        this._executeElementCommands = this._executeElementCommands.bind(this);
     }
 
     async createProject(config) {
@@ -70,6 +71,9 @@ module.exports = class angularBuilder {
 
             this._logger.bold("Awesome!!");
         }
+        catch (err) {
+            this._logger.exception(err);
+        }
         finally {
             this._logger.log("Uninstalling schematics");
             await this._shellExecutor(npmCommand, [
@@ -90,7 +94,14 @@ module.exports = class angularBuilder {
         const moduleElements = Array.from(moduleElementsSet);;
         for (let compCounter = 0; compCounter < moduleElements.length; compCounter++) {
             const element = moduleElements[compCounter];
-            const elementShell = element.package.execute;
+            const executeDirectory = this._path.join(fullWorkspace, projectName);
+            await this._executeElementCommands(element, currentModule, installedElements, executeDirectory);
+        }
+    }
+
+    async _executeElementCommands(element, currentModule, installedElements, executeDirectory) {
+        for (let exeCounter = 0; exeCounter < element.package.execute.length; exeCounter++) {
+            const elementShell = element.package.execute[exeCounter];
             if (installedElements.indexOf(elementShell) === -1 && elementShell !== "" && elementShell !== undefined) {
 
                 this._logger.log(`Executing ${elementShell} for ${currentModule.name}`);
@@ -98,20 +109,13 @@ module.exports = class angularBuilder {
                 brokenCommand = brokenCommand.reduce((acc, param, idx) => {
                     let cmd = param.trim();
                     if (cmd !== "") {
-                        if (idx === 0 && process.platform === windowsPlatform) {
-                            switch (cmd.toLowerCase()) {
-                                case 'npx':
-                                    cmd = 'npx.cmd';
-                                    break;
-                            }
-                        }
                         acc.push(cmd);
                     }
                     return acc;
                 }, []);
                 const command = brokenCommand[0];
                 brokenCommand.splice(0, 1)
-                await this._shellExecutor(command, brokenCommand, { 'cwd': this._path.join(fullWorkspace, projectName) });
+                await this._shellExecutor(command, brokenCommand, { 'cwd': executeDirectory });
 
                 const moduleDependencies = element.package.moduleImports;
                 for (let dependencyCtr = 0; dependencyCtr < moduleDependencies.length; dependencyCtr++) {
@@ -124,7 +128,7 @@ module.exports = class angularBuilder {
                         `--module-path=${currentModule.path}`,
                         `--component-name=${dependency.moduleName}`,
                         `--component-path=${dependency.link}`
-                    ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+                    ], { 'cwd': executeDirectory });
                 }
                 installedElements.push(elementShell);
             }

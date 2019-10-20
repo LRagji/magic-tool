@@ -18,4 +18,14 @@ module.exports = class logger {
             maxLength: '0',             // define how many character can be on one line
         });
     }
+
+    static exception(error) {
+        let message = "";
+        message += error.toString();
+        message += error.stack !== undefined ? error.stack : "No Stack";
+        CFonts.say(message, {
+            colors: ['red'],
+            background: 'transparent'
+        });
+    }
 };

@@ -24,6 +24,7 @@ context.register(serviceNames.parser, new parser(context));
 
 async function runCommand(command, args, options) {
     return new Promise((acc, rej) => {
+        options.shell = true;
         const cmd = spawn(command, args, options);
         cmd.stdout.on('data', data => {
             _logger.log(`${data}`);

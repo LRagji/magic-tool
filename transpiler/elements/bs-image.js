@@ -1,7 +1,7 @@
 class BsImage {
     constructor() {
         this.package = {
-            execute: 'npx ng add ngx-bootstrap',
+            execute: ['npx ng add ngx-bootstrap','echo I-am-Image'],
             moduleImports: []
         };
         this.defaultProperties = { imageSource: 'https://picsum.photos/1024/300', altText: 'Lorem Picsum' };

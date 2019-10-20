@@ -1,7 +1,7 @@
 class matGrid {
     constructor() {
         this.package = {
-            execute: 'npx ng add @angular/material --interactive=false --theme=custom --gestures=true --animations=true',
+            execute: ['npx ng add @angular/material --interactive=false --theme=custom --gestures=true --animations=true'],
             moduleImports: [{ moduleName: 'MatGridListModule', link: '@angular/material/grid-list' }]
         };
         this.defaultProperties = {
