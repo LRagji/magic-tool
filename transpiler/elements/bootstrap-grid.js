@@ -4,7 +4,7 @@ class bootstrapGrid {
         this.package = {
             execute: ['npm i bootstrap-4-grid'],
             moduleImports: [],
-            styles: ['node_modules\\bootstrap-4-grid\\css\\grid.min.css']
+            styles: ['node_modules/bootstrap-4-grid/css/grid.min.css']
         };
         this.defaultProperties = { rows: [{ type: "", layout: '' }], container: 'normal' };
         this.template = this.template.bind(this);
