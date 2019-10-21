@@ -6,7 +6,7 @@ class HtmlSpan {
     }
 
     async template(props) {
-        return `<span>"${props.text}"</span>`;
+        return `<span>${props.text}</span>`;
     }
 }
 

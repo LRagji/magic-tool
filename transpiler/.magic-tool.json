@@ -3,12 +3,12 @@
     "workspace": "workspace",
     "modules": [
         {
-            "name": "dashboard",
-            "route": "dashboard",
+            "name": "bootstrap",
+            "route": "bootstrap",
             "pages": [
                 {
-                    "name": "bootstrap",
-                    "route": "bootstrap",
+                    "name": "dashboard",
+                    "route": "dashboard",
                     "elements": [
                         {
                             "type": "bs-grid",
@@ -16,22 +16,27 @@
                                 "container": "strech",
                                 "rows": [
                                     {
-                                        "type": "row-left",
+                                        "type": "row-center",
                                         "elements": [
                                             {
-                                                "color":"red",
+                                                "color": "lightblue",
                                                 "width": 12,
                                                 "layout": "/transpiler/layouts/layer1.json"
                                             }
                                         ]
                                     },
                                     {
-                                        "type": "row-left",
+                                        "type": "row-center",
                                         "elements": [
                                             {
-                                                "color":"green",
-                                                "width": 12,
-                                                "layout": "/transpiler/layouts/layer1.json"
+                                                "color": "#ECF0F1",
+                                                "width": 1,
+                                                "layout": "/transpiler/layouts/layer2.json"
+                                            },
+                                            {
+                                                "color": "white",
+                                                "width": 11,
+                                                "layout": "/transpiler/layouts/layer3.json"
                                             }
                                         ]
                                     }
@@ -39,22 +44,66 @@
                             }
                         }
                     ]
-                },
+                }
+            ],
+            "services": [],
+            "pipes": []
+        },
+        {
+            "name": "material",
+            "route": "material",
+            "pages": [
                 {
-                    "name": "material",
-                    "route": "material",
+                    "name": "dashboard",
+                    "route": "dashboard",
                     "elements": [
                         {
                             "type": "gridlist",
                             "properties": {
-                                "cols": 12,
-                                "rowHeight": "4:3",
+                                "cols": 10,
+                                "rowHeight": "10:2",
                                 "content": [
                                     {
                                         "rowspan": 1,
-                                        "colspan": 1,
+                                        "colspan": 10,
                                         "layout": "/transpiler/layouts/mat-layer1.json",
-                                        "color": "red"
+                                        "color": "lightblue"
+                                    },
+                                    {
+                                        "rowspan": 3,
+                                        "colspan": 1,
+                                        "layout": "/transpiler/layouts/mat-layer2.json",
+                                        "color": "#ECF0F1"
+                                    },
+                                    {
+                                        "rowspan": 1,
+                                        "colspan": 3,
+                                        "layout": "/transpiler/layouts/mat-layer3.json",
+                                        "color": "lightgreen"
+                                    },
+                                    {
+                                        "rowspan": 1,
+                                        "colspan": 3,
+                                        "layout": "/transpiler/layouts/mat-layer4.json",
+                                        "color": "lightgreen"
+                                    },
+                                    {
+                                        "rowspan": 1,
+                                        "colspan": 3,
+                                        "layout": "/transpiler/layouts/mat-layer5.json",
+                                        "color": "lightgreen"
+                                    },
+                                    {
+                                        "rowspan": 1,
+                                        "colspan": 9,
+                                        "layout": "/transpiler/layouts/mat-layer6.json",
+                                        "color": "#DDBDF1"
+                                    },
+                                    {
+                                        "rowspan": 1,
+                                        "colspan": 9,
+                                        "layout": "/transpiler/layouts/mat-layer7.json",
+                                        "color": "#DDBDF1"
                                     }
                                 ]
                             }

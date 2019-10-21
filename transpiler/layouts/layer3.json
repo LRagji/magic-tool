@@ -1,0 +1,49 @@
+[
+    {
+        "type": "bs-grid",
+        "properties": {
+            "rows": [
+                {
+                    "type": "row-center",
+                    "elements": [
+                        {
+                            "color":"lightgreen",
+                            "width": 4,
+                            "layout": "/transpiler/layouts/layer4.json"
+                        },
+                        {
+                            "color":"lightgreen",
+                            "width": 4,
+                            "layout": "/transpiler/layouts/layer5.json"
+                        },
+                        {
+                            "color":"lightgreen",
+                            "width": 4,
+                            "layout": "/transpiler/layouts/layer6.json"
+                        }
+                    ]
+                },
+                {
+                    "type": "row-center",
+                    "elements": [
+                        {
+                            "color":"#DDBDF1",
+                            "width": 12,
+                            "layout": "/transpiler/layouts/layer7.json"
+                        }
+                    ]
+                },
+                {
+                    "type": "row-center",
+                    "elements": [
+                        {
+                            "color":"#DDBDF1",
+                            "width": 12,
+                            "layout": "/transpiler/layouts/layer8.json"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
