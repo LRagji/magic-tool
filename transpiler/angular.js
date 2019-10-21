@@ -25,7 +25,6 @@ module.exports = class angularBuilder {
         this._fetchUniqueElementsFor = this._fetchUniqueElementsFor.bind(this);
         this._installElements = this._installElements.bind(this);
         this._createLayouts = this._createLayouts.bind(this);
-        //this._executeElementCommands = this._executeElementCommands.bind(this);
     }
 
     async createProject(config) {
@@ -63,7 +62,6 @@ module.exports = class angularBuilder {
             for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
                 const currentModule = modules[moduleCtr];
                 await this._createModule(currentModule, fullWorkspace, projectName);
-                //await this._installElements(currentModule, fullWorkspace, projectName);
                 await this._createPagesForModule(currentModule, fullWorkspace, projectName);
                 await this._createLayouts(currentModule, fullWorkspace, projectName)
             }
@@ -80,35 +78,6 @@ module.exports = class angularBuilder {
                 'ng-utils'
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
         }
-    }
-
-    async _installElements(currentModule, fullWorkspace, projectName) {
-        let installedElements = [];
-        const moduleElementsSet = new Set();
-        for (let pageCounter = 0; pageCounter < currentModule.pages.length; pageCounter++) {
-            const page = currentModule.pages[pageCounter];
-            await this._fetchUniqueElementsFor(page.elements, moduleElementsSet);
-        };
-
-        const moduleElements = Array.from(moduleElementsSet);;
-        for (let compCounter = 0; compCounter < moduleElements.length; compCounter++) {
-            const element = moduleElements[compCounter];
-            const executeDirectory = this._path.join(fullWorkspace, projectName);
-            await this._executeElementCommands(element, currentModule, installedElements, executeDirectory, projectName);
-        }
-    }
-
-    async _fetchUniqueElementsFor(elements, uniqueElements) {
-        for (let elementCounter = 0; elementCounter < elements.length; elementCounter++) {
-            const element = elements[elementCounter];
-            const repoElement = this._elementsRepo[element.type];
-            if (repoElement === undefined) {
-                this._logger.log("Cannot find component of type:" + element.type);
-            }
-            else {
-                uniqueElements.add(repoElement);
-            }
-        };
     }
 
     async _createModule(currentModule, fullWorkspace, projectName) {
