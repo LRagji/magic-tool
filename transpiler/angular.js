@@ -1,6 +1,5 @@
 // Copyright © 2019 Laukik Ragji, a GE company, LLC.  All rights reserved
 const serviceNames = require('./service-names');
-const windowsPlatform = 'win32';
 const npxCommand = 'npx';
 const npmCommand = 'npm';
 
@@ -26,7 +25,7 @@ module.exports = class angularBuilder {
         this._fetchUniqueElementsFor = this._fetchUniqueElementsFor.bind(this);
         this._installElements = this._installElements.bind(this);
         this._createLayouts = this._createLayouts.bind(this);
-        this._executeElementCommands = this._executeElementCommands.bind(this);
+        //this._executeElementCommands = this._executeElementCommands.bind(this);
     }
 
     async createProject(config) {
@@ -64,7 +63,7 @@ module.exports = class angularBuilder {
             for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
                 const currentModule = modules[moduleCtr];
                 await this._createModule(currentModule, fullWorkspace, projectName);
-                await this._installElements(currentModule, fullWorkspace, projectName);
+                //await this._installElements(currentModule, fullWorkspace, projectName);
                 await this._createPagesForModule(currentModule, fullWorkspace, projectName);
                 await this._createLayouts(currentModule, fullWorkspace, projectName)
             }
@@ -96,64 +95,6 @@ module.exports = class angularBuilder {
             const element = moduleElements[compCounter];
             const executeDirectory = this._path.join(fullWorkspace, projectName);
             await this._executeElementCommands(element, currentModule, installedElements, executeDirectory, projectName);
-        }
-    }
-
-    async _executeElementCommands(element, currentModule, installedElements, executeDirectory, projectName) {
-        const moduleExecutions = element.package.execute || [];
-        for (let exeCounter = 0; exeCounter < moduleExecutions.length; exeCounter++) {
-            const elementShell = moduleExecutions[exeCounter];
-            if (installedElements.indexOf(elementShell) === -1 && elementShell !== "" && elementShell !== undefined) {
-
-                this._logger.log(`Executing ${elementShell} for ${currentModule.name}`);
-                let brokenCommand = elementShell.split(' ');
-                brokenCommand = brokenCommand.reduce((acc, param, idx) => {
-                    let cmd = param.trim();
-                    if (cmd !== "") {
-                        acc.push(cmd);
-                    }
-                    return acc;
-                }, []);
-                const command = brokenCommand[0];
-                brokenCommand.splice(0, 1)
-                await this._shellExecutor(command, brokenCommand, { 'cwd': executeDirectory });
-                installedElements.push(elementShell);
-            }
-            else {
-                if (elementShell === undefined || elementShell === "") {
-                    this._logger.log(`Skipped installing inbuilt module for ${currentModule.name}.`);
-                }
-                else {
-                    this._logger.log(`Skipped executing ${elementShell} for ${currentModule.name} as it is already installed.`);
-                }
-            }
-        }
-
-        const moduleDependencies = element.package.moduleImports || [];
-        for (let dependencyCtr = 0; dependencyCtr < moduleDependencies.length; dependencyCtr++) {
-            const dependency = moduleDependencies[dependencyCtr];
-            this._logger.log(`Installing dependency: ${dependency.moduleName} for module: ${currentModule.name}`);
-            await this._shellExecutor(npxCommand, [
-                'ng',
-                'g',
-                "ng-utils:add-imports",
-                `--module-path=${currentModule.path}`,
-                `--component-name=${dependency.moduleName}`,
-                `--component-path=${dependency.link}`
-            ], { 'cwd': executeDirectory });
-        }
-
-        const styleDependencies = element.package.styles || [];
-        for (let dependencyCtr = 0; dependencyCtr < styleDependencies.length; dependencyCtr++) {
-            const style = styleDependencies[dependencyCtr];
-            this._logger.log(`Refering style: ${style} for module: ${currentModule.name}`);
-            await this._shellExecutor(npxCommand, [
-                'ng',
-                'g',
-                "ng-utils:add-styles",
-                `--style-path=${style}`,
-                `--project=${projectName}`
-            ], { 'cwd': executeDirectory });
         }
     }
 
@@ -189,7 +130,7 @@ module.exports = class angularBuilder {
 
         for (let pageCtr = 0; pageCtr < currentModule.pages.length; pageCtr++) {
             const page = currentModule.pages[pageCtr];
-            this._logger.log(`Creating component ${page.name} under ${currentModule.name}`);
+            this._logger.log(`Creating page ${page.name} under ${currentModule.name}`);
             await this._shellExecutor(npxCommand, [
                 'ng',
                 'generate',
@@ -238,7 +179,8 @@ module.exports = class angularBuilder {
                 "css": this._path.join('src/app/', currentModule.name, `${page.name}/${page.name}.component.css`)
             }
             this._logger.log(`Building layout for ${page.name} under ${currentModule.name}`);
-            let htmlContent = await layoutBuilder.parse(page.elements);
+            const executeDirectory = this._path.join(fullWorkspace, projectName)
+            let htmlContent = await layoutBuilder.parse(page.elements, [], currentModule, projectName, executeDirectory);
             await this._fs.writeFile(this._path.join(fullWorkspace, projectName, page.path.html), htmlContent);
         }
     }
