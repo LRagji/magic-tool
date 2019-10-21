@@ -22,8 +22,6 @@ module.exports = class angularBuilder {
         this._installDependencies = this._installDependencies.bind(this);
         this._createPagesForModule = this._createPagesForModule.bind(this);
         this._createModule = this._createModule.bind(this);
-        this._fetchUniqueElementsFor = this._fetchUniqueElementsFor.bind(this);
-        this._installElements = this._installElements.bind(this);
         this._createLayouts = this._createLayouts.bind(this);
     }
 
