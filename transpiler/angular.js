@@ -23,6 +23,7 @@ module.exports = class angularBuilder {
         this._createPagesForModule = this._createPagesForModule.bind(this);
         this._createModule = this._createModule.bind(this);
         this._createLayouts = this._createLayouts.bind(this);
+        this._updateIndexPage = this._updateIndexPage.bind(this);
     }
 
     async createProject(config) {
@@ -56,14 +57,15 @@ module.exports = class angularBuilder {
         ], { 'cwd': this._path.join(fullWorkspace, projectName) });
 
         try {
+            let indexPage = [];
             // Create Modules
             for (let moduleCtr = 0; moduleCtr < modules.length; moduleCtr++) {
                 const currentModule = modules[moduleCtr];
                 await this._createModule(currentModule, fullWorkspace, projectName);
-                await this._createPagesForModule(currentModule, fullWorkspace, projectName);
-                await this._createLayouts(currentModule, fullWorkspace, projectName)
+                indexPage = indexPage.concat(await this._createPagesForModule(currentModule, fullWorkspace, projectName));
+                await this._createLayouts(currentModule, fullWorkspace, projectName);
             }
-
+            await this._updateIndexPage(fullWorkspace, projectName, indexPage);
             this._logger.bold("Awesome!!");
         }
         catch (err) {
@@ -94,7 +96,7 @@ module.exports = class angularBuilder {
     }
 
     async _createPagesForModule(currentModule, fullWorkspace, projectName) {
-
+        const indexPage = [];
         for (let pageCtr = 0; pageCtr < currentModule.pages.length; pageCtr++) {
             const page = currentModule.pages[pageCtr];
             this._logger.log(`Creating page ${page.name} under ${currentModule.name}`);
@@ -133,7 +135,16 @@ module.exports = class angularBuilder {
                 `--route=${(currentModule.route === page.route) ? page.name.toLowerCase() : page.route}`, //DEFECT :https://github.com/LRagji/magic-tool/issues/2
                 `--component-name=${pageName}`
             ], { 'cwd': this._path.join(fullWorkspace, projectName) });
+
+            indexPage.push(`<button routerLink="${currentModule.route + "/" + page.route}">${currentModule.name + " " + pageName}</button>`);
         }
+
+        return indexPage;
+    }
+
+    async _updateIndexPage(fullWorkspace, projectName, indexPageContents) {
+        const htmlContent = `<router-outlet></router-outlet>` + indexPageContents.join('');
+        await this._fs.writeFile(this._path.join(fullWorkspace, projectName, 'src/app/app.component.html'), htmlContent);
     }
 
     async _createLayouts(currentModule, fullWorkspace, projectName) {
@@ -176,8 +187,7 @@ module.exports = class angularBuilder {
             '--style=css',
             '--verbose=true'
         ], { 'cwd': fullWorkspace });
-        const htmlContent = `<router-outlet></router-outlet>`;
-        await this._fs.writeFile(this._path.join(fullWorkspace, projectName, 'src/app/app.component.html'), htmlContent);
+
     }
 
     async _installDependencies(fullWorkspace, projectName) {
