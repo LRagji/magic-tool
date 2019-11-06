@@ -1,3 +1,14 @@
+const requireFromString = require('require-from-string');
+const fs = require('fs');
+const path = require('path');
+
+//TODO: This is the baddest thing done, the correct version of the same will include be to move to dynamic imports of es6
+function dynamicLoad(filepath) {
+    let data = fs.readFileSync(filepath, { encoding: "utf8" });
+    let exportSyntax = "\r\n module.exports = new " + path.basename(filepath, '.js') + "();";
+    return requireFromString(data + exportSyntax);
+}
+
 module.exports = {
     toggle: {
         package: {
@@ -10,7 +21,7 @@ module.exports = {
         }
     },
     "html-span": require("./html-span"),
-    gridlist: require('./mat-grid-list'),
+    gridlist: dynamicLoad('/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/elements/mat_grid_list.js'),
     button: {
         package: {
             execute: ['npx ng add ngx-bootstrap --component buttons'],

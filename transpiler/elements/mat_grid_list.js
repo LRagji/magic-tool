@@ -1,4 +1,4 @@
-class matGrid {
+class mat_grid_list {
     constructor() {
         this.package = {
             execute: ['npx ng add @angular/material --interactive=false --theme=custom --gestures=true --animations=true'],
@@ -25,4 +25,4 @@ class matGrid {
         return `<mat-grid-list cols="${props.cols}" rowHeight="${props.rowHeight}">${contents.join(' ')}</mat-grid-list>`;
     }
 }
-module.exports = new matGrid();
+//module.exports = new matGrid();
