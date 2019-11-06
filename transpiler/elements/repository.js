@@ -22,6 +22,7 @@ module.exports = {
     },
     "html-span": require("./html-span"),
     gridlist: dynamicLoad('/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/elements/mat_grid_list.js'),
+    mat_button: dynamicLoad('/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/elements/mat_button.js'),
     button: {
         package: {
             execute: ['npx ng add ngx-bootstrap --component buttons'],

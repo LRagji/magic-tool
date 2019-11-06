@@ -1,6 +1,6 @@
 [
     {
-        "type": "html-span",
+        "type": "mat_button",
         "properties": {
             "text":"KPI-1"
         }
