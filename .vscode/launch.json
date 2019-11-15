@@ -4,10 +4,16 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Element Repo",
+        "program": "${workspaceFolder}/element-repository/element-repository.js"
+    },
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch Magic Tool",
             "program": "${workspaceFolder}/transpiler/entry-point.js"
         }
     ]
