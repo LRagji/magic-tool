@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
+    "repo":"node ./element-repository/element-repository.js C:/Users/Lauki/Documents/Git/magic-tool/transpiler/elements 4000",
     "build": "npm install && cd transpiler/schematics/ng-utils && npm install",
-    "start": "node ./transpiler/entry-point.js"
+    "magictool": "node ./transpiler/entry-point.js http://localhost:4000/",
+    "start":"concurrently --kill-others \"npm run repo\" \"npm run magictool\""
   },
   "engines": {
     "node": ">=10.0.0"
@@ -22,9 +24,11 @@
     "chalk": "^2.4.2",
     "fs-extra": "^8.1.0",
     "jsonfile": "^5.0.0",
+    "request-promise-native": "^1.0.8",
     "require-from-string": "^2.0.2"
   },
   "devDependencies": {
+    "concurrently": "^5.0.0",
     "tslint": "^5.20.0"
   }
 }
