@@ -58,7 +58,7 @@
                     "route": "dashboard",
                     "elements": [
                         {
-                            "type": "gridlist",
+                            "type": "mat_grid_list",
                             "properties": {
                                 "cols": 10,
                                 "rowHeight": "10:2",
