@@ -1,5 +1,6 @@
 const requireFromString = require('require-from-string');
 const rp = require('request-promise-native');
+const urljoin = require('url-join');
 
 module.exports = class ElementRepoClient {
 
@@ -27,8 +28,7 @@ module.exports = class ElementRepoClient {
 
     async _fetchElementFromRepo(elementName) {
         let returnElement = "";
-        const fetchURL = URL.parse(this._repoUrl + '/v1/elements/' + elementName);
-        console.log(fetchURL);
+        const fetchURL = urljoin(this._repoUrl, '/v1/elements/', elementName);
         returnElement = await rp(fetchURL);
         return returnElement;
     }

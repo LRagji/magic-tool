@@ -20,7 +20,7 @@ module.exports = class LayoutParser {
         let elementTemplates = [];
         for (let elementCounter = 0; elementCounter < elements.length; elementCounter++) {
             const element = elements[elementCounter];
-            const repoElement = this._repoElements.getInstanceOfElement(element.type);
+            const repoElement = await this._repoElements.getInstanceOfElement(element.type);
             if (repoElement === undefined) {
                 elementTemplates.push('Unknown Element:' + element.type);
             }
