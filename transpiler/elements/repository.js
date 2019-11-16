@@ -4,8 +4,9 @@ const path = require('path');
 
 //TODO: This is the baddest thing done, the correct version of the same will include be to move to dynamic imports of es6
 function dynamicLoad(filepath) {
-    let data = fs.readFileSync(filepath, { encoding: "utf8" });
-    let exportSyntax = "\r\n module.exports = new " + path.basename(filepath, '.js') + "();";
+    let completeFilePath = path.join(process.cwd(), filepath);
+    let data = fs.readFileSync(completeFilePath, { encoding: "utf8" });
+    let exportSyntax = "\r\n module.exports = new " + path.basename(completeFilePath, '.js') + "();";
     return requireFromString(data + exportSyntax);
 }
 
@@ -21,8 +22,8 @@ module.exports = {
         }
     },
     "html-span": require("./html-span"),
-    gridlist: dynamicLoad('/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/elements/mat_grid_list.js'),
-    mat_button: dynamicLoad('/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/elements/mat_button.js'),
+    gridlist: dynamicLoad('transpiler/elements/mat_grid_list.js'),
+    mat_button: dynamicLoad('transpiler/elements/mat_button.js'),
     button: {
         package: {
             execute: ['npx ng add ngx-bootstrap --component buttons'],

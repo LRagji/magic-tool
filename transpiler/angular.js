@@ -31,17 +31,17 @@ module.exports = class angularBuilder {
         const projectName = config.name;
         const modules = config.modules;
 
-        // // Clean up project space
-        // this._logger.log(`Deleting existing project ${projectName}`);
-        // await this._clearWorkspaceFolder(fullWorkspace, projectName);
+        // Clean up project space
+        this._logger.log(`Deleting existing project ${projectName}`);
+        await this._clearWorkspaceFolder(fullWorkspace, projectName);
 
-        // // Create a new Project
-        // this._logger.log(`Creating new project ${projectName}`);
-        // await this._createAngularProject(fullWorkspace, projectName);
+        // Create a new Project
+        this._logger.log(`Creating new project ${projectName}`);
+        await this._createAngularProject(fullWorkspace, projectName);
 
-        // // Run NPM Install
-        // this._logger.log(`Installing Dependencies`);
-        // await this._installDependencies(fullWorkspace, projectName);
+        // Run NPM Install
+        this._logger.log(`Installing Dependencies`);
+        await this._installDependencies(fullWorkspace, projectName);
 
         //Copy utils node modules
         this._logger.log("Building schematics");
