@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "repo":"node ./element-repository/element-repository.js C:/Users/Lauki/Documents/Git/magic-tool/transpiler/elements 4000",
+    "repo":"node ./element-repository/element-repository.js C:/Users/Lauki/Documents/Git/magic-tool/element-repository/elements 4000",
     "build": "npm install && cd transpiler/schematics/ng-utils && npm install",
     "magictool": "node ./transpiler/entry-point.js http://localhost:4000/",
     "start":"concurrently --kill-others \"npm run repo\" \"npm run magictool\""
