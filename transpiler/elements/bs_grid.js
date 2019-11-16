@@ -1,4 +1,4 @@
-class bootstrapGrid {
+class bs_grid {
 
     constructor() {
         this.package = {
@@ -66,4 +66,4 @@ class bootstrapGrid {
     }
 }
 
-module.exports = new bootstrapGrid();
+//module.exports = new bootstrapGrid();

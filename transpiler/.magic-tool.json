@@ -11,7 +11,7 @@
                     "route": "dashboard",
                     "elements": [
                         {
-                            "type": "bs-grid",
+                            "type": "bs_grid",
                             "properties": {
                                 "container": "strech",
                                 "rows": [

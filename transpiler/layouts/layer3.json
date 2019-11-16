@@ -1,6 +1,6 @@
 [
     {
-        "type": "bs-grid",
+        "type": "bs_grid",
         "properties": {
             "rows": [
                 {
