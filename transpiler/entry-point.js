@@ -15,7 +15,7 @@ context.register(serviceNames.executorService, runCommand);
 context.register(serviceNames.loggerService, _logger);
 context.register(serviceNames.fileSystemService, fs);
 context.register(serviceNames.pathService, path);
-context.register(serviceNames.elementsRepo, elementsRepo);
+context.register(serviceNames.elementsRepo, new elementsRepo(process.argv[2] || process.env.REPOURL || "http://localhost:3000"));
 context.register(serviceNames.jsonReader, require('jsonfile'));
 context.register(serviceNames.toolRootDirectory, path.join(process.argv[1], '../../'));
 
