@@ -1,4 +1,4 @@
-class BsImage {
+class bs_image {
     constructor() {
         this.package = {
             execute: ['npx ng add ngx-bootstrap','echo I-am-Image'],
@@ -14,4 +14,4 @@ class BsImage {
     }
 }
 
-module.exports = new BsImage();
+//module.exports = new BsImage();
