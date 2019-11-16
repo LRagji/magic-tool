@@ -1,6 +1,6 @@
 [
     {
-        "type": "html-span",
+        "type": "html_span",
         "properties": {
             "text":"Header"
         }

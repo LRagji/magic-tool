@@ -1,4 +1,4 @@
-class HtmlSpan {
+class html_span {
     constructor() {
         this.package = {};
         this.defaultProperties = { text: "Hello World" };
@@ -10,4 +10,4 @@ class HtmlSpan {
     }
 }
 
-module.exports = new HtmlSpan();
+//module.exports = new HtmlSpan();
