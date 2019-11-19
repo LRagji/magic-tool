@@ -3,7 +3,7 @@ let cache = require('memory-cache');
 let shortid = require('shortid');
 
 module.exports = class TopicQue {
-    constructor(cleanResultsAfter = 60000) {
+    constructor(executionContext, cleanResultsAfter = 60000) {
         this._clearResultTimeout = cleanResultsAfter;
         this._topicQue = new Map();
         this._activeTasks = new cache.Cache();
@@ -16,15 +16,16 @@ module.exports = class TopicQue {
         this._taskFailed = this._taskFailed.bind(this);
         this._taskQued = this._taskQued.bind(this);
         this._taskStarted = this._taskStarted.bind(this);
+        this._executionContext = executionContext;
     }
 
-    enque(topicName, task) {
+    enque(topicName, task, taskParams) {
         if (!this._topicQue.has(topicName)) {
             const q = this._createQue(topicName);
             this._topicQue.set(topicName, q);
         }
 
-        const taskWrapper = { id: topicName + shortid.generate(), payload: task };
+        const taskWrapper = { id: topicName + shortid.generate(), payload: task, params: taskParams };
 
         this._topicQue.get(topicName).push(taskWrapper);
         return taskWrapper.id;
@@ -36,9 +37,10 @@ module.exports = class TopicQue {
     }
 
     _createQue(topicName) {
-        var q = new Queue(function (input, cb) {
+        var q = new Queue(async (input, cb) => {
             try {
-                let result = input.payload();
+                input.payload = input.payload.bind(this._executionContext);
+                let result = await input.payload(...input.params);
                 cb(null, result);
             }
             catch (err) {
