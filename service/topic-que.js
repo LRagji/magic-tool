@@ -32,8 +32,7 @@ module.exports = class TopicQue {
     }
 
     status(taskId) {
-        let task = this._activeTasks.get(taskId);
-        return task == undefined ? undefined : task.status;
+        return this._activeTasks.get(taskId);
     }
 
     _createQue(topicName) {
