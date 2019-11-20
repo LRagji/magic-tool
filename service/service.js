@@ -1,5 +1,6 @@
 const express = require('express')
-const application = require('./application');
+const application = require('./routes/application');
+const taskStatus = require('./routes/task-status');
 const dependencyInjector = require('../transpiler/dependency-injector');
 const serviceNames = require('./service-names');
 const logger = require('./service-logger');
@@ -25,10 +26,12 @@ class MagicService {
         this._dependencyContainer.register(serviceNames.WorkSpaceDirectoryPath, this.workspace);
         this.port = args[3] || process.env.SERVICEPORT || defaultPort;
         const applicationRouter = new application(this._dependencyContainer).host();
+        const statusRouter = new taskStatus(this._dependencyContainer).host();
 
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(bodyParser.json());
         app.use('/v1', applicationRouter);
+        app.use('/v1', statusRouter);
         app.listen(this.port, () => console.log(`Magic Service active on ${this.port}!`))
     }
 

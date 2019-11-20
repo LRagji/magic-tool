@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const serviceNames = require('./service-names');
+const serviceNames = require('../service-names');
 
 module.exports = class Application {
     constructor(dependencyContainer) {
@@ -42,7 +42,7 @@ module.exports = class Application {
                     ], { 'cwd': workspaceDirectory });
                 }, [applicationName, this._workspaceDirectory]);
 
-                res.status(201).send({
+                res.status(202).send({
                     message: "Check status of task " + taskId + " for completion."
                 });
             }
