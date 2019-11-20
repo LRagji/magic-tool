@@ -8,5 +8,6 @@ module.exports = {
     //jsonReader: 'jsonreader',
     WorkSpaceDirectoryPath: 'WCD',
     Que:'Que',
-    NPMCacheDirectory:'cache'
+    NPMCacheDirectory:'cache',
+    SchematicPath:'schematicPackagePath'
 }

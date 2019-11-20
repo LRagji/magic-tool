@@ -12,6 +12,7 @@ const utils = require('./exec-utilities');
 const defaultPort = 3000;
 const defaultPath = "C:/Users/Lauki/Documents/Git/magic-tool/service/workspace";
 const deafultNPMCache = "C:/Users/Lauki/Documents/Git/magic-tool/workspace/OFE/node_modules";
+const deafulSchematicPath = "C:/Users/Lauki/Documents/Git/magic-tool/transpiler/schematics/ng-utils";
 
 class MagicService {
     constructor() {
@@ -26,9 +27,11 @@ class MagicService {
         this.workspace = args[2] || process.env.WORKSPACEPATH || defaultPath;
         this.port = args[3] || process.env.SERVICEPORT || defaultPort;
         const npmCache = args[4] || process.env.NPMCACHE || deafultNPMCache;
+        const schematicPath = args[5] || process.env.SCHEMATICPATH || deafulSchematicPath;
 
         this._dependencyContainer.register(serviceNames.WorkSpaceDirectoryPath, this.workspace);
         this._dependencyContainer.register(serviceNames.NPMCacheDirectory, npmCache);
+        this._dependencyContainer.register(serviceNames.SchematicPath, schematicPath);
 
         const applicationRouter = new application(this._dependencyContainer).host();
         const statusRouter = new taskStatus(this._dependencyContainer).host();
@@ -44,6 +47,3 @@ class MagicService {
 
 const mainProgram = new MagicService();
 mainProgram.entryPoint(process.argv);
-
-// let LId = projectBasedExecutionQue.enque("Laukik", () => console.log("Work for laukik"));
-// console.log(LId + projectBasedExecutionQue.status(LId));

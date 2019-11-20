@@ -41,18 +41,22 @@ module.exports = class Utilities {
         });
     }
 
-    async _npmInstall(projectPath, cacheCopy = undefined) {
+    async _npmInstall(projectPath, schematicPackagePath, cacheCopy = undefined) {
         if (cacheCopy !== undefined) {
-            await createSymlink(cacheCopy, path.join(projectPath + "/node_modules"), {type: 'junction'});
+            await createSymlink(cacheCopy, path.join(projectPath + "/node_modules"), { type: 'junction' });
         }
         else {
             //RUN Complete NPM Install
-           await this._executeShell(npmCommand, [
+            await this._executeShell(this.npmCommand, [
                 'install',
                 '--verbose'
             ], { 'cwd': projectPath });
-
-            //Do schematics build and install
         }
+
+        //Do schematics install
+        await this._executeShell(this.npmCommand, [
+            'install',
+            schematicPackagePath,
+        ], { 'cwd': projectPath });
     }
 }
