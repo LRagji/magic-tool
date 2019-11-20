@@ -1,11 +1,14 @@
 const serviceNames = require('./service-names');
 const spawn = require('child_process').spawn;
+const createSymlink = require('create-symlink');
+const path = require('path');
 
 module.exports = class Utilities {
 
     constructor(dependencyContainer) {
         this._logger = dependencyContainer.get(serviceNames.loggerService);
         this._executeShell = this._executeShell.bind(this);
+        this._npmInstall = this._npmInstall.bind(this);
         this.npxCommand = 'npx';
         this.npmCommand = 'npm';
     }
@@ -36,5 +39,20 @@ module.exports = class Utilities {
                 cmd.stdin.end();
             });
         });
+    }
+
+    async _npmInstall(projectPath, cacheCopy = undefined) {
+        if (cacheCopy !== undefined) {
+            await createSymlink(cacheCopy, path.join(projectPath + "/node_modules"), {type: 'junction'});
+        }
+        else {
+            //RUN Complete NPM Install
+           await this._executeShell(npmCommand, [
+                'install',
+                '--verbose'
+            ], { 'cwd': projectPath });
+
+            //Do schematics build and install
+        }
     }
 }

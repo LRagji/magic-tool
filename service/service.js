@@ -11,6 +11,7 @@ const utils = require('./exec-utilities');
 
 const defaultPort = 3000;
 const defaultPath = "C:/Users/Lauki/Documents/Git/magic-tool/service/workspace";
+const deafultNPMCache = "C:/Users/Lauki/Documents/Git/magic-tool/workspace/OFE/node_modules";
 
 class MagicService {
     constructor() {
@@ -23,8 +24,12 @@ class MagicService {
 
     entryPoint(args) {
         this.workspace = args[2] || process.env.WORKSPACEPATH || defaultPath;
-        this._dependencyContainer.register(serviceNames.WorkSpaceDirectoryPath, this.workspace);
         this.port = args[3] || process.env.SERVICEPORT || defaultPort;
+        const npmCache = args[4] || process.env.NPMCACHE || deafultNPMCache;
+
+        this._dependencyContainer.register(serviceNames.WorkSpaceDirectoryPath, this.workspace);
+        this._dependencyContainer.register(serviceNames.NPMCacheDirectory, npmCache);
+
         const applicationRouter = new application(this._dependencyContainer).host();
         const statusRouter = new taskStatus(this._dependencyContainer).host();
 

@@ -7,5 +7,6 @@ module.exports = {
     //elementsRepo: 'element-repo',
     //jsonReader: 'jsonreader',
     WorkSpaceDirectoryPath: 'WCD',
-    Que:'Que'
+    Que:'Que',
+    NPMCacheDirectory:'cache'
 }
