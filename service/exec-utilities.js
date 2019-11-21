@@ -11,6 +11,8 @@ module.exports = class Utilities {
         this._executeShell = this._executeShell.bind(this);
         this._npmInstall = this._npmInstall.bind(this);
         this._fileExists = this._fileExists.bind(this);
+        this._fileWrite = this._fileWrite.bind(this);
+        this._fileAppend = this._fileAppend.bind(this);
         this.npxCommand = 'npx';
         this.npmCommand = 'npm';
     }
@@ -64,5 +66,13 @@ module.exports = class Utilities {
 
     _fileExists(path) {
         return fs.existsSync(path);
+    }
+
+    _fileWrite(filepath, content) {
+        fs.writeFileSync(filepath, content);
+    }
+
+    _fileAppend(filepath, content) {
+        fs.appendFileSync(filepath, content);
     }
 }
