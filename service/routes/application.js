@@ -31,6 +31,7 @@ module.exports = class Application {
                 if (this._fileExists(applicationDir)) {
                     throw new Error("Application" + applicationDir + " already exists.");
                 }
+                //Angular CLI
                 await this._executeShell(this.npxCommand, [
                     '-p',
                     '@angular/cli',
@@ -45,7 +46,11 @@ module.exports = class Application {
                     '--style=css',
                     '--verbose=true'
                 ], { 'cwd': workspaceDirectory });
+                //NPM Install
                 await this._npmInstall(applicationDir, schematicPath, npmCacheDir);
+                //Clear Index Page
+               this._fileWrite(path.join(applicationDir,'src/app/app.component.html'), `<router-outlet></router-outlet>`);
+
             }, [applicationName, this._workspaceDirectory, npmCache, this._schematicPackagePath]);
 
             res.redirect("/v1/tasks/"+taskId);
