@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const serviceNames = require('../service-names');
+const Modules = require('./modules');
 
 module.exports = class Application {
     constructor(dependencyContainer) {
@@ -11,11 +12,13 @@ module.exports = class Application {
         this._schematicPackagePath = dependencyContainer.get(serviceNames.SchematicPath);
         this.host = this.host.bind(this);
         this._createApp = this._createApp.bind(this);
+        this._modules = new Modules(dependencyContainer);
     }
 
     host() {
         const router = express.Router();
         router.post('/apps', this._createApp);
+        router.use('/apps', this._modules.host());
         return router;
     }
 
