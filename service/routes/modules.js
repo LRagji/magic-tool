@@ -42,9 +42,7 @@ module.exports = class Modules {
                 }
             }, [applicationName, this._workspaceDirectory, moduleName, moduleRoute]);
 
-            res.status(202).send({
-                message: "Check status of task " + taskId + " for completion."
-            });
+            res.redirect("/v1/tasks/"+taskId);
         }
         catch (ex) {
             res.status(500).send({ "message": "Unknown Error:" + ex.message });

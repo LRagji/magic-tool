@@ -68,15 +68,15 @@ module.exports = class TopicQue {
         //This seems to be timed event so it can occur even after taskcompleted event if the task is small enough.
         let task = this._activeTasks.get(taskId);
         if (task !== undefined && (task.status !== "Completed" && task.status !== "Error")) {
-            this._activeTasks.put(taskId, { status: "Executing" });
+            this._activeTasks.put(taskId, { id: taskId, status: "Executing" });
         }
     }
 
     _taskCompleted(taskId, result, stats) {
-        this._activeTasks.put(taskId, { status: "Completed", result: result, stats: stats }, this._clearResultTimeout);
+        this._activeTasks.put(taskId, { id: taskId, status: "Completed", result: result, stats: stats }, this._clearResultTimeout);
     }
 
     _taskFailed(taskId, err, stats) {
-        this._activeTasks.put(taskId, { status: "Error", error: err.toString(), stats: stats }, this._clearResultTimeout);
+        this._activeTasks.put(taskId, { id: taskId, status: "Error", error: err.toString(), stats: stats }, this._clearResultTimeout);
     }
 }

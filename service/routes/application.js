@@ -1,5 +1,4 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
 const serviceNames = require('../service-names');
 const Modules = require('./modules');
@@ -26,33 +25,30 @@ module.exports = class Application {
         try {
             const applicationName = req.body.name.toLowerCase();
             const npmCache = req.body.NPMCache === false ? undefined : this._npmCache;
-            const applicationDir = path.join(this._workspaceDirectory, applicationName);
-            if (fs.existsSync(applicationDir)) {
-                res.status(409).send({ "message": "Application already exist:" + applicationDir });
-            }
-            else {
-                const taskId = this._projectQue.enque(applicationName, async function (applicationName, workspaceDirectory, npmCacheDir, schematicPath) {
-                    await this._executeShell(this.npxCommand, [
-                        '-p',
-                        '@angular/cli',
-                        'ng',
-                        'new',
-                        applicationName,
-                        '--commit=false',
-                        '--interactive=false',
-                        '--skipInstall=true',
-                        '--skipGit=true',
-                        '--routing=true',
-                        '--style=css',
-                        '--verbose=true'
-                    ], { 'cwd': workspaceDirectory });
-                    await this._npmInstall(path.join(workspaceDirectory, applicationName), schematicPath, npmCacheDir);
-                }, [applicationName, this._workspaceDirectory, npmCache, this._schematicPackagePath]);
 
-                res.status(202).send({
-                    message: "Check status of task " + taskId + " for completion."
-                });
-            }
+            const taskId = this._projectQue.enque(applicationName, async function (applicationName, workspaceDirectory, npmCacheDir, schematicPath) {
+                const applicationDir = path.join(workspaceDirectory, applicationName);
+                if (this._fileExists(applicationDir)) {
+                    throw new Error("Application" + applicationDir + " already exists.");
+                }
+                await this._executeShell(this.npxCommand, [
+                    '-p',
+                    '@angular/cli',
+                    'ng',
+                    'new',
+                    applicationName,
+                    '--commit=false',
+                    '--interactive=false',
+                    '--skipInstall=true',
+                    '--skipGit=true',
+                    '--routing=true',
+                    '--style=css',
+                    '--verbose=true'
+                ], { 'cwd': workspaceDirectory });
+                await this._npmInstall(applicationDir, schematicPath, npmCacheDir);
+            }, [applicationName, this._workspaceDirectory, npmCache, this._schematicPackagePath]);
+
+            res.redirect("/v1/tasks/"+taskId);
         }
         catch (ex) {
             res.status(500).send({ "message": "Unknown Error:" + ex.message });
