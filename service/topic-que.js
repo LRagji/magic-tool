@@ -77,6 +77,6 @@ module.exports = class TopicQue {
     }
 
     _taskFailed(taskId, err, stats) {
-        this._activeTasks.put(taskId, { status: "Error", err: err, stats: stats }, this._clearResultTimeout);
+        this._activeTasks.put(taskId, { status: "Error", error: err.toString(), stats: stats }, this._clearResultTimeout);
     }
 }
