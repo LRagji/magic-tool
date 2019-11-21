@@ -2,6 +2,7 @@ const serviceNames = require('./service-names');
 const spawn = require('child_process').spawn;
 const createSymlink = require('create-symlink');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = class Utilities {
 
@@ -9,6 +10,7 @@ module.exports = class Utilities {
         this._logger = dependencyContainer.get(serviceNames.loggerService);
         this._executeShell = this._executeShell.bind(this);
         this._npmInstall = this._npmInstall.bind(this);
+        this._fileExists = this._fileExists.bind(this);
         this.npxCommand = 'npx';
         this.npmCommand = 'npm';
     }
@@ -58,5 +60,9 @@ module.exports = class Utilities {
             'install',
             schematicPackagePath,
         ], { 'cwd': projectPath });
+    }
+
+    _fileExists(path) {
+        return fs.existsSync(path);
     }
 }
