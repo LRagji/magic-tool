@@ -4,7 +4,8 @@
   "description": "This package contains repo used by magic tool to host elements.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node element-repository.js C:/Users/Lauki/Documents/Git/magic-tool/element-repository/elements 4000"
   },
   "author": "",
   "license": "ISC",

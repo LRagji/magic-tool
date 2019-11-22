@@ -3,11 +3,10 @@ module.exports = {
     loggerService: 'logger',
     //fileSystemService: 'fs',
     //pathService: 'path',
-    //parser: 'parser',
-    //elementsRepo: 'element-repo',
+    ElementsRepoClient: 'element-repo',
     //jsonReader: 'jsonreader',
     WorkSpaceDirectoryPath: 'WCD',
-    Que:'Que',
-    NPMCacheDirectory:'cache',
-    SchematicPath:'schematicPackagePath'
+    Que: 'Que',
+    NPMCacheDirectory: 'cache',
+    SchematicPath: 'schematicPackagePath'
 }
