@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "8624bf0c-1461-4f69-b51a-7d4bf502e77d",
+		"name": "Magic Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create App",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"Laukik55\",\n\t\"NPMCache\":false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v1/apps/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"apps",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/v1/tasks/laukik1MQkK7O3x",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"tasks",
+						"laukik1MQkK7O3x"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Module",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"dashboard\",\n    \"route\": \"dash\",\n    \"pages\": [\n        {\n            \"name\": \"view1\",\n            \"route\": \"view1\"\n        },\n        {\n            \"name\": \"view2\",\n            \"route\": \"view2\"\n        },\n        {\n            \"name\": \"view3\",\n            \"route\": \"view3\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v1/apps/ofs/modules",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"apps",
+						"ofs",
+						"modules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Layout creation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"main\": [\n        {\n            \"type\": \"bs_grid\",\n            \"properties\": {\n                \"container\": \"strech\",\n                \"rows\": [\n                    {\n                        \"type\": \"row-center\",\n                        \"elements\": [\n                            {\n                                \"color\": \"lightblue\",\n                                \"width\": 12,\n                                \"layout\": \"layer1\"\n                            }\n                        ]\n                    },\n                    {\n                        \"type\": \"row-center\",\n                        \"elements\": [\n                            {\n                                \"color\": \"#ECF0F1\",\n                                \"width\": 1,\n                                \"layout\": \"layer2\"\n                            },\n                            {\n                                \"color\": \"white\",\n                                \"width\": 11,\n                                \"layout\": \"layer3\"\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ],\n    \"layer1\": [\n        {\n            \"type\": \"html_span\",\n            \"properties\": {\n                \"text\": \"Header\"\n            }\n        }\n    ],\n    \"layer2\": [\n        {\n            \"type\": \"html_span\",\n            \"properties\": {\n                \"text\": \"SideBar\"\n            }\n        }\n    ],\n    \"layer3\": [\n        {\n            \"type\": \"bs_grid\",\n            \"properties\": {\n                \"rows\": [\n                    {\n                        \"type\": \"row-center\",\n                        \"elements\": [\n                            {\n                                \"color\": \"lightgreen\",\n                                \"width\": 4,\n                                \"layout\": \"layer4\"\n                            },\n                            {\n                                \"color\": \"lightgreen\",\n                                \"width\": 4,\n                                \"layout\": \"layer5\"\n                            },\n                            {\n                                \"color\": \"lightgreen\",\n                                \"width\": 4,\n                                \"layout\": \"layer6\"\n                            }\n                        ]\n                    },\n                    {\n                        \"type\": \"row-center\",\n                        \"elements\": [\n                            {\n                                \"color\": \"#DDBDF1\",\n                                \"width\": 12,\n                                \"layout\": \"layer7\"\n                            }\n                        ]\n                    },\n                    {\n                        \"type\": \"row-center\",\n                        \"elements\": [\n                            {\n                                \"color\": \"#DDBDF1\",\n                                \"width\": 12,\n                                \"layout\": \"layer8\"\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ],\n    \"layer4\": [\n        {\n            \"type\": \"mat_button\",\n            \"properties\": {\n                \"text\": \"KPI-1\"\n            }\n        }\n    ],\n    \"layer5\": [\n        {\n            \"type\": \"html_span\",\n            \"properties\": {\n                \"text\": \"KPI-2\"\n            }\n        }\n    ],\n    \"layer6\": [\n        {\n            \"type\": \"html_span\",\n            \"properties\": {\n                \"text\": \"KPI-3\"\n            }\n        }\n    ],\n    \"layer7\": [\n        {\n            \"type\": \"html_span\",\n            \"properties\": {\n                \"text\": \"Table\"\n            }\n        }\n    ],\n    \"layer8\": [\n        {\n            \"type\": \"html_span\",\n            \"properties\": {\n                \"text\": \"Trend\"\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v1/apps/ofs/modules/surefirse/pages/view1/layout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"apps",
+						"ofs",
+						"modules",
+						"surefirse",
+						"pages",
+						"view1",
+						"layout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
