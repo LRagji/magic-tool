@@ -21,7 +21,7 @@ class mat_grid_list {
         for (let contentCounter = 0; contentCounter < props.content.length; contentCounter++) {
             const content = props.content[contentCounter]
             const innerContent = await layoutBuilder(content.layout);
-            contents.push(`<mat-grid-tile colspan="${content.colspan}" gutterSize=${content.guttersize} rowspan="${content.rowspan}" [ngStyle]="{background:'${content.color}'}" >${innerContent}</mat-grid-tile>`);
+            contents.push(`<mat-grid-tile colspan="${content.colspan}" gutterSize="${content.guttersize}" rowspan="${content.rowspan}" [ngStyle]="{background:'${content.color}'}" >${innerContent}</mat-grid-tile>`);
         }
         return `<mat-grid-list cols="${props.cols}" rowHeight="${props.rowHeight}">${contents.join(' ')}</mat-grid-list>`;
     }
