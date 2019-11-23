@@ -61,7 +61,7 @@ module.exports = class TopicQue {
     }
 
     _taskQued(taskId, X, Y) {
-        this._activeTasks.put(taskId, { status: "Enqued" });
+        this._activeTasks.put(taskId, { id: taskId, status: "Enqued" });
     }
 
     _taskStarted(taskId, X, Y) {
