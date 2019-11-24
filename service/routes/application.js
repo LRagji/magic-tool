@@ -2,8 +2,8 @@ const express = require('express');
 const path = require('path');
 const serviceNames = require('../service-names');
 //TODO Add validation for each input field only alphanumeric
-//TODO Move the code backend class in context for each api controller
 //TODO Splitup the code in backend for page and module differently
+//IDEA Make a progress component for tasks executingon the page.
 
 module.exports = class Application {
     constructor(dependencyContainer) {
@@ -64,7 +64,10 @@ module.exports = class Application {
             "template": req.body
         }
         return this._projectQue.enque(applicationName, async function (parameter) {
-            let htmlContent = await this.layoutParse(parameter.template.main, [], parameter.modulePath, parameter.applicationName, parameter.applicationDir, (name) => {
+            const installedElementsPath = path.join(parameter.applicationDir, '.installedElements.json');
+            const fileContent = await this._fileRead(installedElementsPath);
+            const installedElements = fileContent == undefined ? [] : JSON.parse(fileContent);
+            let htmlContent = await this.layoutParse(parameter.template.main, installedElements, parameter.modulePath, parameter.applicationName, parameter.applicationDir, (name) => {
                 const layout = parameter.template[name];
                 if (layout == undefined) {
                     return [];
@@ -74,6 +77,7 @@ module.exports = class Application {
                 }
             });
             await this._fileWrite(parameter.html, htmlContent);
+            await this._fileWrite(installedElementsPath, JSON.stringify(installedElements));
 
         }, [parameter]);
     }

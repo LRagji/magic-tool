@@ -28,6 +28,7 @@ module.exports = class TopicQue {
         const taskWrapper = { id: topicName + shortid.generate(), payload: task, params: taskParams };
 
         this._topicQue.get(topicName).push(taskWrapper);
+        this._activeTasks.put(taskWrapper.id, { id: taskWrapper.id, status: "Posted" });
         return taskWrapper.id;
     }
 
@@ -57,6 +58,7 @@ module.exports = class TopicQue {
     }
 
     _processingCompleted(topicName) {
+        console.log("Clearing memory for:" + topicName);
         this._topicQue.delete(topicName);
     }
 

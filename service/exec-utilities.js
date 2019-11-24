@@ -17,6 +17,10 @@ module.exports = class Utilities {
         this._fileWrite = this._fileWrite.bind(this);
         this._fileAppend = this._fileAppend.bind(this);
         this.createModule = this.createModule.bind(this);
+        this._fileRead = this._fileRead.bind(this);
+        this._addImports = this._addImports.bind(this);
+        
+
         this.npxCommand = 'npx';
         this.npmCommand = 'npm';
     }
@@ -80,6 +84,15 @@ module.exports = class Utilities {
         fs.appendFileSync(filepath, content);
     }
 
+    _fileRead(filepath) {
+        if (this._fileExists(filepath)) {
+            return fs.readFileSync(filepath);
+        }
+        else {
+            return undefined;
+        }
+    }
+
     async layoutParse(elements, installedElements, modulePath, projectName, executeDirectory, layoutResolver) {
         let elementTemplates = [];
         for (let elementCounter = 0; elementCounter < elements.length; elementCounter++) {
@@ -89,20 +102,21 @@ module.exports = class Utilities {
                 elementTemplates.push('Unknown Element:' + element.type);
             }
             else {
+                repoElement.type = element.type;
                 if (installedElements.indexOf(element.type) === -1) {
-                    repoElement.type = element.type;
                     await this._installElement(repoElement, modulePath, executeDirectory, projectName);
                     installedElements.push(element.type);
                 }
+                await this._addImports(repoElement, modulePath, executeDirectory);
                 const props = element.properties || repoElement.defaultProperties;
-                const elementInstance = await repoElement.template(props, (layoutName) => this.layoutParse(layoutResolver(layoutName), installedElements, modulePath, projectName, executeDirectory, layoutResolver));
+                const elementInstance = await repoElement.template(props, async (layoutName) => await this.layoutParse(layoutResolver(layoutName), installedElements, modulePath, projectName, executeDirectory, layoutResolver));
                 elementTemplates.push(elementInstance);
             }
         };
         return elementTemplates.join(" ");
     }
 
-    async _installElement(element, modulePath, executeDirectory, projectName) {
+    async _installElement(element, executeDirectory, projectName) {
         const moduleExecutions = element.package.execute || [];
         for (let exeCounter = 0; exeCounter < moduleExecutions.length; exeCounter++) {
             const elementShell = moduleExecutions[exeCounter];
@@ -120,6 +134,21 @@ module.exports = class Utilities {
             await this._executeShell(command, brokenCommand, { 'cwd': executeDirectory });
         }
 
+        const styleDependencies = element.package.styles || [];
+        for (let dependencyCtr = 0; dependencyCtr < styleDependencies.length; dependencyCtr++) {
+            const style = styleDependencies[dependencyCtr];
+            this._logger.log(`Refering style: ${style} for element: ${element.type}`);
+            await this._executeShell(this.npxCommand, [
+                'ng',
+                'g',
+                "ng-utils:add-styles",
+                `--style-path=${style}`,
+                `--project=${projectName}`
+            ], { 'cwd': executeDirectory });
+        }
+    }
+
+    async _addImports(element, modulePath, executeDirectory) {
         const moduleDependencies = element.package.moduleImports || [];
         for (let dependencyCtr = 0; dependencyCtr < moduleDependencies.length; dependencyCtr++) {
             const dependency = moduleDependencies[dependencyCtr];
@@ -134,18 +163,6 @@ module.exports = class Utilities {
             ], { 'cwd': executeDirectory });
         }
 
-        const styleDependencies = element.package.styles || [];
-        for (let dependencyCtr = 0; dependencyCtr < styleDependencies.length; dependencyCtr++) {
-            const style = styleDependencies[dependencyCtr];
-            this._logger.log(`Refering style: ${style} for element: ${element.type}`);
-            await this._executeShell(this.npxCommand, [
-                'ng',
-                'g',
-                "ng-utils:add-styles",
-                `--style-path=${style}`,
-                `--project=${projectName}`
-            ], { 'cwd': executeDirectory });
-        }
     }
 
     async createModule(applicationName, workspaceDirectory, currentModule) {
@@ -214,8 +231,8 @@ module.exports = class Utilities {
         this._fileAppend(path.join(applicationDir, 'src/app/app.component.html'), htmlContent);
 
     }
-    
-    async createApplication (applicationName, workspaceDirectory, npmCacheDir, schematicPath) {
+
+    async createApplication(applicationName, workspaceDirectory, npmCacheDir, schematicPath) {
         const applicationDir = path.join(workspaceDirectory, applicationName);
         if (this._fileExists(applicationDir)) {
             throw new Error("Application" + applicationDir + " already exists.");
