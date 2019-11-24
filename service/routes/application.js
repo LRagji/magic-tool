@@ -64,7 +64,15 @@ module.exports = class Application {
             "template": req.body
         }
         return this._projectQue.enque(applicationName, async function (parameter) {
-            let htmlContent = await this.layoutParse(parameter.template.main, [], parameter.modulePath, parameter.applicationName, parameter.applicationDir, (name) => parameter.template[name]);
+            let htmlContent = await this.layoutParse(parameter.template.main, [], parameter.modulePath, parameter.applicationName, parameter.applicationDir, (name) => {
+                const layout = parameter.template[name];
+                if (layout == undefined) {
+                    return [];
+                }
+                else {
+                    return layout;
+                }
+            });
             await this._fileWrite(parameter.html, htmlContent);
 
         }, [parameter]);
