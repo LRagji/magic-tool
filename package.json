@@ -6,10 +6,12 @@
   "scripts": {
     "test": "test",
     "repo": "node ./element-repository/element-repository.js C:/Users/Lauki/Documents/Git/magic-tool/element-repository/elements 4000",
+    "repoMac": "node ./element-repository/element-repository.js /Users/laukikragji/Documents/Git/Local/magic-tool/element-repository/elements 4000",
     "build": "npm install && cd transpiler/schematics/ng-utils && npm install",
     "magictool": "node ./transpiler/entry-point.js http://localhost:4000/",
     "magicservice": "cd service && npm install && node service.js /Users/laukikragji/Documents/Git/Local/magic-tool/workspace 3000 /Users/laukikragji/Documents/Git/Local/magic-tool/workspace/OFE/node_modules /Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/schematics/ng-utils http://localhost:4000",
-    "start": "npm run build && concurrently --kill-others \"npm run repo\" \"npm run magicservice\""
+    "start": "npm run build && concurrently --kill-others \"npm run repo\" \"npm run magicservice\"",
+    "startMac": "npm run build && concurrently --kill-others \"npm run repoMac\" \"npm run magicservice\""
   },
   "engines": {
     "node": ">=10.0.0"
