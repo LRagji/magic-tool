@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const serviceNames = require('../service-names');
+
 //TODO Add validation for each input field only alphanumeric
 //TODO Splitup the code in backend for page and module differently
 //IDEA Make a progress component for tasks executingon the page.
@@ -17,6 +18,7 @@ module.exports = class Application {
         this._createLayouts = this._createLayouts.bind(this);
         this._safeTasker = this._safeTasker.bind(this);
         this._createPage = this._createPage.bind(this);
+        this._validateJson = this._validateJson.bind(this);
     }
 
     host() {
@@ -29,6 +31,12 @@ module.exports = class Application {
     }
 
     _createApp(req) {
+        let validationResult = this._validateJson(req.body);
+        if (validationResult !== undefined) {
+            let validationError = new Error(validationResult);
+            validationError.errorCode = 400;
+            throw validationError;
+        }
         const applicationName = req.body.name.toLowerCase();
         const npmCache = req.body.NPMCache === false ? undefined : this._npmCache;
 
@@ -43,7 +51,6 @@ module.exports = class Application {
         return this._projectQue.enque(applicationName, async function (applicationName, workspaceDirectory, moduleDefination) {
             await this.createModule(applicationName, workspaceDirectory, moduleDefination);
         }, [applicationName, this._workspaceDirectory, req.body]);
-
     }
 
     _createPage(req) {
@@ -88,8 +95,43 @@ module.exports = class Application {
             res.redirect("/v1/tasks/" + taskId);
         }
         catch (err) {
-            res.status(500).send({ "message": "Unknown Error:" + err.message });
+            err.errorCode = err.errorCode == undefined ? -1 : err.errorCode;
+            const possibleErrors = new Map();
+            possibleErrors.set(400, { tittle: "Validation failed", HttpStatusCode: 400 });
+            possibleErrors.set(-1, { tittle: "Unknown Error", HttpStatusCode: 500 });
+            res.status(possibleErrors.get(err.errorCode).HttpStatusCode).send({ "message": possibleErrors.get(err.HttpStatusCode).tittle + ":" + err.message });
         }
     }
+
+    _validateJson(json, path = "") {
+        const onlyAlphaNumericORBlank = new RegExp('^[a-z0-9_]*$', 'i');
+        return Object.keys(json).reduce((acc, key) => {
+            if (acc !== undefined) return acc;
+            let fullpath = path + "." + key;
+            if (onlyAlphaNumericORBlank.test(key)) {
+                let value = json[key];
+                let valueType = typeof value;
+                switch (valueType) {
+                    case "string":
+                    case "number":
+                        if (!onlyAlphaNumericORBlank.test(value)) {
+                            return "Only Alphanumeric & [_] characters allowed, [" + fullpath + "] voilates the same. ";
+                        }
+                        break;
+                    case "undefined":
+                    case "boolean":
+                        // Dont do anything
+                        break;
+                    case "object":
+                        return this._validateJson(value, fullpath);
+                        break;
+                }
+            }
+            else {
+                return "Only Alphanumeric & [_] characters allowed, [" + fullpath + "] voilates the same. ";
+            }
+        }, undefined);
+    }
+
 
 }
