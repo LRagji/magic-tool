@@ -14,6 +14,6 @@ class mat_form_select {
         props.options.forEach(element => {
             options += `<mat-option value=${element}>${element}</mat-option>`
         });
-        return `<mat-form-field>${props.label == undefined ? '' : label}<mat-select>${options}</mat-select></mat-form-field>`;
+        return { "style": "", "html": `<mat-form-field>${props.label == undefined ? '' : label}<mat-select>${options}</mat-select></mat-form-field>` };
     }
 }

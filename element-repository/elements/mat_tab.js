@@ -27,6 +27,6 @@ class mat_tab {
             const content = await layoutBuilder(tab.content);
             tabsMarkUp += `<mat-tab label="${tab.name}"> ${content} </mat-tab>`
         }
-        return `<mat-tab-group>${tabsMarkUp}</mat-tab-group>`;
+        return { "style": "", "html": `<mat-tab-group>${tabsMarkUp}</mat-tab-group>` };
     }
 }

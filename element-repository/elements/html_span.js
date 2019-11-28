@@ -6,8 +6,6 @@ class html_span {
     }
 
     async template(props) {
-        return `<span>${props.text}</span>`;
+        return { "style": "", "html":`<span>${props.text}</span>`};
     }
 }
-
-//module.exports = new HtmlSpan();

@@ -24,6 +24,6 @@ class mat_grid_list {
             contents.push(`<mat-grid-tile colspan="${content.colspan}" rowspan="${content.rowspan}" ${content.color == undefined ? '' : colorAttribute} >${innerContent}</mat-grid-tile>`);
         }
         const colorAttribute = `[ngStyle]="{background:'${props.color}'}"`;
-        return `<mat-grid-list cols="${props.cols}" gutterSize="${props.guttersize}" rowHeight="${props.rowHeight}" ${props.color == undefined ? '' : colorAttribute} >${contents.join(' ')}</mat-grid-list>`;
+        return { "style": "", "html": `<mat-grid-list cols="${props.cols}" gutterSize="${props.guttersize}" rowHeight="${props.rowHeight}" ${props.color == undefined ? '' : colorAttribute} >${contents.join(' ')}</mat-grid-list>` };
     }
 }

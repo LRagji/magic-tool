@@ -9,6 +9,6 @@ class bs_accordion {
     }
 
     async template(props, layoutBuilder) {
-        return `<accordion><accordion-group heading="${props.name}">This content is straight in the template.</accordion-group></accordion>`;
+        return { "style": "", "html": `<accordion><accordion-group heading="${props.name}">This content is straight in the template.</accordion-group></accordion>` };
     }
 }

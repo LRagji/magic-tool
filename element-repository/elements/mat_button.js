@@ -13,6 +13,6 @@ class mat_button {
     }
 
     async template(props, layoutBuilder) {
-        return `<button mat-${props.type == undefined ? '' : (props.type + '-')}button ${props.disabled === true ? 'disabled' : ''} color="primary">${props.text}</button>`;
+        return { "style": "", "html": `<button mat-${props.type == undefined ? '' : (props.type + '-')}button ${props.disabled === true ? 'disabled' : ''} color="primary">${props.text}</button>` };
     }
 }

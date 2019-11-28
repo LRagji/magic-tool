@@ -36,8 +36,9 @@ class bs_label {
 
         cls += `text-${props.align} `;
 
-        return `<span class="${cls}">
+        return {
+            "style": "", "html": `<span class="${cls}">
                             ${props.text}
-                            </span>`;
+                            </span>`};
     }
 }

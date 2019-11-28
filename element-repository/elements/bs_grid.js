@@ -34,7 +34,7 @@ class bs_grid {
             case 'normal':
                 return `<div class="container" > ${allLayouts.join(' ')} </div>`;
             default:
-                return allLayouts.join(' ');
+                return { "style": "", "html": allLayouts.join(' ') };
         }
     }
 

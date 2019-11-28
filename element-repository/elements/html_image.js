@@ -11,6 +11,6 @@ class html_image {
 
     async template(props) {
         const inlineStyleAttributre = `[ngStyle]="{height:'${props.height}',width:'${props.width}'}"`;
-        return `<img src="${props.imageSource}" alt="${props.altText}" ${inlineStyleAttributre} >`;
+        return { "style": "", "html": `<img src="${props.imageSource}" alt="${props.altText}" ${inlineStyleAttributre} >` };
     }
 }

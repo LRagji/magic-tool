@@ -9,6 +9,6 @@ class bs_button {
     }
 
     async template(props, layoutBuilder) {
-        return `<button type="button" class="btn btn-primary">${props.text}</button>`;
+        return { "style": "", "html":`<button type="button" class="btn btn-primary">${props.text}</button>`};
     }
 }

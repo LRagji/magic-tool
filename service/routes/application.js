@@ -74,7 +74,7 @@ module.exports = class Application {
             const installedElementsPath = path.join(parameter.applicationDir, '.installedElements.json');
             const fileContent = await this._fileRead(installedElementsPath);
             const installedElements = fileContent == undefined ? [] : JSON.parse(fileContent);
-            let htmlContent = await this.layoutParse(parameter.template.main, installedElements, parameter.modulePath, parameter.applicationName, parameter.applicationDir, (name) => {
+            let content = await this.layoutParse(parameter.template.main, installedElements, parameter.modulePath, parameter.applicationName, parameter.applicationDir, (name) => {
                 const layout = parameter.template[name];
                 if (layout == undefined) {
                     return [];
@@ -83,7 +83,8 @@ module.exports = class Application {
                     return layout;
                 }
             });
-            await this._fileWrite(parameter.html, htmlContent);
+            await this._fileWrite(parameter.html, content.html);
+            await this._fileWrite(parameter.css, content.style);
             await this._fileWrite(installedElementsPath, JSON.stringify(installedElements));
 
         }, [parameter]);

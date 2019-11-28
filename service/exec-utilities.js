@@ -19,7 +19,7 @@ module.exports = class Utilities {
         this.createModule = this.createModule.bind(this);
         this._fileRead = this._fileRead.bind(this);
         this._addImports = this._addImports.bind(this);
-        
+
 
         this.npxCommand = 'npx';
         this.npmCommand = 'npm';
@@ -95,6 +95,7 @@ module.exports = class Utilities {
 
     async layoutParse(elements, installedElements, modulePath, projectName, executeDirectory, layoutResolver) {
         let elementTemplates = [];
+        let elementStyles = [];
         for (let elementCounter = 0; elementCounter < elements.length; elementCounter++) {
             const element = elements[elementCounter];
             const repoElement = await this._elementRepoClient.getInstanceOfElement(element.type);
@@ -110,10 +111,11 @@ module.exports = class Utilities {
                 await this._addImports(repoElement, modulePath, executeDirectory);
                 const props = element.properties || repoElement.defaultProperties;
                 const elementInstance = await repoElement.template(props, async (layoutName) => await this.layoutParse(layoutResolver(layoutName), installedElements, modulePath, projectName, executeDirectory, layoutResolver));
-                elementTemplates.push(elementInstance);
+                elementTemplates.push(elementInstance.html);
+                elementStyles.push(elementInstance.style);
             }
         };
-        return elementTemplates.join(" ");
+        return { "html": elementTemplates.join(" "), "style": elementStyles.join(" ") };
     }
 
     async _installElement(element, executeDirectory, projectName) {
