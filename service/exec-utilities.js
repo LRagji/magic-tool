@@ -105,7 +105,7 @@ module.exports = class Utilities {
             else {
                 repoElement.type = element.type;
                 if (installedElements.indexOf(element.type) === -1) {
-                    await this._installElement(repoElement, modulePath, executeDirectory, projectName);
+                    await this._installElement(repoElement, executeDirectory, projectName);
                     installedElements.push(element.type);
                 }
                 await this._addImports(repoElement, modulePath, executeDirectory);
