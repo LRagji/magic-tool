@@ -100,7 +100,7 @@ module.exports = class Application {
             const possibleErrors = new Map();
             possibleErrors.set(400, { tittle: "Validation failed", HttpStatusCode: 400 });
             possibleErrors.set(-1, { tittle: "Unknown Error", HttpStatusCode: 500 });
-            res.status(possibleErrors.get(err.errorCode).HttpStatusCode).send({ "message": possibleErrors.get(err.HttpStatusCode).tittle + ":" + err.message });
+            res.status(possibleErrors.get(err.errorCode).HttpStatusCode).send({ "message": possibleErrors.get(err.errorCode).tittle + ":" + err.message });
         }
     }
 
