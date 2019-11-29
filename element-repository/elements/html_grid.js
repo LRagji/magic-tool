@@ -73,6 +73,6 @@ class html_grid {
             items += `<div class="i${idx + props.styleSuffix}" > ${content.html} </div>`;
             styles.push(content.style);
         }
-        return { "html": `<div class="gc${props.styleSuffix}"> ${items} </div>`, style: styles.join(" ") };
+        return { "html": `<div class="gc${props.styleSuffix}"> ${items} </div>`, "style": styles.join(" ") };
     }
 }

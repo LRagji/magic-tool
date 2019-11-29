@@ -22,11 +22,13 @@ class mat_tab {
 
     async template(props, layoutBuilder) {
         let tabsMarkUp = "";
+        const styles = [];
         for (let index = 0; index < props.tabs.length; index++) {
             const tab = props.tabs[index];
             const content = await layoutBuilder(tab.content);
-            tabsMarkUp += `<mat-tab label="${tab.name}"> ${content} </mat-tab>`
+            tabsMarkUp += `<mat-tab label="${tab.name}"> ${content.html} </mat-tab>`;
+            styles.push(content.style);
         }
-        return { "style": "", "html": `<mat-tab-group>${tabsMarkUp}</mat-tab-group>` };
+        return { "style": styles.join(" "), "html": `<mat-tab-group>${tabsMarkUp}</mat-tab-group>` };
     }
 }

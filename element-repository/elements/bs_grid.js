@@ -14,6 +14,7 @@ class bs_grid {
 
     async template(props, layoutBuilder) {
         const allLayouts = [];
+        const styles = [];
         for (let rowCounter = 0; rowCounter < props.rows.length; rowCounter++) {
             const row = props.rows[rowCounter];
             const hContainer = this._createHorizontalContainer(row);
@@ -22,19 +23,19 @@ class bs_grid {
                 const element = row.elements[colCtr];
                 const elementContainer = this._createElementContainer(element);
                 const elementTemplates = await layoutBuilder(element.layout);
-                columns.push(elementContainer(elementTemplates));
-
+                columns.push(elementContainer(elementTemplates.html));
+                styles.push(elementTemplates.style);
             }
             allLayouts.push(hContainer(columns.join(' ')));
         }
 
         switch (props.container) {
             case 'strech':
-                return `<div class="container-fluid" > ${allLayouts.join(' ')} </div>`;
+                return { "style": styles.join(" "), "html": `<div class="container-fluid" > ${allLayouts.join(' ')} </div>` };
             case 'normal':
-                return `<div class="container" > ${allLayouts.join(' ')} </div>`;
+                return { "style": styles.join(" "), "html": `<div class="container" > ${allLayouts.join(' ')} </div>` };
             default:
-                return { "style": "", "html": allLayouts.join(' ') };
+                return { "style": styles.join(" "), "html": allLayouts.join(" ") };
         }
     }
 

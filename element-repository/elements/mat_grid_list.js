@@ -17,13 +17,15 @@ class mat_grid_list {
 
     async template(props, layoutBuilder) {
         const contents = [];
+        const styles = [];
         for (let contentCounter = 0; contentCounter < props.content.length; contentCounter++) {
             const content = props.content[contentCounter]
             const innerContent = await layoutBuilder(content.layout);
             const colorAttribute = `[ngStyle]="{background:'${content.color}'}"`;
-            contents.push(`<mat-grid-tile colspan="${content.colspan}" rowspan="${content.rowspan}" ${content.color == undefined ? '' : colorAttribute} >${innerContent}</mat-grid-tile>`);
+            contents.push(`<mat-grid-tile colspan="${content.colspan}" rowspan="${content.rowspan}" ${content.color == undefined ? '' : colorAttribute} >${innerContent.html}</mat-grid-tile>`);
+            styles.push(innerContent.style);
         }
         const colorAttribute = `[ngStyle]="{background:'${props.color}'}"`;
-        return { "style": "", "html": `<mat-grid-list cols="${props.cols}" gutterSize="${props.guttersize}" rowHeight="${props.rowHeight}" ${props.color == undefined ? '' : colorAttribute} >${contents.join(' ')}</mat-grid-list>` };
+        return { "style": styles.join(" "), "html": `<mat-grid-list cols="${props.cols}" gutterSize="${props.guttersize}" rowHeight="${props.rowHeight}" ${props.color == undefined ? '' : colorAttribute} >${contents.join(' ')}</mat-grid-list>` };
     }
 }
