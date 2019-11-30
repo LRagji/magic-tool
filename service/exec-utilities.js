@@ -234,7 +234,7 @@ module.exports = class Utilities {
 
     }
 
-    async createApplication(applicationName, workspaceDirectory, npmCacheDir, schematicPath) {
+    async createApplication(applicationName, workspaceDirectory, npmCacheDir, schematicPath, enableDocker) {
         const applicationDir = path.join(workspaceDirectory, applicationName);
         if (this._fileExists(applicationDir)) {
             throw new Error("Application" + applicationDir + " already exists.");
@@ -258,6 +258,20 @@ module.exports = class Utilities {
         await this._npmInstall(applicationDir, schematicPath, npmCacheDir);
         //Clear Index Page
         this._fileWrite(path.join(applicationDir, 'src/app/app.component.html'), `<router-outlet></router-outlet>`);
+        //Docker
+        if (enableDocker === true) {
+            //Add command in package.jason
+            let projPackage = JSON.parse(this._fileRead(path.join(applicationDir, 'package.json')));
+            projPackage.scripts["dockerbuild"] = "ng build --prod && docker build -t sds:localbuild . && docker image inspect " + applicationName.toLowerCase() + ":localbuild --format='{{.Size}}'";
+            projPackage.scripts["dockerrun"] = "docker run --name debugDocker -d -p 4500:80 " + applicationName.toLowerCase() + ":localbuild";
+            this._fileWrite(path.join(applicationDir, 'package.json'), JSON.stringify(projPackage));
+
+            //Create Docker File
+            this._fileWrite(path.join(applicationDir, 'Dockerfile'),
+                `FROM nginx:mainline-alpine
+            COPY ./docker/default.conf /etc/nginx/conf.d/default.conf
+            COPY ./dist/subsea-drilling-systems /usr/share/nginx/html/`);
+        }
 
     }
 }

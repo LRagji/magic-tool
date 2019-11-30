@@ -7,10 +7,17 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Service",
+            "name": "Launch Service Mac",
             "program": "${workspaceFolder}/service/service.js",
             "skipFiles": [
                 "<node_internals>/**"
+            ],
+            "args": [
+                "/Users/laukikragji/Documents/Git/Local/magic-tool/workspace",
+                "3000",
+                "/Users/laukikragji/Documents/Git/Local/magic-tool/workspace/OFE/node_modules",
+                "/Users/laukikragji/Documents/Git/Local/magic-tool/transpiler/schematics/ng-utils",
+                "http://localhost:4000"
             ]
         },
         {
@@ -22,7 +29,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Magic Tool",
+            "name": "Launch Tool",
             "program": "${workspaceFolder}/transpiler/entry-point.js"
         }
     ]

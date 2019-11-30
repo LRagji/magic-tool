@@ -39,10 +39,11 @@ module.exports = class Application {
         }
         const applicationName = req.body.name.toLowerCase();
         const npmCache = req.body.NPMCache === false ? undefined : this._npmCache;
+        const enableDocker = !(req.body.enableDocker === false);
 
-        return this._projectQue.enque(applicationName, async function (applicationName, workspaceDirectory, npmCacheDir, schematicPath) {
-            await this.createApplication(applicationName, workspaceDirectory, npmCacheDir, schematicPath);
-        }, [applicationName, this._workspaceDirectory, npmCache, this._schematicPackagePath]);
+        return this._projectQue.enque(applicationName, async function (applicationName, workspaceDirectory, npmCacheDir, schematicPath, enableDocker) {
+            await this.createApplication(applicationName, workspaceDirectory, npmCacheDir, schematicPath, enableDocker);
+        }, [applicationName, this._workspaceDirectory, npmCache, this._schematicPackagePath, enableDocker]);
     }
 
     _createModule(req) {
