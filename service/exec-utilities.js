@@ -77,7 +77,10 @@ module.exports = class Utilities {
     }
 
     _fileWrite(filepath, content) {
-        fs.writeFileSync(filepath, content);
+        const filename = path.basename(filepath);
+        const directory = filepath.replace(filename, '');
+        fs.mkdirSync(directory, { recursive: true });
+        fs.writeFileSync(path.join(directory, filename), content);
     }
 
     _fileAppend(filepath, content) {
@@ -269,8 +272,26 @@ module.exports = class Utilities {
             //Create Docker File
             this._fileWrite(path.join(applicationDir, 'Dockerfile'),
                 `FROM nginx:mainline-alpine
-            COPY ./docker/default.conf /etc/nginx/conf.d/default.conf
-            COPY ./dist/subsea-drilling-systems /usr/share/nginx/html/`);
+                COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+                COPY ./dist/subsea-drilling-systems /usr/share/nginx/html/`);
+
+            //Create Nginx config
+            this._fileWrite(path.join(applicationDir, 'nginx/default.conf'),
+                `server {
+                listen       80;
+                server_name  localhost;
+                gzip on;
+                gzip_comp_level 5;
+                gzip_types text/plain text/css application/javascript application/x-javascript text/xml application/xml application/rss+xml text/javascript image/x-icon image/bmp image/svg+xml;
+                gzip_proxied no-cache no-store private expired auth;
+                gzip_min_length 1000;
+                
+                location / {
+                    root   /usr/share/nginx/html;
+                    index  index.html index.htm;
+                    try_files $uri $uri/ /index.html;
+                }
+            }`);
         }
 
     }
