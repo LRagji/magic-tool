@@ -5,14 +5,15 @@ class mat_button {
             moduleImports: [{ moduleName: 'MatButtonModule', link: '@angular/material/button' }]
         };
         this.defaultProperties = {
-            text: "Hello World",
+            content: "Hello World",
             disabled: false,
-            type: "raised"
+            buttontype: "raised"
         };
         this.template = this.template.bind(this);
     }
 
     async template(props, layoutBuilder) {
-        return { "style": "", "html": `<button mat-${props.type == undefined ? '' : (props.type + '-')}button ${props.disabled === true ? 'disabled' : ''} color="primary">${props.text}</button>` };
+        const content = await layoutBuilder(props.content);
+        return { "style": "", "html": `<button mat-${props.buttontype == undefined ? '' : (props.buttontype + '-')}button ${props.disabled === true ? 'disabled' : ''} color="primary">${content.html}</button>` };
     }
 }
