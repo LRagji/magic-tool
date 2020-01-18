@@ -1,7 +1,7 @@
 class html_span {
     constructor() {
         this.package = {};
-        this.defaultProperties = { text: "Hello World", type="normal" };
+        this.defaultProperties = { text: "Hello World", type: "normal" };
         this.template = this.template.bind(this);
     }
 
