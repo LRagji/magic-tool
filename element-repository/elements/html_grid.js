@@ -33,6 +33,18 @@ class html_grid {
             let container = ".gc" + styleSuffix + " {display: grid;";
             let gridTemplate = props.gridDef[minWidth];
             container += "grid-template:" + gridTemplate.reduce((acc, cols) => acc + "'" + cols.join(' ') + "'", "") + ";";
+
+            container += "grid-template-columns:" + gridTemplate[0].reduce((acc, e) => {
+                let coldef = props.content.find((i) => i.name === e);
+                if (coldef == undefined) {
+                    return acc + " auto";
+                }
+                else {
+                    return acc + " " + (coldef.width == undefined ? "auto" : coldef.width);
+                }
+
+            }, "") + ";";
+            
             if (props.horizontalAlignment !== undefined) {
                 container += "justify-content: " + props.horizontalAlignment + ";"
             }
