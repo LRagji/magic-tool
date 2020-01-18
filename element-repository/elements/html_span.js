@@ -1,7 +1,7 @@
 class html_span {
     constructor() {
         this.package = {};
-        this.defaultProperties = { text: "Hello World", type: "normal" };
+        this.defaultProperties = { text: "Hello World", type: "normal", style: "" };
         this.template = this.template.bind(this);
     }
 
@@ -19,7 +19,8 @@ class html_span {
                 return { "style": "", "html": `<h5>${props.text}</h5>` };
 
             default:
-                return { "style": "", "html": `<span>${props.text}</span>` };
+                props.style = (props.style == undefined ? "" : `style="${props.style}"`);
+                return { "style": "", "html": `<span ${props.style} >${props.text}</span>` };
         }
     }
 }
