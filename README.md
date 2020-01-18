@@ -42,3 +42,7 @@ The following are different sections of tool json
 3. [Components](documentation/components.md)
 4. [Layouts](documentation/layouts.md)
 5. [Elements](documentation/elements.md)
+
+## Run locally
+1. Mac's Use ```NPM RUN startMac``` 
+2. Windows Use ```NPM RUN start```
