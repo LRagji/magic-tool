@@ -19,6 +19,7 @@ module.exports = class Utilities {
         this.createModule = this.createModule.bind(this);
         this._fileRead = this._fileRead.bind(this);
         this._addImports = this._addImports.bind(this);
+        this._capitalizeAsAngular = this._capitalizeAsAngular.bind(this);
 
 
         this.npxCommand = 'npx';
@@ -101,24 +102,40 @@ module.exports = class Utilities {
         let elementStyles = [];
         for (let elementCounter = 0; elementCounter < elements.length; elementCounter++) {
             const element = elements[elementCounter];
-            const repoElement = await this._elementRepoClient.getInstanceOfElement(element.type);
+            let repoElement = await this._elementRepoClient.getInstanceOfElement(element.type);
             if (repoElement === undefined) {
-                elementTemplates.push('Unknown Element:' + element.type);
-            }
-            else {
-                repoElement.type = element.type;
-                if (installedElements.indexOf(element.type) === -1) {
-                    await this._installElement(repoElement, executeDirectory, projectName);
-                    installedElements.push(element.type);
+                let componentName = projectName + '-' + element.type;
+                this._logger.log(`Generating library ${componentName}`);
+                repoElement = { type: element.type };
+                repoElement.package = {
+                    execute: ['npx ng generate library ' + componentName],
+                    moduleImports: [{ moduleName: this._capitalizeAsAngular(componentName) + 'Module', link: `projects/${componentName}/src/public-api` }]
                 }
-                await this._addImports(repoElement, modulePath, executeDirectory);
-                const props = element.properties || repoElement.defaultProperties;
-                const elementInstance = await repoElement.template(props, async (layoutName) => await this.layoutParse(layoutResolver(layoutName), installedElements, modulePath, projectName, executeDirectory, layoutResolver));
-                elementTemplates.push(elementInstance.html);
-                elementStyles.push(elementInstance.style);
+                repoElement.defaultProperties = {};
+                repoElement.template = (props, layoutBuilder) => ({ "style": "", "html": `<lib-${componentName}> </lib-${componentName}>` });
             }
+
+            repoElement.type = element.type;
+            if (installedElements.indexOf(element.type) === -1) {
+                await this._installElement(repoElement, executeDirectory, projectName);
+                installedElements.push(element.type);
+            }
+            await this._addImports(repoElement, modulePath, executeDirectory);
+            const props = element.properties || repoElement.defaultProperties;
+            const elementInstance = await repoElement.template(props, async (layoutName) => await this.layoutParse(layoutResolver(layoutName), installedElements, modulePath, projectName, executeDirectory, layoutResolver));
+            elementTemplates.push(elementInstance.html);
+            elementStyles.push(elementInstance.style);
+
         };
         return { "html": elementTemplates.join(" "), "style": elementStyles.join(" ") };
+    }
+
+    _capitalizeAsAngular(name) {
+        name = name.charAt(0).toUpperCase() + name.slice(1);
+        let idx = name.indexOf("-");
+        let partA = name.slice(0, idx);
+        idx++;
+        return partA + name.charAt(idx).toUpperCase() + name.slice((idx+1), name.length);
     }
 
     async _installElement(element, executeDirectory, projectName) {

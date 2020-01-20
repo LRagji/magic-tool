@@ -29,7 +29,12 @@ module.exports = class ElementRepoClient {
     async _fetchElementFromRepo(elementName) {
         let returnElement = "";
         const fetchURL = urljoin(this._repoUrl, '/v1/elements/', elementName);
-        returnElement = await rp(fetchURL);
+        try {
+            returnElement = await rp(fetchURL);
+        }
+        catch (err) {
+            console.error(err);
+        }
         return returnElement;
     }
 }
