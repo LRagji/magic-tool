@@ -17,6 +17,8 @@ class html_span {
                 return { "style": "", "html": `<h4>${props.text}</h4>` };
             case "heading5":
                 return { "style": "", "html": `<h5>${props.text}</h5>` };
+            case "bold":
+                return { "style": "", "html": `<b>${props.text}</b>` };
 
             default:
                 props.style = (props.style == undefined ? "" : `style="${props.style}"`);
