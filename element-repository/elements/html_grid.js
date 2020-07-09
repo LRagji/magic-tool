@@ -44,7 +44,7 @@ class html_grid {
                 }
 
             }, "") + ";";
-            
+
             if (props.horizontalAlignment !== undefined) {
                 container += "justify-content: " + props.horizontalAlignment + ";"
             }
@@ -66,7 +66,7 @@ class html_grid {
             itemStyles = props.content.map((itemProp, idx) => {
                 let itemStyle = ".i" + idx + styleSuffix + "{";
                 itemStyle += `grid-area: ${itemProp.name};`;
-                if (itemProp.color !== undefined) itemStyle += ` background-color: ${itemProp.color};`;
+                if (itemProp.style !== undefined) itemStyle += itemProp.style.join(' ; ');
                 itemStyle += "}";
                 return itemStyle;
             });
