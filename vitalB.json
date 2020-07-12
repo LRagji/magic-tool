@@ -1,0 +1,207 @@
+{
+    "main": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "mb",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "navbar"
+                        ],
+                        [
+                            "kpibar"
+                        ],
+                        [
+                            "workspace"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "0px",
+                "content": [
+                    {
+                        "name": "navbar",
+                        "layout": "navbar"
+                    },
+                    {
+                        "name": "kpibar",
+                        "layout": "kpibar"
+                    },
+                    {
+                        "name": "workspace",
+                        "layout": "workspace",
+                        "style": [
+                            "padding-top: 40px"
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "navbar": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Appshell OR Nav bar"
+            }
+        }
+    ],
+    "workspace": [
+        {
+            "type": "mat_tab",
+            "properties": {
+                "tabs": [
+                    {
+                        "name": "Overview",
+                        "content": "taboverview"
+                    },
+                    {
+                        "name": "Alarms",
+                        "content": ""
+                    }
+                ]
+            }
+        }
+    ],
+    "kpibar": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "kb",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "kpi1",
+                            "kpi2",
+                            "kpi3",
+                            "kpi4",
+                            "kpi5"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "0px",
+                "content": [
+                    {
+                        "name": "kpi1",
+                        "layout": "kpi1"
+                    },
+                    {
+                        "name": "kpi2",
+                        "layout": "kpi2"
+                    },
+                    {
+                        "name": "kpi3",
+                        "layout": "kpi3"
+                    },
+                    {
+                        "name": "kpi4",
+                        "layout": "kpi4"
+                    },
+                    {
+                        "name": "kpi5",
+                        "layout": "kpi5"
+                    }
+                ]
+            }
+        }
+    ],
+    "kpi1": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 1"
+            }
+        }
+    ],
+    "kpi2": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 2"
+            }
+        }
+    ],
+    "kpi3": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 3"
+            }
+        }
+    ],
+    "kpi4": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 4"
+            }
+        }
+    ],
+    "kpi5": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 5"
+            }
+        }
+    ],
+    "taboverview": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "tb",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "section1",
+                            "section2"
+                        ]
+                    ]
+                },
+                "columnGap": "10px",
+                "rowGap": "10px",
+                "content": [
+                    {
+                        "name": "section1",
+                        "layout": "section1"
+                    },
+                    {
+                        "name": "section2",
+                        "layout": "section2"
+                    }
+                ]
+            }
+        }
+    ],
+    "section1": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Section 1",
+                "type": "normal"
+            }
+        }
+    ],
+    "section2": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "Systems",
+                "content": "systemtable"
+            }
+        }
+    ],
+    "systemtable": [
+        {
+            "type": "mat_table"
+        }
+    ]
+}

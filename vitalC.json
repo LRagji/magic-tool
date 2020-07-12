@@ -1,0 +1,341 @@
+{
+    "main": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "mc",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "kpibar"
+                        ],
+                        [
+                            "workspace"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "0px",
+                "content": [
+                    {
+                        "name": "kpibar",
+                        "layout": "kpibar"
+                    },
+                    {
+                        "name": "workspace",
+                        "layout": "workspace",
+                        "style": [
+                            "padding-top: 40px"
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "workspace": [
+        {
+            "type": "mat_tab",
+            "properties": {
+                "tabs": [
+                    {
+                        "name": "Overview",
+                        "content": "taboverview"
+                    },
+                    {
+                        "name": "Alarms",
+                        "content": ""
+                    }
+                ]
+            }
+        }
+    ],
+    "kpibar": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "kc",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "kpi1",
+                            "kpi2",
+                            "kpi3",
+                            "kpi4"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "0px",
+                "content": [
+                    {
+                        "name": "kpi1",
+                        "layout": "kpi"
+                    },
+                    {
+                        "name": "kpi2",
+                        "layout": "kpi"
+                    },
+                    {
+                        "name": "kpi3",
+                        "layout": "kpi"
+                    },
+                    {
+                        "name": "kpi4",
+                        "layout": "kpi"
+                    }
+                ]
+            }
+        }
+    ],
+    "kpi": [
+        {
+            "type": "kpi"
+        }
+    ],
+    "taboverview": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "tc",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "name",
+                            "cal"
+                        ],
+                        [
+                            "tabs",
+                            "tabs"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "0px",
+                "content": [
+                    {
+                        "name": "name",
+                        "layout": "name"
+                    },
+                    {
+                        "name": "cal",
+                        "layout": "cal"
+                    },
+                    {
+                        "name": "tabs",
+                        "layout": "tabs"
+                    }
+                ]
+            }
+        }
+    ],
+    "name": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Trend Charts",
+                "type": "normal"
+            }
+        }
+    ],
+    "cal": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Jan 28 2019 - Feb 08 2019",
+                "type": "normal"
+            }
+        }
+    ],
+    "tabs": [
+        {
+            "type": "mat_tab",
+            "properties": {
+                "tabs": [
+                    {
+                        "name": "Oil Life Cycle",
+                        "content": "c1"
+                    },
+                    {
+                        "name": "Contaminants",
+                        "content": "tabconta"
+                    },
+                    {
+                        "name": "TBN/TAN",
+                        "content": "tabtbn"
+                    },
+                    {
+                        "name": "Particles",
+                        "content": "tabparticles"
+                    },
+                    {
+                        "name": "VDVT",
+                        "content": "tabvdvt"
+                    },
+                    {
+                        "name": "+",
+                        "content": ""
+                    }
+                ]
+            }
+        }
+    ],
+    "c1": [
+        {
+            "type": "trendchart"
+        }
+    ],
+    "c2": [
+        {
+            "type": "barchart"
+        }
+    ],
+    "c3": [
+        {
+            "type": "stackedtrendchart"
+        }
+    ],
+    "tabvdvt": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "tabvdvtc",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "vc1",
+                            "vc2"
+                        ],
+                        [
+                            "vc3",
+                            "vc4"
+                        ]
+                    ]
+                },
+                "columnGap": "40px",
+                "rowGap": "40px",
+                "content": [
+                    {
+                        "name": "vc1",
+                        "layout": "c1"
+                    },
+                    {
+                        "name": "vc2",
+                        "layout": "c1"
+                    },
+                    {
+                        "name": "vc3",
+                        "layout": "c1"
+                    },
+                    {
+                        "name": "vc4",
+                        "layout": "c1"
+                    }
+                ]
+            }
+        }
+    ],
+    "tabparticles": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "tabparticles",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "pc1",
+                            "pc2"
+                        ],
+                        [
+                            "pc3",
+                            "pc4"
+                        ]
+                    ]
+                },
+                "columnGap": "40px",
+                "rowGap": "40px",
+                "content": [
+                    {
+                        "name": "pc1",
+                        "layout": "c2"
+                    },
+                    {
+                        "name": "pc2",
+                        "layout": "c2"
+                    },
+                    {
+                        "name": "pc3",
+                        "layout": "c1"
+                    },
+                    {
+                        "name": "pc4",
+                        "layout": ""
+                    }
+                ]
+            }
+        }
+    ],
+    "tabtbn": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "tabtbn",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "tc1",
+                            "tc2"
+                        ]
+                    ]
+                },
+                "columnGap": "40px",
+                "rowGap": "40px",
+                "content": [
+                    {
+                        "name": "tc1",
+                        "layout": "c1"
+                    },
+                    {
+                        "name": "tc2",
+                        "layout": "c1"
+                    }
+                ]
+            }
+        }
+    ],
+    "tabconta": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "tabcon",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "cc1",
+                            "cc2"
+                        ],
+                        [
+                            "cc3",
+                            "cc2"
+                        ]
+                    ]
+                },
+                "columnGap": "40px",
+                "rowGap": "40px",
+                "content": [
+                    {
+                        "name": "cc1",
+                        "layout": "c1"
+                    },
+                    {
+                        "name": "cc2",
+                        "layout": "c3"
+                    },
+                    {
+                        "name": "cc3",
+                        "layout": "c1"
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,102 @@
+{
+    "main": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "gridDef": {
+                    "600px": [
+                        [
+                            "speed",
+                            "hours",
+                            "lubeoil"
+                        ],
+                        [
+                            "oiltemp",
+                            "oilpressure",
+                            "hightemp1"
+                        ],
+                        [
+                            "hightemp2",
+                            ".",
+                            "."
+                        ]
+                    ]
+                },
+                "columnGap": "5px",
+                "rowGap": "5px",
+                "content": [
+                    {
+                        "name": "speed",
+                        "layout": "speed",
+                        "color": "lightblue"
+                    },
+                    {
+                        "name": "hours",
+                        "layout": "hours",
+                        "color": "gray"
+                    },
+                    {
+                        "name": "lubeoil",
+                        "layout": "lubeoil",
+                        "color": "lightblue"
+                    },
+                    {
+                        "name": "oiltemp",
+                        "layout": "oiltemp",
+                        "color": "gray"
+                    },
+                    {
+                        "name": "oilpressure",
+                        "layout": "oilpressure",
+                        "color": "lightblue"
+                    },
+                    {
+                        "name": "hightemp1",
+                        "layout": "hightemp1",
+                        "color": "gray"
+                    },
+                    {
+                        "name": "hightemp2",
+                        "layout": "hightemp2",
+                        "color": "lightblue"
+                    }
+                ]
+            }
+        }
+    ],
+    "speed": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "hours": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "lubeoil": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "oiltemp": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "oilpressure": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "hightemp1": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "hightemp2": [
+        {
+            "type": "customcard"
+        }
+    ]
+}

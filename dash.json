@@ -1,0 +1,320 @@
+{
+    "main": [
+        {
+            "type": "mat_sidenav",
+            "properties": {
+                "content": "content",
+                "drawer": "drawer",
+                "mode": "side"
+            }
+        }
+    ],
+    "drawer": [
+        {
+            "type": "filters"
+        }
+    ],
+    "content": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "gridDef": {
+                    "600px": [
+                        [
+                            "contentheader"
+                        ],
+                        [
+                            "statusicons"
+                        ],
+                        [
+                            "stauscards"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "5px",
+                "content": [
+                    {
+                        "name": "contentheader",
+                        "layout": "contentheader"
+                    },
+                    {
+                        "name": "statusicons",
+                        "layout": "statusicons"
+                    },
+                    {
+                        "name": "stauscards",
+                        "layout": "stauscards"
+                    }
+                ]
+            }
+        }
+    ],
+    "contentheader": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Smart Compressor Status",
+                "type": "heading2"
+            }
+        }
+    ],
+    "statusicons": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Status:",
+                "type": "normal"
+            }
+        }
+    ],
+    "stauscards": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "ONLINE",
+                "content": "statuscardcontent"
+            }
+        }
+    ],
+    "statuscardcontent": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "gridDef": {
+                    "600px": [
+                        [
+                            "siteheader",
+                            ".",
+                            ".",
+                            ".",
+                            ".",
+                            "assetoverviewlink",
+                            "compressoranalyticslink"
+                        ],
+                        [
+                            "lblstatus",
+                            "lblcompany",
+                            "lblenginemodel",
+                            "lblcompressormodel",
+                            "lblhp",
+                            "lblflow",
+                            "lblenginehours"
+                        ],
+                        [
+                            "valstatus",
+                            "valcompany",
+                            "valenginemodel",
+                            "valcompressormodel",
+                            "valhp",
+                            "valflow",
+                            "valenginehours"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "5px",
+                "content": [
+                    {
+                        "name": "siteheader",
+                        "layout": "siteheader"
+                    },
+                    {
+                        "name": "assetoverviewlink",
+                        "layout": "assetoverviewlink"
+                    },
+                    {
+                        "name": "compressoranalyticslink",
+                        "layout": "compressoranalyticslink"
+                    },
+                    {
+                        "name": "lblstatus",
+                        "layout": "lblstatus"
+                    },
+                    {
+                        "name": "lblcompany",
+                        "layout": "lblcompany"
+                    },
+                    {
+                        "name": "lblenginemodel",
+                        "layout": "lblenginemodel"
+                    },
+                    {
+                        "name": "lblcompressormodel",
+                        "layout": "lblcompressormodel"
+                    },
+                    {
+                        "name": "lblhp",
+                        "layout": "lblhp"
+                    },
+                    {
+                        "name": "lblflow",
+                        "layout": "lblflow"
+                    },
+                    {
+                        "name": "lblenginehours",
+                        "layout": "lblenginehours"
+                    },
+                    {
+                        "name": "valstatus",
+                        "layout": "valstatus"
+                    },
+                    {
+                        "name": "valcompany",
+                        "layout": "valcompany"
+                    },
+                    {
+                        "name": "valenginemodel",
+                        "layout": "valenginemodel"
+                    },
+                    {
+                        "name": "valcompressormodel",
+                        "layout": "valcompressormodel"
+                    },
+                    {
+                        "name": "valhp",
+                        "layout": "valhp"
+                    },
+                    {
+                        "name": "valflow",
+                        "layout": "valflow"
+                    },
+                    {
+                        "name": "valenginehours",
+                        "layout": "valenginehours"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "html_hr"
+        }
+    ],
+    "lblstatus": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Status",
+                "type": "bold"
+            }
+        }
+    ],
+    "lblcompany": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Company",
+                "type": "bold"
+            }
+        }
+    ],
+    "lblenginemodel": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Engine Model",
+                "type": "bold"
+            }
+        }
+    ],
+    "lblcompressormodel": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Compressor Model",
+                "type": "bold"
+            }
+        }
+    ],
+    "lblhp": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "HP Utilization",
+                "type": "bold"
+            }
+        }
+    ],
+    "lblflow": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Flow Efficiency",
+                "type": "bold"
+            }
+        }
+    ],
+    "lblenginehours": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "0.0",
+                "type": "bold"
+            }
+        }
+    ],
+    "valstatus": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Status",
+                "type": "Tripped"
+            }
+        }
+    ],
+    "valcompany": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Artesian Software",
+                "type": "normal"
+            }
+        }
+    ],
+    "valenginemodel": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "F18",
+                "type": "normal"
+            }
+        }
+    ],
+    "valcompressormodel": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Standard 6 Cylinder Compresso",
+                "type": "normal"
+            }
+        }
+    ],
+    "valhp": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "0.0090",
+                "type": "normal"
+            }
+        }
+    ],
+    "valflow": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "0.0090",
+                "type": "normal"
+            }
+        }
+    ],
+    "valenginehours": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "0.0090",
+                "type": "normal"
+            }
+        }
+    ]
+}

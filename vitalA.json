@@ -1,0 +1,218 @@
+{
+    "main": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "m",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "navbar"
+                        ],
+                        [
+                            "workspace"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "0px",
+                "content": [
+                    {
+                        "name": "navbar",
+                        "layout": "navbar"
+                    },
+                    {
+                        "name": "workspace",
+                        "layout": "workspace"
+                    }
+                ]
+            }
+        }
+    ],
+    "navbar": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Appshell OR Nav bar"
+            }
+        }
+    ],
+    "workspace": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "w",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "heading1"
+                        ],
+                        [
+                            "content1"
+                        ],
+                        [
+                            "heading2"
+                        ],
+                        [
+                            "content2"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "5px",
+                "content": [
+                    {
+                        "name": "heading1",
+                        "layout": "heading1"
+                    },
+                    {
+                        "name": "content1",
+                        "layout": "content1"
+                    },
+                    {
+                        "name": "heading2",
+                        "layout": "heading2"
+                    },
+                    {
+                        "name": "content2",
+                        "layout": "content2"
+                    }
+                ]
+            }
+        }
+    ],
+    "heading1": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Fleet Overview"
+            }
+        }
+    ],
+    "heading2": [
+        {
+            "type": "html_span",
+            "properties": {
+                "text": "Fleet Alarms"
+            }
+        }
+    ],
+    "content2": [
+        {
+            "type": "mat_table",
+            "properties": {
+                "columns": []
+            }
+        }
+    ],
+    "content1": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "styleSuffix": "k",
+                "gridDef": {
+                    "600px": [
+                        [
+                            "kpi1",
+                            "kpi2",
+                            "kpi3",
+                            "kpi4",
+                            "kpi5"
+                        ],
+                        [
+                            "map",
+                            "map",
+                            "map",
+                            "map",
+                            "map"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "0px",
+                "content": [
+                    {
+                        "name": "kpi1",
+                        "layout": "kpi1"
+                    },
+                    {
+                        "name": "kpi2",
+                        "layout": "kpi2"
+                    },
+                    {
+                        "name": "kpi3",
+                        "layout": "kpi3"
+                    },
+                    {
+                        "name": "kpi4",
+                        "layout": "kpi4"
+                    },
+                    {
+                        "name": "kpi5",
+                        "layout": "kpi5"
+                    },
+                    {
+                        "name": "map",
+                        "layout": "map"
+                    }
+                ]
+            }
+        }
+    ],
+    "map": [
+        {
+            "type": "html_image",
+            "properties": {
+                "imageSource": "/assets/Worldmapper_Basemap_label 1.png",
+                "altText": "Map Component",
+                "height": "100%",
+                "width": "100%"
+            }
+        }
+    ],
+    "kpi1": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 1"
+            }
+        }
+    ],
+    "kpi2": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 2"
+            }
+        }
+    ],
+    "kpi3": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 3"
+            }
+        }
+    ],
+    "kpi4": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 4"
+            }
+        }
+    ],
+    "kpi5": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "title": "KPI 5"
+            }
+        }
+    ]
+}

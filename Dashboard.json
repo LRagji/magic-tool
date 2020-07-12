@@ -1,0 +1,129 @@
+{
+    "main": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "gridDef": {
+                    "600px": [
+                        [
+                            "header1",
+                            "header2",
+                            "header3",
+                            "header4",
+                            "header5"
+                        ],
+                        [
+                            "detail",
+                            "detail",
+                            "detail",
+                            "detail",
+                            "detail"
+                        ]
+                    ]
+                },
+                "columnGap": "0px",
+                "rowGap": "0px",
+                "content": [
+                    {
+                        "name": "header1",
+                        "layout": "header1"
+                    },
+                    {
+                        "name": "header2",
+                        "layout": "header2"
+                    },
+                    {
+                        "name": "header3",
+                        "layout": "header3"
+                    },
+                    {
+                        "name": "header4",
+                        "layout": "header4"
+                    },
+                    {
+                        "name": "header5",
+                        "layout": "header5"
+                    },
+                    {
+                        "name": "detail",
+                        "layout": "detail"
+                    }
+                ]
+            }
+        }
+    ],
+    "header1": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "subTitle": "Detail 1"
+            }
+        }
+    ],
+    "header2": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "subTitle": "Detail 2"
+            }
+        }
+    ],
+    "header3": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "subTitle": "Detail 3"
+            }
+        }
+    ],
+    "header4": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "subTitle": "Detail 4"
+            }
+        }
+    ],
+    "header5": [
+        {
+            "type": "mat_card",
+            "properties": {
+                "header": "",
+                "subTitle": "Detail 5"
+            }
+        }
+    ],
+    "detail": [
+        {
+            "type": "mat_tab",
+            "properties": {
+                "tabs": [
+                    {
+                        "name": "Alarm Log",
+                        "content": ""
+                    },
+                    {
+                        "name": "Asset Details",
+                        "content": ""
+                    },
+                    {
+                        "name": "Current Status",
+                        "content": ""
+                    },
+                    {
+                        "name": "Last 7 Days",
+                        "content": ""
+                    },
+                    {
+                        "name": "Compressor Analytics",
+                        "content": ""
+                    }
+                ]
+            }
+        }
+    ]
+}

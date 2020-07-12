@@ -1,0 +1,145 @@
+{
+    "main": [
+        {
+            "type": "html_grid",
+            "properties": {
+                "gridDef": {
+                    "600px": [
+                        [
+                            "alarms",
+                            "alarms"
+                        ],
+                        [
+                            "siteinfo",
+                            "siteinfo"
+                        ],
+                        [
+                            "packageinfo",
+                            "packageinfo"
+                        ],
+                        [
+                            "currentdata",
+                            "currentdata"
+                        ],
+                        [
+                            "suction",
+                            "enginespeed"
+                        ],
+                        [
+                            "oiltemp",
+                            "engineoiltemp"
+                        ],
+                        [
+                            "dischargetemp",
+                            "cylinder"
+                        ]
+                    ]
+                },
+                "columnGap": "5px",
+                "rowGap": "5px",
+                "content": [
+                    {
+                        "name": "alarms",
+                        "layout": "alarms",
+                        "color":"lightblue"
+                    },
+                    {
+                        "name": "siteinfo",
+                        "layout": "siteinfo",
+                        "color":"gray"
+                    },
+                    {
+                        "name": "packageinfo",
+                        "layout": "packageinfo",
+                        "color":"lightblue"
+                    },
+                    {
+                        "name": "currentdata",
+                        "layout": "currentdata",
+                        "color":"gray"
+                    },
+                    {
+                        "name": "suction",
+                        "layout": "suction",
+                        "color":"lightblue"
+                    },
+                    {
+                        "name": "enginespeed",
+                        "layout": "enginespeed",
+                        "color":"gray"
+                    },
+                    {
+                        "name": "oiltemp",
+                        "layout": "oiltemp",
+                        "color":"lightblue"
+                    },
+                    {
+                        "name": "engineoiltemp",
+                        "layout": "engineoiltemp",
+                        "color":"gray"
+                    },
+                    {
+                        "name": "dischargetemp",
+                        "layout": "packageinfo",
+                        "color":"lightblue"
+                    },
+                    {
+                        "name": "cylinder",
+                        "layout": "cylinder",
+                        "color":"gray"
+                    }
+                ]
+            }
+        }
+    ],
+    "alarms": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "siteinfo": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "packageinfo": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "currentdata": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "suction": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "enginespeed": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "oiltemp": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "engineoiltemp": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "dischargetemp": [
+        {
+            "type": "customcard"
+        }
+    ],
+    "cylinder": [
+        {
+            "type": "customcard"
+        }
+    ]
+}
