@@ -19,7 +19,7 @@ class html_grid {
             content: [{
                 "name": "Abc",
                 "layout": '',
-                "color": 'red'
+                "style": ['background-color:red']
             }]
         };
         this.template = this.template.bind(this);
