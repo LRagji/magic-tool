@@ -245,7 +245,7 @@ module.exports = class Utilities {
                 `--component-name=${pageName}`
             ], { 'cwd': applicationDir });
 
-            indexPage.push(`<li><a href="${currentModule.route + "/" + page.route}">${pageName}</a></li>`);
+            indexPage.push(`<li><a style="color:gray;" routerLink="${currentModule.route + "/" + page.route}">${pageName}</a></li>`);
         }
 
         //Update Index Page
@@ -282,7 +282,7 @@ module.exports = class Utilities {
         if (enableDocker === true) {
             //Add command in package.jason
             let projPackage = JSON.parse(this._fileRead(path.join(applicationDir, 'package.json')));
-            projPackage.scripts["dockerbuild"] = "ng build --prod && docker build -t sds:localbuild . && docker image inspect " + applicationName.toLowerCase() + ":localbuild --format='{{.Size}}'";
+            projPackage.scripts["dockerbuild"] = "ng build --prod && docker build -t "+ applicationName.toLowerCase() +":localbuild . && docker image inspect " + applicationName.toLowerCase() + ":localbuild --format='{{.Size}}'";
             projPackage.scripts["dockerrun"] = "docker run --name debugDocker -d -p 4500:80 " + applicationName.toLowerCase() + ":localbuild";
             this._fileWrite(path.join(applicationDir, 'package.json'), JSON.stringify(projPackage));
 
@@ -290,7 +290,13 @@ module.exports = class Utilities {
             this._fileWrite(path.join(applicationDir, 'Dockerfile'),
                 `FROM nginx:mainline-alpine
                 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-                COPY ./dist/subsea-drilling-systems /usr/share/nginx/html/`);
+                COPY ./dist/${applicationName.toLowerCase()} /usr/share/nginx/html/`);
+
+            //Create Docker Ignore File
+            this._fileWrite(path.join(applicationDir, '.dockerignore'),
+                `**/**
+                !dist/**
+                !nginx/**`);
 
             //Create Nginx config
             this._fileWrite(path.join(applicationDir, 'nginx/default.conf'),
